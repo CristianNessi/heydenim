@@ -86,7 +86,7 @@
         /* HERO */
         .hero {
             min-height: 70vh;
-            background: linear-gradient(180deg, rgba(17,17,17,0.35), rgba(17,17,17,0.65)),
+            background: linear-gradient(180deg, rgba(17, 17, 17, 0.35), rgba(17, 17, 17, 0.65)),
                 url('https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1300&q=80') center/cover fixed;
             display: flex;
             justify-content: center;
@@ -114,8 +114,7 @@
         }
 
         .about-section {
-            background: url('https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1400&q=80')
-                center/cover fixed no-repeat;
+            background: url('https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1400&q=80') center/cover fixed no-repeat;
             color: white;
             position: relative;
         }
@@ -174,8 +173,15 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
         }
 
         .grid {
@@ -242,6 +248,90 @@
             transition: max-height 0.3s ease, padding 0.3s ease;
         }
 
+        /* MODAL PRO */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 3000;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 20px;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-body {
+            display: flex;
+            gap: 20px;
+        }
+
+        .modal-body img {
+            width: 50%;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        .modal-info {
+            flex: 1;
+        }
+
+        .modal-info button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .close {
+            float: right;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .sizes {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .sizes button {
+            padding: 8px 14px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+        }
+
+        .sizes button.active {
+            background: black;
+            color: white;
+        }
+
         .product.show-description .product-description {
             max-height: 140px;
             padding: 14px 20px 20px;
@@ -286,6 +376,24 @@
             cursor: pointer;
         }
 
+        .colors {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .colors span {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .colors span.active {
+            border: 2px solid black;
+        }
+
         .reviews {
             display: flex;
             gap: 22px;
@@ -327,6 +435,38 @@
             width: 60px;
             filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.22));
         }
+
+        .cart {
+            border-radius: 20px 0 0 20px;
+        }
+
+        .cart-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .cart-item span {
+            font-size: 14px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: black;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            opacity: 0;
+            transition: 0.4s;
+            z-index: 4000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -356,8 +496,10 @@
     <section id="about" class="section about-section">
         <div class="about-overlay">
             <h2>Nosotras</h2>
-            <p>En Heydemin somos una marca dedicada al denim femenino. Diseñamos jeans que combinan estilo, comodidad y actitud para
-                mujeres reales. Nuestro objetivo es que cada prenda resalte tu personalidad con detalles únicos y una silueta cómoda.
+            <p>En Heydemin somos una marca dedicada al denim femenino. Diseñamos jeans que combinan estilo, comodidad y
+                actitud para
+                mujeres reales. Nuestro objetivo es que cada prenda resalte tu personalidad con detalles únicos y una
+                silueta cómoda.
                 Navega, atrévete y descubre por qué el denim es nuestra forma de contar historias.</p>
         </div>
     </section>
@@ -367,6 +509,42 @@
         <h2>Catálogo</h2>
         <div id="products" class="grid"></div>
     </section>
+
+    <!-- MODAL PRODUCTO PRO -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+
+            <div class="modal-body">
+                <img id="modal-img">
+
+                <div class="modal-info">
+                    <h2 id="modal-name"></h2>
+                    <p id="modal-desc"></p>
+                    <h3 id="modal-price"></h3>
+
+                    <label>Talle</label>
+                    <div class="sizes">
+                        <button onclick="selectSize(this,'S')">S</button>
+                        <button onclick="selectSize(this,'M')">M</button>
+                        <button onclick="selectSize(this,'L')">L</button>
+                    </div>
+
+                    <label>Cantidad</label>
+                    <input type="number" id="modal-qty" value="1" min="1">
+
+                    <button onclick="addToCartFromModal()">Agregar al carrito</button>
+                </div>
+
+                <label>Color</label>
+                <div class="colors">
+                    <span style="background:#1e3a5f" onclick="selectColor(this,'Azul')"></span>
+                    <span style="background:black" onclick="selectColor(this,'Negro')"></span>
+                    <span style="background:#a3c1da" onclick="selectColor(this,'Celeste')"></span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- REVIEWS -->
     <section id="reviews" class="section">
@@ -410,6 +588,60 @@
     </a>
 
     <script>
+
+        let selectedProduct = null;
+
+        function openModal(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+
+            selectedProduct = p;
+
+            document.getElementById('modal-name').innerText = p.name;
+            document.getElementById('modal-desc').innerText = p.description;
+            document.getElementById('modal-price').innerText = "€" + p.price;
+            document.getElementById('modal-img').src =
+                "https://images.unsplash.com/photo-1512436991641-6745cdb1723f";
+
+            document.getElementById('product-modal').style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').style.display = "none";
+        }
+
+        function addToCartFromModal() {
+            const qty = parseInt(document.getElementById('modal-qty').value);
+
+            let item = cart.find(i => i.id === selectedProduct.id);
+
+            if (item) {
+                item.qty += qty;
+            } else {
+                cart.push({ ...selectedProduct, qty, size: selectedSize, color: selectedColor });
+            }
+
+            updateCart();
+            showToast();
+            closeModal();
+        }
+
+        let selectedSize = "M";
+
+        function selectSize(el, size) {
+            document.querySelectorAll(".sizes button").forEach(b => b.classList.remove("active"));
+            el.classList.add("active");
+            selectedSize = size;
+        }
+
+        let selectedColor = "Azul";
+
+        function selectColor(el, color) {
+            document.querySelectorAll(".colors span").forEach(c => c.classList.remove("active"));
+            el.classList.add("active");
+            selectedColor = color;
+        }
+
         let cart = [];
 
         const products = [
@@ -432,13 +664,13 @@
 <div class="product-info">
 <h3>${p.name}</h3>
 <p>€${p.price}</p>
-<button type="button" onclick="event.stopPropagation(); addToCart(${p.id})">Agregar</button>
+<button type="button" onclick="event.stopPropagation(); openModal(${p.id})">Agregar</button>
 </div>
 <p class="product-description">${p.description}</p>
 </div>`;
 
                 carousel.innerHTML += `
-<div class="carousel-card" onclick="toggleDetail(${p.id})">
+<div class="carousel-card" onclick="openModal(${p.id})"
 <img src="https://images.unsplash.com/photo-1495121605193-b116b5b9c5d2?auto=format&fit=crop&w=900&q=80" alt="${p.name}">
 <p>${p.name}</p>
 </div>`;
@@ -469,6 +701,15 @@
             updateCart();
         }
 
+        function showToast() {
+            const t = document.getElementById("toast");
+            t.classList.add("show");
+
+            setTimeout(() => {
+                t.classList.remove("show");
+            }, 2000);
+        }
+
         function updateCart() {
             const container = document.getElementById('cart-items');
             const count = document.getElementById('cart-count');
@@ -483,13 +724,25 @@
 <div class="cart-item">
 <span>${item.name}</span>
 <div class="qty">
-<button onclick="changeQty(${item.id}, -1)">-</button>
+<button onclick="changeQty(${item.id},-1)">-</button>
 <span>${item.qty}</span>
-<button onclick="changeQty(${item.id}, 1)">+</button>
+<button onclick="changeQty(${item.id},1)">+</button>
 </div>
-<span>€${(item.price * item.qty).toFixed(2)}</span>
+<span>€${item.price * item.qty}</span>
 </div>`;
             });
+
+            function saveCart() {
+                localStorage.setItem("cart", JSON.stringify(cart));
+            }
+
+            function loadCart() {
+                const data = localStorage.getItem("cart");
+                if (data) {
+                    cart = JSON.parse(data);
+                    updateCart();
+                }
+            }
 
             document.getElementById('total').innerText = `Total: €${total.toFixed(2)}`;
             count.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
@@ -528,9 +781,12 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadProducts);
+        document.addEventListener("DOMContentLoaded", () => {
+            loadProducts();
+            loadCart();
+        });
     </script>
-
+    <div id="toast" class="toast">Producto agregado 🛒</div>
 </body>
 
 </html>
