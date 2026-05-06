@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heydemin | Denim Store</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --black: #111;
+            --accent: #c19a6b;
+            --light: #f7f7f7;
+            --gray: #777;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f2ed;
+            color: #222;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Playfair Display';
+            font-size: 30px;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 22px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -12px;
+            background: var(--black);
+            color: white;
+            font-size: 12px;
+            padding: 4px 7px;
+            border-radius: 50%;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 70vh;
+            background: linear-gradient(180deg, rgba(17,17,17,0.35), rgba(17,17,17,0.65)),
+                url('https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1300&q=80') center/cover fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 60px 30px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-family: 'Playfair Display';
+            line-height: 1.02;
+            letter-spacing: 0.02em;
+            max-width: 900px;
+        }
+
+        .section {
+            padding: 80px 60px;
+        }
+
+        .section h2 {
+            margin-bottom: 18px;
+            font-size: 2.5rem;
+        }
+
+        .about-section {
+            background: url('https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1400&q=80')
+                center/cover fixed no-repeat;
+            color: white;
+            position: relative;
+        }
+
+        .about-overlay {
+            background: rgba(0, 0, 0, 0.45);
+            padding: 60px 40px;
+            border-radius: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .about-overlay p {
+            line-height: 1.8;
+            color: #f1f1f1;
+            max-width: 760px;
+        }
+
+        .carousel {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-card {
+            min-width: 260px;
+            border-radius: 24px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            cursor: pointer;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .carousel-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 55px rgba(0, 0, 0, 0.15);
+        }
+
+        .carousel-card img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .carousel-card p {
+            padding: 18px 16px;
+            font-weight: 600;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
+        }
+
+        .product {
+            border-radius: 24px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            cursor: pointer;
+        }
+
+        .product:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .product img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-info {
+            padding: 22px 20px 16px;
+        }
+
+        .product-info h3 {
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+
+        .product-info p {
+            margin-bottom: 16px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .product-info button {
+            border: none;
+            background: var(--accent);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .product-info button:hover {
+            background: #a67f54;
+        }
+
+        .product-description {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+            color: #555;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .product.show-description .product-description {
+            max-height: 140px;
+            padding: 14px 20px 20px;
+        }
+
+        .cart {
+            position: fixed;
+            right: -420px;
+            top: 0;
+            width: 420px;
+            height: 100%;
+            background: white;
+            box-shadow: -6px 0 24px rgba(0, 0, 0, 0.12);
+            padding: 28px;
+            transition: right 0.35s ease;
+            display: flex;
+            flex-direction: column;
+            z-index: 999;
+        }
+
+        .cart.active {
+            right: 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .qty {
+            display: flex;
+            gap: 8px;
+        }
+
+        .qty button {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            background: #fafafa;
+            cursor: pointer;
+        }
+
+        .reviews {
+            display: flex;
+            gap: 22px;
+            overflow-x: auto;
+        }
+
+        .review {
+            min-width: 250px;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .review img {
+            width: 100%;
+            display: block;
+        }
+
+        footer {
+            background: #111;
+            color: white;
+            padding: 50px 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        footer a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin: 6px 0;
+        }
+
+        .whatsapp {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            width: 60px;
+            filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.22));
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">Heydemin</div>
+        <nav>
+            <a href="#about">Nosotras</a>
+            <a href="#catalog">Catálogo</a>
+            <a href="#reviews">Opiniones</a>
+            <div class="cart-icon" onclick="toggleCart()">🛒<span id="cart-count" class="cart-count">0</span></div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Denim que potencia tu estilo</h1>
+    </section>
+
+    <!-- NUEVOS PRODUCTOS -->
+    <section class="section">
+        <h2>Nuevos Ingresos</h2>
+        <div class="carousel" id="carousel"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section about-section">
+        <div class="about-overlay">
+            <h2>Nosotras</h2>
+            <p>En Heydemin somos una marca dedicada al denim femenino. Diseñamos jeans que combinan estilo, comodidad y actitud para
+                mujeres reales. Nuestro objetivo es que cada prenda resalte tu personalidad con detalles únicos y una silueta cómoda.
+                Navega, atrévete y descubre por qué el denim es nuestra forma de contar historias.</p>
+        </div>
+    </section>
+
+    <!-- CATALOGO -->
+    <section id="catalog" class="section">
+        <h2>Catálogo</h2>
+        <div id="products" class="grid"></div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="section">
+        <h2>Opiniones reales</h2>
+        <div class="reviews">
+            <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png"></div>
+            <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png"></div>
+            <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png"></div>
+        </div>
+    </section>
+
+    <!-- CART -->
+    <div id="cart" class="cart">
+        <h3>Tu carrito</h3>
+        <div id="cart-items"></div>
+        <p id="total"></p>
+        <button onclick="checkout()">Finalizar compra</button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div>
+            <h3>Heydemin</h3>
+            <p>Denim femenino premium</p>
+        </div>
+        <div>
+            <h4>Links</h4>
+            <a href="#">Inicio</a>
+            <a href="#">Productos</a>
+            <a href="#">Contacto</a>
+        </div>
+        <div>
+            <h4>Contacto</h4>
+            <p>Email: contacto@heydemin.com</p>
+            <p>WhatsApp: +123456789</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/123456789" target="_blank">
+        <img class="whatsapp" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+    </a>
+
+    <script>
+        let cart = [];
+
+        const products = [
+            { id: 1, name: "Jean Skinny", price: 50, description: "Corte ajustado que estiliza la silueta con confort y un lavado suave." },
+            { id: 2, name: "Jean Mom Fit", price: 60, description: "Tiro alto y pierna recta para un look relajado con mucha actitud." },
+            { id: 3, name: "Jean Wide Leg", price: 70, description: "La silueta más cómoda y moderna con un ancho fluido perfecto para el verano." },
+            { id: 4, name: "Jean Tiro Alto", price: 65, description: "Soporte y estilo en una silueta femenina que acompaña cada movimiento." },
+            { id: 5, name: "Jean Black Premium", price: 80, description: "Negro intenso con detalles premium para un look elegante y urbano." },
+            { id: 6, name: "Jean Vintage", price: 75, description: "Un denim con personalidad, perfecto para combinar con básicos y estampados." }
+        ];
+
+        function loadProducts() {
+            const grid = document.getElementById('products');
+            const carousel = document.getElementById('carousel');
+
+            products.forEach(p => {
+                grid.innerHTML += `
+<div id="product-${p.id}" class="product" onclick="toggleDetail(${p.id})">
+<img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=900&q=80" alt="${p.name}">
+<div class="product-info">
+<h3>${p.name}</h3>
+<p>€${p.price}</p>
+<button type="button" onclick="event.stopPropagation(); addToCart(${p.id})">Agregar</button>
+</div>
+<p class="product-description">${p.description}</p>
+</div>`;
+
+                carousel.innerHTML += `
+<div class="carousel-card" onclick="toggleDetail(${p.id})">
+<img src="https://images.unsplash.com/photo-1495121605193-b116b5b9c5d2?auto=format&fit=crop&w=900&q=80" alt="${p.name}">
+<p>${p.name}</p>
+</div>`;
+            });
+        }
+
+        function toggleCart() {
+            document.getElementById('cart').classList.toggle('active');
+        }
+
+        function toggleDetail(id) {
+            const card = document.getElementById(`product-${id}`);
+            if (card) {
+                card.classList.toggle('show-description');
+            }
+        }
+
+        function addToCart(id) {
+            let item = cart.find(i => i.id === id);
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            if (item) {
+                item.qty++;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const container = document.getElementById('cart-items');
+            const count = document.getElementById('cart-count');
+            let total = 0;
+
+            container.innerHTML = "";
+
+            cart.forEach(item => {
+                total += item.price * item.qty;
+
+                container.innerHTML += `
+<div class="cart-item">
+<span>${item.name}</span>
+<div class="qty">
+<button onclick="changeQty(${item.id}, -1)">-</button>
+<span>${item.qty}</span>
+<button onclick="changeQty(${item.id}, 1)">+</button>
+</div>
+<span>€${(item.price * item.qty).toFixed(2)}</span>
+</div>`;
+            });
+
+            document.getElementById('total').innerText = `Total: €${total.toFixed(2)}`;
+            count.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+        }
+
+        function changeQty(id, delta) {
+            let item = cart.find(i => i.id === id);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+            updateCart();
+        }
+
+        async function checkout() {
+            if (!cart.length) {
+                alert('El carrito está vacío. Agrega algún producto antes de pagar.');
+                return;
+            }
+
+            const res = await fetch('/checkout/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cart)
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                window.location.href = data.payment_url;
+            } else {
+                alert(data.detail || 'No se pudo procesar el pago.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+
+</body>
+
+</html>
