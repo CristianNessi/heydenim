@@ -1,19 +1,23 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from typing import Any
 
-from app.db.fake_db import CART
 from app.services.sumup import SumupError, create_checkout
 
 router = APIRouter(prefix="/checkout", tags=["Checkout"])
 
 @router.post("/")
-async def process_checkout(items: list[dict[str, Any]]) -> dict[str, str]:
-    if not items:
-        raise HTTPException(status_code=401, detail="Carrito vacio")
+async def process_checkout(request: Request) -> dict[str, str]:
+    try:
+        cart_items = await request.json()
+    except Exception:
+        raise HTTPException(status_code=400, detail="JSON inválido")
+
+    if not isinstance(cart_items, list) or not cart_items:
+        raise HTTPException(status_code=400, detail="Carrito vacio")
 
     total = sum(
         item.get("qty", item.get("quantity", 1)) * item.get("price", 0)
-        for item in items
+        for item in cart_items
     )
 
     try:
