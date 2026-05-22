@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notificaciones · Heydemin Admin</title>
+<link rel="icon" type="image/svg+xml" href="/static/imagen/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/imagen/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__brand">
+    <div class="sidebar__logo-mark">
+      <span class="sidebar__logo-hey">hey</span>
+      <span class="sidebar__logo-rule"></span>
+      <span class="sidebar__logo-denim">denim</span>
+    </div>
+    <span class="sidebar__sub">Admin</span>
+  </div>
+  <nav class="sidebar__nav">
+    <a href="/admin/dashboard" class="sidebar__link">
+      <i class="fa-solid fa-chart-line"></i> Dashboard
+    </a>
+    <a href="/admin/products" class="sidebar__link">
+      <i class="fa-solid fa-shirt"></i> Productos
+    </a>
+    <a href="/admin/products/new" class="sidebar__link sidebar__link--cta">
+      <i class="fa-solid fa-plus"></i> Cargar producto
+    </a>
+    <a href="/admin/content" class="sidebar__link">
+      <i class="fa-solid fa-pen-to-square"></i> Contenido
+    </a>
+    <a href="/admin/notifications" class="sidebar__link sidebar__link--active">
+      <i class="fa-solid fa-bell"></i> Notificaciones
+      <span class="sidebar__notif-count" id="sidebar-notif-count" style="display:none;"></span>
+    </a>
+    <a href="/" class="sidebar__link" target="_blank">
+      <i class="fa-solid fa-store"></i> Ver tienda
+    </a>
+  </nav>
+  <div class="sidebar__footer">
+    <button onclick="confirmLogout()" class="sidebar__logout">
+      <i class="fa-solid fa-right-from-bracket"></i> Salir
+    </button>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menú">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<main class="dash">
+  <header class="dash__header">
+    <div>
+      <p class="dash__brand-tag">Heydemin · <span>Admin</span></p>
+      <h1 class="dash__title">Notificaciones</h1>
+      <p class="dash__sub" id="notif-subtitle">Cargando…</p>
+    </div>
+    <button class="dash__refresh" onclick="markAllRead()">
+      <i class="fa-solid fa-check-double"></i> Marcar todo leído
+    </button>
+  </header>
+
+  <!-- Filtros -->
+  <div class="notif-filters" id="notif-filters">
+    <button class="notif-filter-btn notif-filter-btn--active" data-filter="all" onclick="filterNotifs('all', this)">
+      Todas
+    </button>
+    <button class="notif-filter-btn" data-filter="sale" onclick="filterNotifs('sale', this)">
+      <i class="fa-solid fa-bag-shopping"></i> Ventas
+    </button>
+    <button class="notif-filter-btn" data-filter="out_of_stock" onclick="filterNotifs('out_of_stock', this)">
+      <i class="fa-solid fa-circle-xmark"></i> Agotados
+    </button>
+    <button class="notif-filter-btn" data-filter="low_stock" onclick="filterNotifs('low_stock', this)">
+      <i class="fa-solid fa-triangle-exclamation"></i> Stock bajo
+    </button>
+    <button class="notif-filter-btn" data-filter="no_activity" onclick="filterNotifs('no_activity', this)">
+      <i class="fa-solid fa-clock"></i> Sin actividad
+    </button>
+    <button class="notif-filter-btn" data-filter="unread" onclick="filterNotifs('unread', this)">
+      <i class="fa-solid fa-circle"></i> No leídas
+    </button>
+  </div>
+
+  <!-- Lista -->
+  <div class="notif-page-list" id="notif-page-list">
+    <div class="notif-page-loading">
+      <i class="fa-solid fa-spinner fa-spin"></i> Cargando notificaciones…
+    </div>
+  </div>
+</main>
+
+<script>
+let allNotifs = [];
+let currentFilter = 'all';
+
+const NOTIF_ICONS = {
+  sale:            { icon: 'fa-bag-shopping',        color: '#10b981', label: 'Venta' },
+  low_stock:       { icon: 'fa-triangle-exclamation', color: '#f59e0b', label: 'Stock bajo' },
+  out_of_stock:    { icon: 'fa-circle-xmark',        color: '#ef4444', label: 'Agotado' },
+  no_activity:     { icon: 'fa-clock',               color: '#6b7280', label: 'Sin actividad' },
+  visit_milestone: { icon: 'fa-chart-line',          color: '#3b82f6', label: 'Hito' },
+};
+
+async function loadNotifications() {
+  try {
+    const res = await fetch('/analytics/notifications');
+    if (!res.ok) return;
+    const data = await res.json();
+    allNotifs = data.items;
+
+    // Badge en sidebar
+    const count = document.getElementById('sidebar-notif-count');
+    if (data.unread > 0) {
+      count.textContent = data.unread;
+      count.style.display = 'inline-flex';
+    } else {
+      count.style.display = 'none';
+    }
+
+    document.getElementById('notif-subtitle').textContent =
+      `${data.items.length} notificaciones · ${data.unread} sin leer`;
+
+    renderNotifs();
+  } catch {
+    document.getElementById('notif-page-list').innerHTML =
+      '<p style="text-align:center;color:#9ca3af;padding:40px">Error al cargar notificaciones</p>';
+  }
+}
+
+function filterNotifs(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.notif-filter-btn').forEach(b => b.classList.remove('notif-filter-btn--active'));
+  btn.classList.add('notif-filter-btn--active');
+  renderNotifs();
+}
+
+function renderNotifs() {
+  const list = document.getElementById('notif-page-list');
+  let items = allNotifs;
+
+  if (currentFilter === 'unread') {
+    items = items.filter(n => !n.read);
+  } else if (currentFilter !== 'all') {
+    items = items.filter(n => n.type === currentFilter);
+  }
+
+  if (!items.length) {
+    list.innerHTML = `
+      <div class="notif-page-empty">
+        <i class="fa-solid fa-bell-slash"></i>
+        <p>Sin notificaciones en esta categoría</p>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = items.map(n => {
+    const cfg = NOTIF_ICONS[n.type] || { icon: 'fa-bell', color: '#6b7280', label: 'Info' };
+    return `
+      <div class="notif-page-item${n.read ? '' : ' notif-page-item--unread'}" id="npi-${n.id}" onclick="markRead(${n.id})">
+        <div class="notif-page-item__icon" style="background:${cfg.color}18;color:${cfg.color}">
+          <i class="fa-solid ${cfg.icon}"></i>
+        </div>
+        <div class="notif-page-item__body">
+          <div class="notif-page-item__top">
+            <span class="notif-page-item__tag" style="background:${cfg.color}18;color:${cfg.color}">${cfg.label}</span>
+            <span class="notif-page-item__title">${n.title}</span>
+            ${!n.read ? '<span class="notif-page-item__dot"></span>' : ''}
+          </div>
+          <p class="notif-page-item__msg">${n.message}</p>
+          <p class="notif-page-item__time"><i class="fa-regular fa-clock"></i> ${n.created_at}</p>
+        </div>
+        <button class="notif-page-item__delete" onclick="deleteNotif(event, ${n.id})" title="Eliminar">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>`;
+  }).join('');
+}
+
+async function markRead(id) {
+  await fetch(`/analytics/notifications/${id}/read`, { method: 'POST' });
+  const item = document.getElementById(`npi-${id}`);
+  if (item) {
+    item.classList.remove('notif-page-item--unread');
+    item.querySelector('.notif-page-item__dot')?.remove();
+  }
+  const n = allNotifs.find(x => x.id === id);
+  if (n) n.read = true;
+  // Actualizar subtitle
+  const unread = allNotifs.filter(x => !x.read).length;
+  document.getElementById('notif-subtitle').textContent =
+    `${allNotifs.length} notificaciones · ${unread} sin leer`;
+  const count = document.getElementById('sidebar-notif-count');
+  if (unread > 0) { count.textContent = unread; count.style.display = 'inline-flex'; }
+  else count.style.display = 'none';
+}
+
+async function markAllRead() {
+  await fetch('/analytics/notifications/read-all', { method: 'POST' });
+  allNotifs.forEach(n => n.read = true);
+  document.getElementById('sidebar-notif-count').style.display = 'none';
+  document.getElementById('notif-subtitle').textContent =
+    `${allNotifs.length} notificaciones · 0 sin leer`;
+  renderNotifs();
+}
+
+async function deleteNotif(event, id) {
+  event.stopPropagation();
+  await fetch(`/analytics/notifications/${id}`, { method: 'DELETE' });
+  allNotifs = allNotifs.filter(n => n.id !== id);
+  const unread = allNotifs.filter(x => !x.read).length;
+  document.getElementById('notif-subtitle').textContent =
+    `${allNotifs.length} notificaciones · ${unread} sin leer`;
+  const count = document.getElementById('sidebar-notif-count');
+  if (unread > 0) { count.textContent = unread; count.style.display = 'inline-flex'; }
+  else count.style.display = 'none';
+  renderNotifs();
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('active');
+}
+function confirmLogout() {
+  if (confirm('¿Segura que querés cerrar sesión?')) {
+    window.location.href = '/admin/logout';
+  }
+}
+
+loadNotifications();
+</script>
+</body>
+</html>

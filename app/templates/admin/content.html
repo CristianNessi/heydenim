@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contenido del Landing · Heydemin Admin</title>
+<link rel="icon" type="image/svg+xml" href="/static/imagen/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/imagen/favicon.png">
+<link rel="shortcut icon" href="/static/imagen/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/imagen/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/static/css/admin.css">
+<style>
+  .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .content-grid { grid-template-columns: 1fr; } }
+
+  .content-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 28px 28px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .content-card h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #111;
+  }
+  .content-card h2 i { color: #6366f1; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin-bottom: 6px;
+  }
+  .form-group input[type="text"],
+  .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: #111;
+    transition: border-color 0.2s;
+    background: #fafafa;
+  }
+  .form-group input[type="text"]:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: #fff;
+  }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+
+  .img-preview-wrap {
+    margin-top: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f3f4f6;
+    max-height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .img-preview-wrap img {
+    width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    display: block;
+  }
+  .img-placeholder {
+    color: #9ca3af;
+    font-size: 0.8rem;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    background: #f3f4f6;
+    border: 1.5px dashed #d1d5db;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: #374151;
+    transition: border-color 0.2s, background 0.2s;
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .file-label:hover { border-color: #6366f1; background: #eef2ff; color: #4f46e5; }
+  .file-label input { display: none; }
+
+  .save-btn {
+    width: 100%;
+    padding: 12px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 8px;
+  }
+  .save-btn:hover { background: #333; }
+
+  .alert-ok {
+    background: #d1fae5;
+    color: #065f46;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hint { font-size: 0.75rem; color: #9ca3af; margin-top: 4px; }
+
+  /* Reviews grid */
+  .reviews-current {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .review-thumb {
+    position: relative;
+    width: 140px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f3f4f6;
+    flex-shrink: 0;
+  }
+  .review-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .review-thumb__del {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(17,17,17,0.75);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    transition: background 0.2s;
+  }
+  .review-thumb__del:hover { background: #ef4444; }
+</style>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__brand">
+    <div class="sidebar__logo-mark">
+      <span class="sidebar__logo-hey">hey</span>
+      <span class="sidebar__logo-rule"></span>
+      <span class="sidebar__logo-denim">denim</span>
+    </div>
+    <span class="sidebar__sub">Admin</span>
+  </div>
+  <nav class="sidebar__nav">
+    <a href="/admin/dashboard" class="sidebar__link">
+      <i class="fa-solid fa-chart-line"></i> Dashboard
+    </a>
+    <a href="/admin/products" class="sidebar__link">
+      <i class="fa-solid fa-shirt"></i> Productos
+    </a>
+    <a href="/admin/products/new" class="sidebar__link sidebar__link--cta">
+      <i class="fa-solid fa-plus"></i> Cargar producto
+    </a>
+    <a href="/admin/content" class="sidebar__link sidebar__link--active">
+      <i class="fa-solid fa-pen-to-square"></i> Contenido
+    </a>
+    <a href="/admin/notifications" class="sidebar__link">
+      <i class="fa-solid fa-bell"></i> Notificaciones
+    </a>
+    <a href="/" class="sidebar__link" target="_blank">
+      <i class="fa-solid fa-store"></i> Ver tienda
+    </a>
+  </nav>
+  <div class="sidebar__footer">
+    <button onclick="confirmLogout()" class="sidebar__logout">
+      <i class="fa-solid fa-right-from-bracket"></i> Salir
+    </button>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menú">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<main class="dash">
+  <header class="dash__header">
+    <div>
+      <h1 class="dash__title">Contenido del Landing</h1>
+      <p class="dash__sub">Editá el hero y la sección "Nosotras" sin tocar el código</p>
+    </div>
+  </header>
+
+  {% set ok = request.query_params.get('ok') %}
+  {% if ok == 'hero' %}
+    <div class="alert-ok"><i class="fa-solid fa-circle-check"></i> Hero actualizado correctamente</div>
+  {% elif ok == 'about' %}
+    <div class="alert-ok"><i class="fa-solid fa-circle-check"></i> Sección "Nosotras" actualizada</div>
+  {% elif ok == 'reviews' %}
+    <div class="alert-ok"><i class="fa-solid fa-circle-check"></i> Opiniones actualizadas correctamente</div>
+  {% elif ok == 'topbar' %}
+    <div class="alert-ok"><i class="fa-solid fa-circle-check"></i> Topbar actualizado correctamente</div>
+  {% elif ok == 'social' %}
+    <div class="alert-ok"><i class="fa-solid fa-circle-check"></i> Redes sociales actualizadas</div>
+  {% endif %}
+
+  <div class="content-grid">
+
+    <!-- ── HERO ── -->
+    <div class="content-card">
+      <h2><i class="fa-solid fa-image"></i> Hero / Banner principal</h2>
+      <form method="POST" action="/admin/content/hero" enctype="multipart/form-data">
+
+        <div class="form-group">
+          <label>Título principal</label>
+          <input type="text" name="hero_title"
+            value="{{ hero.hero_title if hero and hero.hero_title else '' }}"
+            placeholder="Ej: Jeans que potencian tu estilo" required>
+          <p class="hint">Aparece como texto grande sobre el banner</p>
+        </div>
+
+        <div class="form-group">
+          <label>Subtítulo / frase de atracción</label>
+          <input type="text" name="hero_subtitle"
+            value="{{ hero.hero_subtitle if hero and hero.hero_subtitle else '' }}"
+            placeholder="Ej: Envío gratis desde €60 · Nueva colección">
+        </div>
+
+        <div class="form-group">
+          <label>Imagen de fondo del banner</label>
+          {% if hero and hero.hero_image %}
+            <div class="img-preview-wrap">
+              <img src="{{ hero.hero_image }}" alt="Hero actual" id="hero-preview">
+            </div>
+          {% else %}
+            <div class="img-preview-wrap">
+              <p class="img-placeholder"><i class="fa-solid fa-image"></i><br>Sin imagen personalizada<br>(se usa la imagen por defecto)</p>
+            </div>
+          {% endif %}
+          <label class="file-label">
+            <i class="fa-solid fa-upload"></i> Cambiar imagen (JPG/PNG/WEBP, máx 8MB)
+            <input type="file" name="hero_image" accept="image/*" onchange="previewImg(this,'hero-preview')">
+          </label>
+        </div>
+
+        <button type="submit" class="save-btn">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar hero
+        </button>
+      </form>
+    </div>
+
+    <!-- ── NOSOTRAS ── -->
+    <div class="content-card">
+      <h2><i class="fa-solid fa-heart"></i> Sección "Nosotras"</h2>
+      <form method="POST" action="/admin/content/about" enctype="multipart/form-data">
+
+        <div class="form-group">
+          <label>Texto principal</label>
+          <textarea name="about_text" placeholder="Contá la historia de la marca…" required>{{ about.about_text if about and about.about_text else '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Línea secundaria (envíos, garantías, etc.)</label>
+          <input type="text" name="about_extra"
+            value="{{ about.about_extra if about and about.about_extra else '' }}"
+            placeholder="Ej: Enviamos a toda España · Pago seguro">
+        </div>
+
+        <div class="form-group">
+          <label>Imagen de fondo de la sección</label>
+          {% if about and about.about_image %}
+            <div class="img-preview-wrap">
+              <img src="{{ about.about_image }}" alt="About actual" id="about-preview">
+            </div>
+          {% else %}
+            <div class="img-preview-wrap">
+              <p class="img-placeholder"><i class="fa-solid fa-image"></i><br>Sin imagen personalizada<br>(se usa la imagen por defecto)</p>
+            </div>
+          {% endif %}
+          <label class="file-label">
+            <i class="fa-solid fa-upload"></i> Cambiar imagen (JPG/PNG/WEBP, máx 8MB)
+            <input type="file" name="about_image" accept="image/*" onchange="previewImg(this,'about-preview')">
+          </label>
+        </div>
+
+        <button type="submit" class="save-btn">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar "Nosotras"
+        </button>
+      </form>
+    </div>
+
+  </div><!-- /content-grid -->
+
+  <!-- ── TOPBAR Y REDES SOCIALES ── -->
+  <div style="margin-top:24px;">
+    <div class="content-grid">
+
+      <!-- Topbar -->
+      <div class="content-card">
+        <h2><i class="fa-solid fa-bullhorn"></i> Topbar (barra superior)</h2>
+        <form method="POST" action="/admin/content/topbar">
+
+          <div class="form-group">
+            <label>Mensajes del ticker (uno por línea)</label>
+            <textarea name="topbar_items" id="topbar-textarea" rows="5"
+              placeholder="🏷️ 15% OFF en tu primera compra · Código: HEYDENIM15&#10;🚚 Envío gratis a partir de €60&#10;✨ Nueva colección disponible">{% for item in topbar_items %}{{ item }}{% if not loop.last %}
+{% endif %}{% endfor %}</textarea>
+            <p class="hint">Cada línea es un mensaje separado que aparece en el ticker animado</p>
+          </div>
+
+          <div class="form-group">
+            <label>Email de contacto</label>
+            <input type="text" name="contact_email"
+              value="{{ topbar.contact_email if topbar and topbar.contact_email else '' }}"
+              placeholder="contacto@heydemin.com">
+          </div>
+
+          <div class="form-group">
+            <label>Número WhatsApp (solo dígitos, sin +)</label>
+            <input type="text" name="whatsapp_number"
+              value="{{ topbar.whatsapp_number if topbar and topbar.whatsapp_number else '' }}"
+              placeholder="5491234567890">
+            <p class="hint">Ej: 5491234567890 → se usa en wa.me/5491234567890</p>
+          </div>
+
+          <div class="form-group">
+            <label>Texto visible del WhatsApp</label>
+            <input type="text" name="whatsapp_display"
+              value="{{ topbar.whatsapp_display if topbar and topbar.whatsapp_display else '' }}"
+              placeholder="+54 9 1234-5678">
+          </div>
+
+          <button type="submit" class="save-btn">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar topbar
+          </button>
+        </form>
+      </div>
+
+      <!-- Redes sociales -->
+      <div class="content-card">
+        <h2><i class="fa-solid fa-share-nodes"></i> Redes sociales</h2>
+        <p class="hint" style="margin-bottom:18px;">Dejá en blanco las redes que no uses — no aparecerán en la página</p>
+        <form method="POST" action="/admin/content/social">
+
+          {% set nets = [
+            ("instagram", "fab fa-instagram", "Instagram", "https://www.instagram.com/heydemin/"),
+            ("tiktok",    "fab fa-tiktok",    "TikTok",    "https://www.tiktok.com/@heydemin"),
+            ("facebook",  "fab fa-facebook",  "Facebook",  "https://www.facebook.com/heydemin"),
+            ("pinterest", "fab fa-pinterest", "Pinterest", "https://www.pinterest.com/heydemin/"),
+            ("youtube",   "fab fa-youtube",   "YouTube",   ""),
+            ("twitter",   "fab fa-x-twitter", "X / Twitter", ""),
+          ] %}
+
+          {% for key, icon, label, placeholder in nets %}
+          <div class="form-group" style="margin-bottom:12px;">
+            <label style="display:flex;align-items:center;gap:8px;">
+              <i class="{{ icon }}" style="font-size:1rem;width:18px;text-align:center;color:#374151;"></i>
+              {{ label }}
+            </label>
+            <input type="text" name="{{ key }}"
+              value="{{ social.get(key, '') if social else '' }}"
+              placeholder="{{ placeholder }}">
+          </div>
+          {% endfor %}
+
+          <button type="submit" class="save-btn">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar redes sociales
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── OPINIONES REALES ── -->
+  <div style="margin-top:24px;">
+    <div class="content-card">
+      <h2><i class="fa-solid fa-star"></i> Opiniones reales (capturas de clientes)</h2>
+
+      <!-- Imágenes actuales con opción de eliminar -->
+      {% if reviews_images %}
+      <div class="reviews-current" id="reviews-current">
+        {% for img_url in reviews_images %}
+        <div class="review-thumb" id="rt-{{ loop.index0 }}">
+          <img src="{{ img_url }}" alt="Opinión {{ loop.index }}">
+          <button type="button" class="review-thumb__del" onclick="removeReview({{ loop.index0 }})" aria-label="Eliminar">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="hint" style="margin-bottom:16px;">No hay imágenes cargadas aún. Subí capturas de reseñas de clientes.</p>
+      {% endif %}
+
+      <!-- Formulario para subir nuevas -->
+      <form method="POST" action="/admin/content/reviews" enctype="multipart/form-data" id="reviews-form">
+        <!-- Hidden inputs para las URLs que se conservan -->
+        <div id="keep-inputs"></div>
+
+        <div class="form-group" style="margin-top:16px;">
+          <label>Agregar nuevas imágenes (podés subir varias a la vez)</label>
+          <label class="file-label">
+            <i class="fa-solid fa-upload"></i> Seleccionar imágenes (JPG/PNG/WEBP, máx 8MB c/u)
+            <input type="file" name="review_images" accept="image/*" multiple
+              onchange="previewNewReviews(this)">
+          </label>
+        </div>
+
+        <!-- Preview de las nuevas antes de guardar -->
+        <div class="reviews-current" id="new-reviews-preview" style="margin-top:12px;"></div>
+
+        <button type="submit" class="save-btn" style="margin-top:16px;">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar opiniones
+        </button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<!-- Datos del servidor para JS -->
+<script type="application/json" id="reviews-data">{{ reviews_images | tojson }}</script>
+
+<script>
+function previewImg(input, previewId) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    let img = document.getElementById(previewId);
+    if (!img) {
+      const wrap = input.closest('.form-group').querySelector('.img-preview-wrap');
+      wrap.innerHTML = `<img id="${previewId}" src="" alt="Preview" style="width:100%;max-height:160px;object-fit:cover;">`;
+      img = document.getElementById(previewId);
+    }
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── Reviews: imágenes existentes a conservar ──────────────────
+// Datos inyectados desde el servidor via JSON tag
+const _reviewsData = document.getElementById('reviews-data');
+const keepUrls = _reviewsData ? JSON.parse(_reviewsData.textContent) : [];
+
+function syncKeepInputs() {
+  const container = document.getElementById('keep-inputs');
+  container.innerHTML = keepUrls
+    .map(url => `<input type="hidden" name="keep_images" value="${url}">`)
+    .join('');
+}
+syncKeepInputs();
+
+function removeReview(index) {
+  keepUrls.splice(index, 1);
+  syncKeepInputs();
+  // Ocultar visualmente la tarjeta
+  const thumbs = document.querySelectorAll('#reviews-current .review-thumb');
+  // Re-renderizar con los índices actualizados
+  const current = document.getElementById('reviews-current');
+  current.innerHTML = keepUrls.map((url, i) => `
+    <div class="review-thumb" id="rt-${i}">
+      <img src="${url}" alt="Opinión ${i+1}">
+      <button type="button" class="review-thumb__del" onclick="removeReview(${i})" aria-label="Eliminar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>`).join('');
+}
+
+function previewNewReviews(input) {
+  const preview = document.getElementById('new-reviews-preview');
+  preview.innerHTML = '';
+  Array.from(input.files).forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.innerHTML += `
+        <div class="review-thumb">
+          <img src="${e.target.result}" alt="Nueva ${i+1}">
+          <span style="position:absolute;bottom:4px;left:6px;font-size:0.6rem;background:rgba(0,0,0,.6);color:#fff;padding:2px 5px;border-radius:4px;">Nueva</span>
+        </div>`;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// Topbar: convertir líneas del textarea a JSON antes de enviar
+const topbarTextarea = document.getElementById('topbar-textarea');
+if (topbarTextarea) {
+  topbarTextarea.closest('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const lines = topbarTextarea.value
+      .split('\n')
+      .map(l => l.trim())
+      .filter(Boolean);
+    // Reemplazar el textarea por un hidden con el JSON
+    const hidden = document.createElement('input');
+    hidden.type = 'hidden';
+    hidden.name = 'topbar_items';
+    hidden.value = JSON.stringify(lines);
+    // Quitar el name del textarea para que no se envíe doble
+    topbarTextarea.removeAttribute('name');
+    this.appendChild(hidden);
+    this.submit();
+  });
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('active');
+}
+function confirmLogout() {
+  if (confirm('¿Segura que querés cerrar sesión?')) {
+    window.location.href = '/admin/logout';
+  }
+}
+</script>
+</body>
+</html>

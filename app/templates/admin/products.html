@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Productos · Heydemin Admin</title>
+<link rel="icon" type="image/svg+xml" href="/static/imagen/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/imagen/favicon.png">
+<link rel="shortcut icon" href="/static/imagen/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/imagen/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__brand">
+    <div class="sidebar__logo-mark">
+      <span class="sidebar__logo-hey">hey</span>
+      <span class="sidebar__logo-rule"></span>
+      <span class="sidebar__logo-denim">denim</span>
+    </div>
+    <span class="sidebar__sub">Admin</span>
+  </div>
+  <nav class="sidebar__nav">
+    <a href="/admin/dashboard" class="sidebar__link">
+      <i class="fa-solid fa-chart-line"></i> Dashboard
+    </a>
+    <a href="/admin/products" class="sidebar__link sidebar__link--active">
+      <i class="fa-solid fa-shirt"></i> Productos
+    </a>
+    <a href="/admin/products/new" class="sidebar__link sidebar__link--cta">
+      <i class="fa-solid fa-plus"></i> Cargar producto
+    </a>
+    <a href="/admin/notifications" class="sidebar__link">
+      <i class="fa-solid fa-bell"></i> Notificaciones
+    </a>
+    <a href="/" class="sidebar__link" target="_blank">
+      <i class="fa-solid fa-store"></i> Ver tienda
+    </a>
+  </nav>
+  <div class="sidebar__footer">
+    <button onclick="confirmLogout()" class="sidebar__logout">
+      <i class="fa-solid fa-right-from-bracket"></i> Salir
+    </button>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menú">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<main class="dash">
+  <header class="dash__header">
+    <div>
+      <h1 class="dash__title">Productos</h1>
+      <p class="dash__sub">{{ products|length }} producto{{ 's' if products|length != 1 else '' }} cargado{{ 's' if products|length != 1 else '' }}</p>
+    </div>
+    <a href="/admin/products/new" class="admin-btn admin-btn--primary">
+      <i class="fa-solid fa-plus"></i> Nuevo producto
+    </a>
+  </header>
+
+  <!-- Tabla desktop -->
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Talles</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>
+            <div class="product-cell">
+              <img src="{{ product.image or '/static/images/no-image.jpg' }}" alt="{{ product.name }}" class="product-cell__img">
+              <div>
+                <p class="product-cell__name">{{ product.name }}</p>
+                <p class="product-cell__id">#{{ product.id }}</p>
+              </div>
+            </div>
+          </td>
+          <td class="td-price">€{{ "%.2f"|format(product.price) }}</td>
+          <td>
+            <span class="stock-badge {% if product.stock == 0 %}stock-badge--out{% elif product.stock <= 5 %}stock-badge--low{% else %}stock-badge--ok{% endif %}">
+              {{ product.stock }}
+            </span>
+          </td>
+          <td class="td-muted">{{ product.sizes or '—' }}</td>
+          <td>
+            <div class="action-btns">
+              <a href="/admin/products/edit/{{ product.id }}" class="admin-btn admin-btn--sm">
+                <i class="fa-solid fa-pen"></i> Editar
+              </a>
+              <button type="button" onclick="openDeleteModal({{ product.id }})" class="admin-btn admin-btn--sm admin-btn--danger">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="td-empty">No hay productos cargados aún.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Cards mobile -->
+  <div class="product-cards">
+    {% for product in products %}
+    <div class="product-card-admin">
+      <img src="{{ product.image or '/static/images/no-image.jpg' }}" alt="{{ product.name }}" class="product-card-admin__img">
+      <div class="product-card-admin__body">
+        <p class="product-card-admin__name">{{ product.name }}</p>
+        <p class="product-card-admin__meta">€{{ "%.2f"|format(product.price) }} · Stock: {{ product.stock }}</p>
+        <p class="product-card-admin__meta">{{ product.sizes or 'Sin talles' }}</p>
+      </div>
+      <div class="product-card-admin__actions">
+        <a href="/admin/products/edit/{{ product.id }}" class="admin-btn admin-btn--sm">
+          <i class="fa-solid fa-pen"></i>
+        </a>
+        <button type="button" onclick="openDeleteModal({{ product.id }})" class="admin-btn admin-btn--sm admin-btn--danger">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </div>
+    {% else %}
+    <p class="td-empty">No hay productos cargados aún.</p>
+    {% endfor %}
+  </div>
+
+</main>
+
+<!-- Modal confirmar borrado -->
+<div id="delete-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:12px;padding:28px;width:min(400px,92vw);box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:6px;">Eliminar producto</h3>
+    <p style="font-size:0.85rem;color:#666;margin-bottom:20px;">Esta acción no se puede deshacer. Ingresá tu contraseña para confirmar.</p>
+    <form method="POST" id="delete-form">
+      <div style="margin-bottom:14px;">
+        <label style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#444;display:block;margin-bottom:6px;">Contraseña</label>
+        <input type="password" name="confirm_password" required
+          style="width:100%;padding:10px 14px;border:1.5px solid #e5e5e5;border-radius:8px;font-size:0.9rem;outline:none;"
+          placeholder="••••••••" id="delete-password">
+      </div>
+      {% if request.query_params.get('error') == 'password' %}
+      <p style="color:#dc2626;font-size:0.8rem;margin-bottom:10px;"><i class="fa-solid fa-circle-exclamation"></i> Contraseña incorrecta.</p>
+      {% endif %}
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button type="button" onclick="closeDeleteModal()" class="admin-btn admin-btn--ghost">Cancelar</button>
+        <button type="submit" class="admin-btn admin-btn--danger" style="background:#dc2626;color:#fff;border:none;">
+          <i class="fa-solid fa-trash"></i> Eliminar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('active');
+}
+function confirmLogout() {
+  if (confirm('¿Segura que querés cerrar sesión?')) {
+    window.location.href = '/admin/logout';
+  }
+}
+function openDeleteModal(productId) {
+  document.getElementById('delete-form').action = `/admin/products/delete/${productId}`;
+  document.getElementById('delete-password').value = '';
+  const modal = document.getElementById('delete-modal');
+  modal.style.display = 'flex';
+}
+function closeDeleteModal() {
+  document.getElementById('delete-modal').style.display = 'none';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDeleteModal(); });
+</script>
+</body>
+</html>

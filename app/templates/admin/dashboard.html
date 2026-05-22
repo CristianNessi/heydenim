@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · Heydemin Admin</title>
+<link rel="icon" type="image/svg+xml" href="/static/imagen/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/imagen/favicon.png">
+<link rel="shortcut icon" href="/static/imagen/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/imagen/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__brand">
+    <div class="sidebar__logo-mark">
+      <span class="sidebar__logo-hey">hey</span>
+      <span class="sidebar__logo-rule"></span>
+      <span class="sidebar__logo-denim">denim</span>
+    </div>
+    <span class="sidebar__sub">Admin</span>
+  </div>
+  <nav class="sidebar__nav">
+    <a href="/admin/dashboard" class="sidebar__link sidebar__link--active">
+      <i class="fa-solid fa-chart-line"></i> Dashboard
+    </a>
+    <a href="/admin/products" class="sidebar__link">
+      <i class="fa-solid fa-shirt"></i> Productos
+    </a>
+    <a href="/admin/products/new" class="sidebar__link sidebar__link--cta">
+      <i class="fa-solid fa-plus"></i> Cargar producto
+    </a>
+    <a href="/admin/content" class="sidebar__link">
+      <i class="fa-solid fa-pen-to-square"></i> Contenido
+    </a>
+    <a href="/admin/notifications" class="sidebar__link">
+      <i class="fa-solid fa-bell"></i> Notificaciones
+      <span class="sidebar__notif-count" id="sidebar-notif-count" style="display:none;"></span>
+    </a>
+    <a href="/" class="sidebar__link" target="_blank">
+      <i class="fa-solid fa-store"></i> Ver tienda
+    </a>
+  </nav>
+
+  <!-- Sección notificaciones -->
+  <div class="sidebar__notif-section">
+    <button class="sidebar__notif-btn" onclick="toggleNotifPanel()" id="notif-bell">
+      <div class="sidebar__notif-btn-left">
+        <i class="fa-solid fa-bell"></i>
+        <span>Notificaciones</span>
+      </div>
+      <span class="notif-badge" id="notif-badge" style="display:none;">0</span>
+    </button>
+  </div>
+
+  <div class="sidebar__footer">
+    <button onclick="confirmLogout()" class="sidebar__logout">
+      <i class="fa-solid fa-right-from-bracket"></i> Salir
+    </button>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menú">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<main class="dash">
+
+  <header class="dash__header">
+    <div>
+      <p class="dash__brand-tag">Heydemin · <span>Admin</span></p>
+      <h1 class="dash__title">Dashboard</h1>
+      <p class="dash__sub" id="last-updated">Cargando métricas…</p>
+    </div>
+    <button class="dash__refresh" onclick="loadMetrics()">
+      <i class="fa-solid fa-rotate-right"></i> Actualizar
+    </button>
+  </header>
+
+  <!-- KPI cards -->
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-card__icon kpi-card__icon--blue"><i class="fa-solid fa-eye"></i></div>
+      <div>
+        <p class="kpi-card__label">Visitas totales</p>
+        <p class="kpi-card__value" id="kpi-total">—</p>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-card__icon kpi-card__icon--green"><i class="fa-solid fa-calendar-day"></i></div>
+      <div>
+        <p class="kpi-card__label">Visitas hoy</p>
+        <p class="kpi-card__value" id="kpi-today">—</p>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-card__icon kpi-card__icon--purple"><i class="fa-solid fa-users"></i></div>
+      <div>
+        <p class="kpi-card__label">Únicos hoy</p>
+        <p class="kpi-card__value" id="kpi-unique">—</p>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-card__icon kpi-card__icon--orange"><i class="fa-solid fa-computer-mouse"></i></div>
+      <div>
+        <p class="kpi-card__label">Clics totales</p>
+        <p class="kpi-card__value" id="kpi-clicks">—</p>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-card__icon kpi-card__icon--teal"><i class="fa-solid fa-chart-bar"></i></div>
+      <div>
+        <p class="kpi-card__label">Visitas 7 días</p>
+        <p class="kpi-card__value" id="kpi-7d">—</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Charts row -->
+  <section class="charts-row">
+    <div class="chart-card chart-card--wide dash-hide-mobile">
+      <h2 class="chart-card__title">Visitas diarias (últimos 30 días)</h2>
+      <canvas id="chart-daily" height="220"></canvas>
+    </div>
+    <div class="chart-card dash-hide-mobile">
+      <h2 class="chart-card__title">Clics por elemento</h2>
+      <canvas id="chart-clicks" height="220"></canvas>
+    </div>
+  </section>
+
+  <!-- Bottom row -->
+  <section class="charts-row">
+    <div class="chart-card">
+      <h2 class="chart-card__title"><i class="fa-solid fa-fire"></i> Productos más vistos</h2>
+      <div id="top-products" class="bar-list"></div>
+    </div>
+    <div class="chart-card dash-hide-mobile">
+      <h2 class="chart-card__title"><i class="fa-solid fa-link"></i> Fuentes de tráfico</h2>
+      <div id="referrers" class="bar-list"></div>
+    </div>
+    <div class="chart-card dash-hide-mobile">
+      <h2 class="chart-card__title"><i class="fa-solid fa-map-pin"></i> Páginas más visitadas</h2>
+      <div id="top-pages" class="bar-list"></div>
+    </div>
+  </section>
+
+  <!-- Heatmap -->
+  <section class="charts-row dash-hide-mobile">
+    <div class="chart-card chart-card--full">
+      <h2 class="chart-card__title"><i class="fa-solid fa-crosshairs"></i> Mapa de calor de clics</h2>
+      <p class="chart-card__desc">Distribución de clics sobre la página (% horizontal × % vertical)</p>
+      <div class="heatmap-wrap">
+        <canvas id="heatmap-canvas"></canvas>
+        <div class="heatmap-empty" id="heatmap-empty">Sin datos de clics aún</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ventas -->
+  <section class="charts-row" style="margin-top:8px;">
+    <div class="chart-card">
+      <h2 class="chart-card__title"><i class="fa-solid fa-coins"></i> Ingresos totales</h2>
+      <p class="kpi-card__value" id="kpi-revenue" style="font-size:2rem;font-weight:700;margin:8px 0;">—</p>
+      <p class="dash__sub" id="kpi-revenue-30d"></p>
+    </div>
+    <div class="chart-card">
+      <h2 class="chart-card__title"><i class="fa-solid fa-bag-shopping"></i> Órdenes totales</h2>
+      <p class="kpi-card__value" id="kpi-orders" style="font-size:2rem;font-weight:700;margin:8px 0;">—</p>
+    </div>
+    <div class="chart-card chart-card--wide dash-hide-mobile">
+      <h2 class="chart-card__title"><i class="fa-solid fa-chart-area"></i> Ingresos diarios (30 días)</h2>
+      <canvas id="chart-revenue" height="220"></canvas>
+    </div>
+  </section>
+
+  <section class="charts-row">
+    <div class="chart-card">
+      <h2 class="chart-card__title"><i class="fa-solid fa-trophy"></i> Productos más vendidos</h2>
+      <div id="top-sold" class="bar-list"></div>
+    </div>
+    <div class="chart-card chart-card--wide" id="sales-table-wrap">
+      <h2 class="chart-card__title"><i class="fa-solid fa-clock-rotate-left"></i> Historial reciente de ventas</h2>
+      <div style="overflow-x:auto;">
+        <table class="admin-table" id="sales-table">
+          <thead><tr>
+            <th>Producto</th><th>Precio</th><th>Dto.</th><th>Final</th><th>Cant.</th><th>Talle</th><th>Total</th><th>Fecha</th>
+          </tr></thead>
+          <tbody id="sales-tbody"><tr><td colspan="8" class="td-empty">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Descuentos y destacados -->
+  <section class="charts-row">
+    <div class="chart-card chart-card--full">
+      <h2 class="chart-card__title"><i class="fa-solid fa-tag"></i> Descuentos y productos destacados</h2>
+      <p class="chart-card__desc">Configurá descuentos y marcá productos como destacados directamente desde aquí.</p>
+      <div id="discounts-list" class="discounts-grid"></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="/static/js/admin-dashboard.js"></script>
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('active');
+}
+function confirmLogout() {
+  if (confirm('¿Segura que querés cerrar sesión?')) {
+    window.location.href = '/admin/logout';
+  }
+}
+
+// ── Notificaciones — solo badge en sidebar ──────────────────────
+const NOTIF_ICONS = {
+  sale:            { icon: 'fa-bag-shopping',        color: '#10b981' },
+  low_stock:       { icon: 'fa-triangle-exclamation', color: '#f59e0b' },
+  out_of_stock:    { icon: 'fa-circle-xmark',        color: '#ef4444' },
+  no_activity:     { icon: 'fa-clock',               color: '#6b7280' },
+  visit_milestone: { icon: 'fa-chart-line',          color: '#3b82f6' },
+};
+
+async function loadNotifications() {
+  try {
+    const res = await fetch('/analytics/notifications');
+    if (!res.ok) return;
+    const data = await res.json();
+    const count = document.getElementById('sidebar-notif-count');
+    if (!count) return;
+    if (data.unread > 0) {
+      count.textContent = data.unread > 99 ? '99+' : data.unread;
+      count.style.display = 'inline-flex';
+    } else {
+      count.style.display = 'none';
+    }
+  } catch {}
+}
+
+// Cargar badge al iniciar
+loadNotifications();
+// Refrescar cada 60 segundos
+setInterval(loadNotifications, 60000);
+
+// ── Toast de confirmación ─────────────────────────────────────
+(function() {
+  const MESSAGES = {
+    producto_creado:   { text: '✅ Producto creado correctamente', color: '#10b981' },
+    producto_editado:  { text: '✅ Producto actualizado correctamente', color: '#10b981' },
+    producto_eliminado:{ text: '🗑️ Producto eliminado', color: '#ef4444' },
+  };
+  const params = new URLSearchParams(window.location.search);
+  const ok = params.get('ok');
+  if (ok && MESSAGES[ok]) {
+    const { text, color } = MESSAGES[ok];
+    const toast = document.createElement('div');
+    toast.textContent = text;
+    toast.style.cssText = `
+      position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+      background:${color}; color:#fff; padding:12px 24px;
+      border-radius:10px; font-size:0.88rem; font-weight:600;
+      box-shadow:0 4px 20px rgba(0,0,0,0.18); z-index:9999;
+      animation: fadeInUp 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+    // Limpiar el parámetro de la URL sin recargar
+    history.replaceState(null, '', '/admin/dashboard');
+    setTimeout(() => toast.remove(), 3500);
+  }
+})();
+</script>
+
+</body>
+</html>

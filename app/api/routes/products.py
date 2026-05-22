@@ -1,9 +1,14 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
-from app.db.products import get_all_products
+from app.db.database import get_db
+from app.db.models.product import Product
+from app.schemas.schemas import ProductOut
+
 
 router = APIRouter(prefix="/products", tags=["Products"])
 
-@router.get("/")
-def get_products():
-    return get_all_products()
+
+@router.get("/", response_model=list[ProductOut])
+def get_products(db: Session = Depends(get_db)):
+    return db.query(Product).all()

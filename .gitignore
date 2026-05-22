@@ -1,0 +1,35 @@
+# Entorno y secretos — NUNCA subir al repo
+.env
+*.env
+.env.*
+!.env.example
+.vault
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Base de datos local
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploads (imágenes subidas por el admin)
+app/static/uploads/*
+!app/static/uploads/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

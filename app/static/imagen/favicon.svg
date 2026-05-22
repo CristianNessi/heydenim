@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#111111"/>
+  <!-- h cursiva simplificada -->
+  <path d="
+    M 7 24
+    C 7 24 7 8 7 7
+    C 7 6.2 7.5 6 8 6
+    C 8.5 6 9 6.4 9 7
+    L 9 15.5
+    C 10 14.2 12 13 14.5 13
+    C 17.5 13 19 15 19 17.5
+    L 19 24
+    C 19 24.6 18.5 25 18 25
+    C 17.5 25 17 24.6 17 24
+    L 17 18
+    C 17 16.2 16 15 14.5 15
+    C 12.5 15 9 17 9 19.5
+    L 9 24
+    C 9 24.6 8.5 25 8 25
+    C 7.5 25 7 24.6 7 24 Z
+  " fill="#c19a6b"/>
+  <!-- punto decorativo -->
+  <circle cx="22" cy="24" r="2" fill="#c19a6b" opacity="0.6"/>
+</svg>

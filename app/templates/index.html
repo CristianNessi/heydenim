@@ -4,1826 +4,573 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Heydemin - Denim femenino premium. Jeans que combinan estilo, comodidad y actitud para mujeres reales.">
-    <meta name="keywords" content="denim, jeans, mujer, moda, Heydemin">
-    <title>Heydemin | Denim Store</title>
 
+    <!-- ═══════════════════════════════════════════════════════
+         SEO BÁSICO
+    ═══════════════════════════════════════════════════════ -->
+    <title>Heydemin | Jeans y Denim Femenino Premium – Tienda Online</title>
+    <meta name="description"
+        content="Descubre Heydemin, tu tienda de denim femenino premium. Jeans de mujer con estilo, comodidad y actitud. Envío gratis desde €60. ¡Compra ahora!">
+    <meta name="keywords"
+        content="jeans mujer, denim femenino, pantalones vaqueros mujer, jeans premium, ropa denim mujer, tienda jeans online España, vaqueros mujer, jeans ajustados mujer, denim store, Heydemin">
+    <meta name="author" content="Heydemin">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://heydemin.com/">
+
+    <!-- ═══════════════════════════════════════════════════════
+         OPEN GRAPH (Facebook, WhatsApp, LinkedIn)
+    ═══════════════════════════════════════════════════════ -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Heydemin">
+    <meta property="og:title" content="Heydemin | Jeans y Denim Femenino Premium">
+    <meta property="og:description"
+        content="Jeans de mujer con estilo, comodidad y actitud. Denim premium con envío gratis desde €60. Descubre nuestra colección.">
+    <meta property="og:url" content="https://heydemin.com/">
+    <meta property="og:image" content="https://heydemin.com/static/imagen/logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Heydemin – Denim femenino premium">
+    <meta property="og:locale" content="es_ES">
+
+    <!-- ═══════════════════════════════════════════════════════
+         TWITTER CARD
+    ═══════════════════════════════════════════════════════ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@heydemin">
+    <meta name="twitter:title" content="Heydemin | Jeans y Denim Femenino Premium">
+    <meta name="twitter:description"
+        content="Jeans de mujer con estilo, comodidad y actitud. Denim premium con envío gratis desde €60.">
+    <meta name="twitter:image" content="https://heydemin.com/static/imagen/logo.png">
+    <meta name="twitter:image:alt" content="Heydemin – Denim femenino premium">
+
+    <!-- ═══════════════════════════════════════════════════════
+         SCHEMA.ORG – ORGANIZACIÓN + TIENDA ONLINE
+    ═══════════════════════════════════════════════════════ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://heydemin.com/#organization",
+          "name": "Heydemin",
+          "url": "https://heydemin.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://heydemin.com/static/imagen/logo.png",
+            "width": 300,
+            "height": 100
+          },
+          "description": "Marca de denim femenino premium. Jeans que combinan estilo, comodidad y actitud para mujeres reales.",
+          "sameAs": [
+            "https://www.instagram.com/heydemin/",
+            "https://www.tiktok.com/@heydemin",
+            "https://www.facebook.com/heydemin",
+            "https://www.pinterest.com/heydemin/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "email": "contacto@heydemin.com",
+            "availableLanguage": "Spanish"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://heydemin.com/#website",
+          "url": "https://heydemin.com/",
+          "name": "Heydemin",
+          "description": "Tienda online de denim femenino premium",
+          "publisher": { "@id": "https://heydemin.com/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://heydemin.com/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://heydemin.com/#webpage",
+          "url": "https://heydemin.com/",
+          "name": "Heydemin | Jeans y Denim Femenino Premium – Tienda Online",
+          "isPartOf": { "@id": "https://heydemin.com/#website" },
+          "about": { "@id": "https://heydemin.com/#organization" },
+          "description": "Descubre Heydemin, tu tienda de denim femenino premium. Jeans de mujer con estilo, comodidad y actitud.",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Inicio",
+                "item": "https://heydemin.com/"
+              }
+            ]
+          },
+          "inLanguage": "es-ES"
+        },
+        {
+          "@type": "ClothingStore",
+          "@id": "https://heydemin.com/#store",
+          "name": "Heydemin",
+          "url": "https://heydemin.com/",
+          "image": "https://heydemin.com/static/imagen/logo.png",
+          "description": "Tienda online de denim femenino premium. Jeans, vaqueros y ropa denim para mujer.",
+          "priceRange": "€€",
+          "currenciesAccepted": "EUR",
+          "paymentAccepted": "Credit Card, Debit Card",
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Colección Denim Femenino",
+            "itemListElement": [
+              {
+                "@type": "OfferCatalog",
+                "name": "Jeans de Mujer"
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Denim Premium"
+              }
+            ]
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════
+         RENDIMIENTO – PRECONNECT Y PRELOAD
+    ═══════════════════════════════════════════════════════ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;700&display=swap"
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <!-- Preload fuente crítica para evitar FOUT -->
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;700&family=Dancing+Script:wght@700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;700&family=Dancing+Script:wght@700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <style>
-        :root {
-            --black: #111;
-            --accent: #c19a6b;
-            --light: #f7f7f7;
-            --gray: #777;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f5f2ed;
-            color: #222;
-            line-height: 1.6;
-        }
-
-        /* HEADER */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-            position: sticky;
-            top: 0;
-            background: #f8d5d5d4;
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-        }
-
-        .logo {
-            font-family: 'Playfair Display';
-            font-size: 30px;
-            letter-spacing: 1px;
-        }
-
-        nav {
-            display: flex;
-            gap: 22px;
-            align-items: center;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover,
-        nav a:focus {
-            color: var(--accent);
-        }
-
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 22px;
-            transition: transform 0.2s ease;
-        }
-
-        .cart-icon:hover {
-            transform: scale(1.1);
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -10px;
-            right: -12px;
-            background: var(--black);
-            color: white;
-            font-size: 12px;
-            padding: 4px 7px;
-            border-radius: 50%;
-        }
-
-        /* HERO */
-        .hero {
-            min-height: 70vh;
-            background: linear-gradient(180deg, rgba(17, 17, 17, 0.35), rgba(17, 17, 17, 0.65)),
-                url('https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1300&q=80') center/cover fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-            padding: 60px 30px;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 6vw, 5rem);
-            font-family: 'Playfair Display';
-            line-height: 1.02;
-            letter-spacing: 0.02em;
-            max-width: 900px;
-        }
-
-        .section {
-            padding: 50px 0px;
-        }
-
-        .section h2 {
-            margin: 0px 0px 15px 30px;
-            margin-bottom: 18px;
-            font-size: 2.5rem;
-            font-family: 'Playfair Display';
-        }
-
-        .about-section {
-            background: url('https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1400&q=80') center/cover fixed no-repeat;
-            color: white;
-            position: relative;
-        }
-
-        .about-overlay {
-            background: rgba(0, 0, 0, 0.45);
-            padding: 60px 40px;
-            border-radius: 24px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .about-overlay p {
-            line-height: 1.8;
-            color: #f1f1f1;
-            max-width: 760px;
-        }
-
-        .carousel {
-            margin: 15px;
-            display: flex;
-            gap: 20px;
-            overflow: hidden;
-            padding-bottom: 10px;
-            position: relative;
-        }
-
-        .carousel::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 50px;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0.8), transparent);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .carousel::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            width: 50px;
-            background: linear-gradient(to left, rgba(255, 255, 255, 0.8), transparent);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .carousel-indicator {
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 3px;
-            background: rgba(166, 127, 84, 0.3);
-            border-radius: 2px;
-            animation: indicatorPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes indicatorPulse {
-
-            0%,
-            100% {
-                opacity: 0.3;
-                transform: translateX(-50%) scaleX(1);
-            }
-
-            50% {
-                opacity: 0.7;
-                transform: translateX(-50%) scaleX(1.2);
-            }
-        }
-
-        .carousel-track {
-            display: flex;
-            gap: 20px;
-            animation: scroll 30s linear infinite;
-        }
-
-        .carousel-track:hover {
-            animation-play-state: paused;
-        }
-
-        .carousel-track:active {
-            animation-play-state: paused;
-        }
-
-        .carousel-track.paused {
-            animation-play-state: paused;
-        }
-
-        .carousel-card {
-            min-width: 260px;
-            border-radius: 24px;
-            overflow: hidden;
-            background: white;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            transition: transform 0.35s ease, box-shadow 0.35s ease;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .carousel-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 55px rgba(0, 0, 0, 0.15);
-        }
-
-        .carousel-card img {
-            width: 100%;
-            height: 230px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .carousel-card p {
-            padding: 18px 16px;
-            font-weight: 600;
-        }
-
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 28px;
-        }
-
-        .product {
-            margin: 15px;
-            border-radius: 24px;
-            overflow: hidden;
-            background: white;
-            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
-            transition: transform 0.35s ease, box-shadow 0.35s ease;
-            cursor: pointer;
-        }
-
-        .product:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 28px 60px rgba(0, 0, 0, 0.12);
-        }
-
-        .product img {
-            width: 100%;
-            height: 230px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .product-info {
-            padding: 22px 20px 16px;
-        }
-
-        .product-info h3 {
-            margin-bottom: 8px;
-            font-size: 1.3rem;
-        }
-
-        .product-info p {
-            margin-bottom: 16px;
-            color: var(--gray);
-            line-height: 1.7;
-        }
-
-        .product-info button {
-            border: none;
-            background: var(--accent);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 999px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            font-weight: 500;
-        }
-
-        .product-info button:hover,
-        .product-info button:focus {
-            background: #a67f54;
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
-
-        .product-description {
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 20px;
-            color: #555;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-        }
-
-        /* MODAL PRO */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 3000;
-        }
-
-        .modal-content {
-            background: white;
-            margin: 5% auto;
-            width: 80%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
-            border-radius: 20px;
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .modal-body {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        .modal-body img {
-            width: 50%;
-            max-width: 380px;
-            border-radius: 15px;
-            object-fit: cover;
-            cursor: zoom-in;
-            transition: transform 0.2s ease;
-        }
-
-        .modal-body img:hover {
-            transform: scale(1.02);
-        }
-
-        .modal-info {
-            flex: 1;
-        }
-
-        .modal-actions {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 16px;
-        }
-
-        .modal-field {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex: 1;
-            min-width: 180px;
-        }
-
-        .modal-field label {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 6px;
-        }
-
-        .modal-qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            justify-content: flex-start;
-            padding: 12px 14px;
-            background: #faf7f2;
-            border: 1px solid #eee;
-            border-radius: 14px;
-        }
-
-        .modal-qty-controls button {
-            width: 38px;
-            height: 38px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            color: #333;
-        }
-
-        .modal-qty-controls button:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
-
-        .modal-qty-controls input {
-            width: 72px;
-            height: 42px;
-            text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            background: white;
-        }
-
-        .image-preview {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.95);
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 3100;
-        }
-
-        .image-preview.active {
-            display: flex;
-        }
-
-        .image-preview img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 18px;
-            object-fit: contain;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .image-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.18);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 3200;
-        }
-
-        .modal-info button {
-            width: 100%;
-            padding: 12px;
-            background: var(--accent);
-            color: rgb(0, 0, 0);
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.3s ease;
-        }
-
-        .modal-info button:hover,
-        .modal-info button:focus {
-            background: #a67f54;
-        }
-
-        .close {
-            float: right;
-            font-size: 25px;
-            cursor: pointer;
-        }
-
-        .sizes {
-            display: flex;
-            gap: 10px;
-            margin: 10px 0;
-        }
-
-        .sizes button {
-            padding: 8px 14px;
-            border: 1px solid #ddd;
-            background: white;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.2s ease;
-        }
-
-        .sizes button.active,
-        .sizes button:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        .product.show-description .product-description {
-            max-height: 140px;
-            padding: 14px 20px 20px;
-        }
-
-        .cart {
-            position: fixed;
-            right: -420px;
-            top: 0;
-            width: 420px;
-            height: 100%;
-            background: white;
-            box-shadow: -6px 0 24px rgba(0, 0, 0, 0.12);
-            padding: 0;
-            transition: right 0.35s ease;
-            display: flex;
-            flex-direction: column;
-            z-index: 999;
-            border-radius: 20px 0 0 20px;
-            overflow: hidden;
-        }
-
-        .cart.active {
-            right: 0;
-        }
-
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.38);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 990;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 28px;
-            border-bottom: 1px solid #eee;
-            background: #fafafa;
-        }
-
-        .cart-header h3 {
-            margin: 0;
-            font-size: 1.5rem;
-        }
-
-        .close-cart {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background 0.2s ease;
-        }
-
-        .close-cart:hover {
-            background: #eee;
-        }
-
-        .cart-content {
-            flex: 1;
-            padding: 20px 28px;
-            overflow-y: auto;
-        }
-
-        .cart-footer {
-            padding: 20px 28px;
-            border-top: 1px solid #eee;
-            background: #fafafa;
-        }
-
-        .cart-footer p {
-            margin: 0 0 15px 0;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .checkout-btn:hover {
-            background: #a67f54;
-        }
-
-        .cart-item {
-            display: grid;
-            grid-template-columns: 1fr auto auto;
-            margin-bottom: 16px;
-            gap: 16px;
-            align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-item>div:first-child {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .cart-item strong {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .cart-item span {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .cart-item>span:last-child {
-            font-weight: 600;
-            font-size: 1.05rem;
-            text-align: right;
-            min-width: 80px;
-        }
-
-        .cart-empty {
-            color: #555;
-            font-size: 0.95rem;
-            padding: 40px 0;
-            text-align: center;
-        }
-
-        .qty {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            background: #f5f5f5;
-            padding: 6px 8px;
-            border-radius: 6px;
-            white-space: nowrap;
-        }
-
-        .qty span {
-            min-width: 24px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #333;
-        }
-
-        .qty button {
-            min-width: 36px;
-            padding: 6px 10px;
-            border: 1px solid #ddd;
-            background: white;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: background 0.2s ease, border-color 0.2s ease;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .qty button:hover {
-            background: #efefef;
-            border-color: #999;
-        }
-
-        .colors {
-            display: flex;
-            gap: 10px;
-            margin: 10px 0;
-        }
-
-        .colors span {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .colors span.active {
-            border: 2px solid black;
-        }
-
-        .reviews {
-            display: flex;
-            gap: 22px;
-            overflow-x: auto;
-        }
-
-        .review {
-            min-width: 250px;
-            border-radius: 22px;
-            overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        .review img {
-            width: 100%;
-            display: block;
-        }
-
-        footer {
-            background: #111;
-            color: white;
-            padding: 50px 60px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
-        }
-
-        footer h3,
-        footer h4 {
-            margin-bottom: 15px;
-        }
-
-        footer a {
-            color: #ccc;
-            text-decoration: none;
-            display: block;
-            margin: 6px 0;
-            transition: color 0.3s ease;
-        }
-
-        footer a:hover,
-        footer a:focus {
-            color: var(--accent);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 18px;
-            margin-top: 12px;
-        }
-
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            font-size: 1.3rem;
-            color: white;
-            text-decoration: none;
-        }
-
-        .social-links a:hover,
-        .social-links a:focus {
-            background: var(--accent);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(166, 127, 84, 0.3);
-        }
-
-        .whatsapp {
-            position: fixed;
-            bottom: 22px;
-            right: 22px;
-            width: 60px;
-            filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.22));
-            transition: transform 0.2s ease;
-        }
-
-        .whatsapp:hover {
-            transform: scale(1.1);
-        }
-
-        .cart {
-            border-radius: 20px 0 0 20px;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: black;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 30px;
-            opacity: 0;
-            transition: 0.4s;
-            z-index: 4000;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 1024px) {
-            .section {
-                padding: 50px 30px;
-            }
-
-            .hero h1 {
-                font-size: clamp(2.5rem, 6vw, 4rem);
-            }
-
-            .grid {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 25px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .section {
-                padding: 40px 20px;
-            }
-
-            header {
-                padding: 12px 20px;
-                position: relative;
-            }
-
-            .logo {
-                font-size: 1.4rem;
-                font-weight: 700;
-            }
-
-            nav {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: white;
-                flex-direction: column;
-                padding: 20px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-                border-top: 1px solid #eee;
-                z-index: 800;
-            }
-
-            nav.active {
-                display: flex;
-            }
-
-            nav a {
-                padding: 12px 0;
-                border-bottom: 1px solid #f5f5f5;
-                font-weight: 500;
-            }
-
-            nav a:last-child {
-                border-bottom: none;
-            }
-
-            .cart-icon {
-                position: absolute;
-                right: 20px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 1.5rem;
-                cursor: pointer;
-            }
-
-            .menu-toggle {
-                display: block !important;
-                position: absolute;
-                right: 70px;
-                top: 50%;
-                transform: translateY(-50%);
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                cursor: pointer;
-                padding: 8px;
-                border-radius: 4px;
-                transition: background 0.2s ease;
-            }
-
-            .menu-toggle:hover {
-                background: #f5f5f5;
-            }
-
-            .hero {
-                padding: 80px 20px 60px;
-                text-align: center;
-            }
-
-            .hero h1 {
-                font-size: clamp(2rem, 10vw, 3rem);
-                line-height: 1.2;
-                margin-bottom: 20px;
-            }
-
-            .carousel {
-                margin: 0;
-                padding: 20px 0;
-                overflow: hidden;
-            }
-
-            .carousel-track {
-                gap: 15px;
-                animation-duration: 25s;
-            }
-
-            .carousel-card {
-                min-width: 280px;
-                border-radius: 16px;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-                transition: transform 0.3s ease;
-            }
-
-            .carousel-card:hover {
-                transform: translateY(-5px);
-            }
-
-            .carousel-card img {
-                height: 200px;
-            }
-
-            .carousel-card p {
-                padding: 15px;
-                margin: 0;
-                font-weight: 600;
-                text-align: center;
-                background: white;
-            }
-
-            .carousel::before,
-            .carousel::after {
-                display: none;
-            }
-
-            .carousel-indicator {
-                display: none;
-            }
-
-            .grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-            }
-
-            .modal-actions {
-                grid-template-columns: 1fr;
-            }
-
-
-            .product {
-                border-radius: 12px;
-                overflow: hidden;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            }
-
-            .product img {
-                height: 280px;
-                object-fit: cover;
-            }
-
-            .product-info {
-                padding: 16px;
-            }
-
-            .product-info h3 {
-                font-size: 1.1rem;
-                margin-bottom: 8px;
-            }
-
-            .product-info p {
-                font-size: 1.1rem;
-                font-weight: 600;
-                margin-bottom: 12px;
-            }
-
-            .product-info button {
-                width: 100%;
-                padding: 10px;
-                font-size: 0.95rem;
-            }
-
-            .about-section {
-                padding: 60px 20px;
-                text-align: center;
-            }
-
-            .about-overlay h2 {
-                font-size: 2rem;
-                margin-bottom: 20px;
-            }
-
-            .about-overlay p {
-                font-size: 1.1rem;
-                line-height: 1.6;
-                max-width: 100%;
-            }
-
-            .modal-content {
-                width: 95%;
-                max-width: 400px;
-                margin: 20px;
-                max-height: 90vh;
-                overflow-y: auto;
-            }
-
-            .modal-body {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .modal-img {
-                width: 100%;
-                height: 300px;
-                object-fit: cover;
-                border-radius: 8px;
-            }
-
-            .modal-info {
-                width: 100%;
-            }
-
-            .sizes {
-                justify-content: center;
-                gap: 8px;
-            }
-
-            .modal-qty-controls {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                justify-content: center;
-            }
-
-            .modal-qty-controls button {
-                width: 40px;
-                height: 40px;
-                border: 2px solid #ddd;
-                background: white;
-                border-radius: 50%;
-                font-size: 18px;
-                font-weight: bold;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: all 0.2s ease;
-                margin-top: 0px;
-            }
-
-            .modal-qty-controls button:hover {
-                background: var(--accent);
-                border-color: var(--accent);
-                color: white;
-            }
-
-            .modal-qty-controls input {
-                width: 60px;
-                height: 40px;
-                text-align: center;
-                border: 2px solid #ddd;
-                border-radius: 8px;
-                font-size: 16px;
-                font-weight: 600;
-                background: white;
-            }
-
-            .colors {
-                justify-content: center;
-            }
-
-            .reviews {
-                gap: 15px;
-                padding: 20px;
-            }
-
-            .review {
-                min-width: 200px;
-                border-radius: 16px;
-            }
-
-            .review img {
-                height: 150px;
-                object-fit: cover;
-            }
-
-            .cart {
-                width: 100%;
-                right: -100%;
-                border-radius: 0;
-                max-height: 100vh;
-                overflow-y: auto;
-            }
-
-            .cart-header,
-            .cart-content,
-            .cart-footer {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-
-            .cart-item {
-                grid-template-columns: 1fr auto;
-                gap: 12px;
-                padding: 12px 0;
-            }
-
-            .cart-item>div:first-child {
-                flex-direction: row;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .cart-item strong {
-                font-size: 0.95rem;
-            }
-
-            .cart-item span {
-                font-size: 0.85rem;
-            }
-
-            footer {
-                padding: 40px 20px;
-                grid-template-columns: 1fr;
-                gap: 30px;
-                text-align: center;
-            }
-
-            footer h3 {
-                font-size: 1.5rem;
-            }
-
-            footer h4 {
-                font-size: 1.1rem;
-                margin-bottom: 15px;
-            }
-
-            footer p {
-                font-size: 0.95rem;
-            }
-
-            .social-links {
-                justify-content: center;
-                gap: 20px;
-            }
-
-            .social-links a {
-                width: 48px;
-                height: 48px;
-                font-size: 1.4rem;
-            }
-
-            .whatsapp {
-                width: 55px;
-                bottom: 18px;
-                right: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .section {
-                padding: 30px 15px;
-            }
-
-            header {
-                padding: 10px 15px;
-            }
-
-            .logo {
-                font-size: 1.3rem;
-            }
-
-            .menu-toggle {
-                right: 60px;
-            }
-
-            .cart-icon {
-                right: 15px;
-                font-size: 1.4rem;
-            }
-
-            .hero {
-                padding: 60px 15px 40px;
-            }
-
-            .hero h1 {
-                font-size: clamp(1.8rem, 12vw, 2.5rem);
-            }
-
-            .carousel {
-                margin: 0;
-                padding: 15px 0;
-                overflow: hidden;
-            }
-
-            .carousel-track {
-                gap: 12px;
-                animation-duration: 20s;
-            }
-
-            .carousel-card {
-                min-width: 240px;
-            }
-
-            .carousel-card img {
-                height: 180px;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .product img {
-                height: 250px;
-            }
-
-            .product-info {
-                padding: 14px;
-            }
-
-            .product-info h3 {
-                font-size: 1rem;
-            }
-
-            .product-info p {
-                font-size: 1rem;
-            }
-
-            .section h2 {
-                font-size: 1.3rem;
-            }
-
-            .about-section {
-                padding: 40px 15px;
-            }
-
-            .about-overlay h2 {
-                font-size: 1.3rem;
-            }
-
-            .about-overlay p {
-                font-size: 1rem;
-            }
-
-            .modal-content {
-                width: 95%;
-                margin: 15px;
-                max-height: 90vh;
-                overflow-y: auto;
-            }
-
-            .modal-img {
-                height: 250px;
-            }
-
-            .sizes button {
-                padding: 8px 14px;
-                font-size: 0.9rem;
-            }
-
-            .reviews {
-                gap: 12px;
-                padding: 15px;
-            }
-
-            .review {
-                min-width: 180px;
-            }
-
-            .review img {
-                height: 130px;
-            }
-
-            .cart-header,
-            .cart-content,
-            .cart-footer {
-                padding-left: 15px;
-                padding-right: 15px;
-            }
-
-            footer {
-                padding: 30px 15px;
-            }
-
-            .social-links {
-                gap: 16px;
-            }
-
-            .social-links a {
-                width: 44px;
-                height: 44px;
-                font-size: 1.2rem;
-            }
-
-            .whatsapp {
-                width: 50px;
-                bottom: 15px;
-                right: 15px;
-            }
-        }
-    </style>
+    <!-- Font Awesome con display=swap para no bloquear render -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            crossorigin="anonymous" referrerpolicy="no-referrer">
+    </noscript>
+    <link rel="stylesheet" href="/static/css/styles.css?v=seo-1">
+    <script src="/static/js/app.js?v=seo-1" defer></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/static/imagen/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/imagen/favicon.png">
+    <link rel="shortcut icon" href="/static/imagen/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/imagen/favicon.png">
 </head>
 
 <body>
+    <!-- TOPBAR: ticker animado -->
+    <div class="topbar" id="topbar">
+        <div class="topbar__track" id="topbar-track">
+            <!-- Contenido por defecto — se reemplaza dinámicamente desde la DB -->
+            <span class="topbar__item">🏷️ 15% OFF en tu primera compra · Código: <strong>HEYDENIM15</strong></span>
+            <span class="topbar__sep">·</span>
+            <span class="topbar__item">🚚 Envío gratis a partir de €60</span>
+            <span class="topbar__sep">·</span>
+            <span class="topbar__item" id="topbar-social-slot">
+                Síguenos
+                <a href="https://www.instagram.com/heydemin/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="topbar__social"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@heydemin" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="topbar__social"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.facebook.com/heydemin" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="topbar__social"><i class="fab fa-facebook"></i></a>
+            </span>
+            <span class="topbar__sep">·</span>
+            <span class="topbar__item" id="topbar-email-slot">📩 contacto@heydemin.com</span>
+            <span class="topbar__sep">·</span>
+            <span class="topbar__item" id="topbar-whatsapp-slot">💬 WhatsApp: <a href="https://wa.me/5491234567890" target="_blank" rel="noopener noreferrer" class="topbar__link">+54 9 1234-5678</a></span>
+        </div>
+    </div>
 
-    <header>
-        <div class="logo">Heydemin</div>
-        <nav>
-            <a href="#about">Nosotras</a>
-            <a href="#catalog">Catálogo</a>
-            <a href="#reviews">Opiniones</a>
-            <div class="cart-icon" onclick="toggleCart()" aria-label="Abrir carrito" role="button" tabindex="0">🛒<span
-                    id="cart-count" class="cart-count">0</span></div>
+    <!-- HEADER PRINCIPAL -->
+    <header class="site-header">
+        <button class="menu-toggle" type="button" onclick="toggleMenu()" aria-label="Abrir menú" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <nav class="main-nav" id="main-nav" role="navigation" aria-label="Navegación principal">
+            <a href="#about" class="main-nav__link">Nosotras</a>
+            <a href="#catalog" class="main-nav__link">Catálogo</a>
+            <a href="#reviews" class="main-nav__link">Opiniones</a>
         </nav>
-        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menú" style="display: none;">☰</button>
+
+        <a href="/" class="logo" aria-label="Heydemin inicio">
+            <span class="logo__wrap">
+                <span class="logo__line logo__line--left"></span>
+                <span class="logo__hey">hey</span>
+                <span class="logo__line logo__line--right"></span>
+                <span class="logo__denim">denim</span>
+            </span>
+        </a>
+
+        <div class="header-actions">
+            <button class="header-actions__btn" aria-label="Buscar" title="Buscar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <div class="cart-icon" onclick="toggleCart()"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCart()}"
+                aria-label="Abrir carrito" role="button" tabindex="0">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span id="cart-count" class="cart-count">0</span>
+            </div>
+        </div>
     </header>
 
-    <main>
-
-        <section class="hero">
-            <h1>
-                " HeyDenim "<br>que potencia tu estilo
-            </h1>
+    <main id="main-content">
+        <!-- HERO: H1 optimizado con keyword principal -->
+        <section class="hero" aria-label="Bienvenida a Heydemin" id="hero-section"
+          {% if hero_image %}style="background-image:linear-gradient(180deg,rgba(17,17,17,.35),rgba(17,17,17,.65)),url('{{ hero_image }}')"{% endif %}>
+            <h1 id="hero-title">{{ hero_title if hero_title else 'Jeans y Denim Femenino – Heydemin' }}</h1>
+            <p class="hero__sub" id="hero-subtitle">{{ hero_subtitle if hero_subtitle else 'Denim premium para mujeres reales · Envío gratis desde €60 · Nueva colección disponible' }}</p>
         </section>
 
-        <!-- NUEVOS PRODUCTOS -->
         <section class="section" aria-labelledby="nuevos-title">
             <h2 id="nuevos-title">Nuevos Ingresos</h2>
             <div class="carousel" id="carousel" role="region" aria-label="Carrusel de nuevos productos">
                 <div class="carousel-track" id="carousel-track"></div>
                 <div class="carousel-indicator" aria-hidden="true"></div>
             </div>
+        </section>
 
-            <!-- ABOUT -->
-            <section id="about" class="section about-section" aria-labelledby="about-title">
-                <div class="about-overlay">
-                    <h2 id="about-title">Nosotras</h2>
-                    <p>En Heydemin somos una marca dedicada al denim femenino. Diseñamos jeans que combinan estilo,
-                        comodidad y
-                        actitud para
-                        mujeres reales. Nuestro objetivo es que cada prenda resalte tu personalidad con detalles únicos
-                        y una
-                        silueta cómoda.
-                        Navega, atrévete y descubre por qué el denim es nuestra forma de contar historias.</p>
-                </div>
-            </section>
+        <section id="about" class="section about-section" aria-labelledby="about-title"
+          {% if about_image %}style="background-image:url('{{ about_image }}')"{% endif %}>
+            <div class="about-overlay">
+                <h2 id="about-title">Nosotras</h2>
+                <p id="about-text">{{ about_text if about_text else 'En Heydemin somos una marca dedicada al denim femenino premium. Diseñamos jeans de mujer que combinan estilo, comodidad y actitud para mujeres reales.' }}</p>
+                <p id="about-extra" style="margin-top:14px;font-size:0.9rem;color:rgba(255,255,255,0.75)">
+                    {{ about_extra if about_extra else 'Enviamos a toda España · Pago seguro · Devoluciones fáciles' }}
+                </p>
+            </div>
+        </section>
 
-            <!-- CATALOGO -->
-            <section id="catalog" class="section" aria-labelledby="catalog-title">
-                <h2 id="catalog-title">Catálogo</h2>
-                <div id="products" class="grid" role="region" aria-label="Catálogo de productos"></div>
+        <section id="catalog" class="section" aria-labelledby="catalog-title">
+            <h2 id="catalog-title">Catálogo</h2>
+            <div id="products" class="grid" role="region" aria-label="Catálogo de productos"></div>
 
-                <!-- MODAL PRODUCTO PRO -->
-                <div id="product-modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="closeModal()">×</span>
+            <div id="product-modal" class="modal product-modal" role="dialog" aria-modal="true" aria-labelledby="modal-name" hidden>
+                <div class="modal-content product-modal__content">
+                    <button type="button" class="modal-close" onclick="closeModal()" aria-label="Cerrar">×</button>
+                    <div class="product-modal__body">
+                        <div class="product-modal__gallery">
+                            <div class="modal-img-wrap" id="modal-img-wrap">
+                                <img id="modal-img" alt="Imagen del producto" onclick="openImagePreview(this.src)">
+                                <div class="zoom-lens" id="zoom-lens"></div>
+                                <div class="zoom-result" id="zoom-result"></div>
+                                <button type="button" class="modal-zoom-btn" onclick="openImagePreview(document.getElementById('modal-img').src)" aria-label="Ver imagen ampliada">
+                                    <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                </button>
+                            </div>
+                            <div id="modal-thumbs" class="product-modal__thumbs" aria-label="Imagenes del producto"></div>
+                        </div>
+                        <div class="product-modal__details">
+                            <p class="product-modal__eyebrow">Heydemin · Denim</p>
+                            <h2 id="modal-name" class="product-modal__title"></h2>
+                            <p id="modal-desc" class="product-modal__desc"></p>
+                            <p id="modal-price" class="product-modal__price"></p>
+                            <p id="modal-stock" class="product-modal__stock"></p>
 
-                        <div class="modal-body">
-                            <img id="modal-img" alt="Imagen del producto" onclick="openImagePreview(this.src)">
+                            <div class="product-modal__block">
+                                <span class="product-modal__label">Talle</span>
+                                <div id="sizes-container" class="size-selector" role="listbox" aria-label="Seleccionar talle"></div>
+                                <p id="size-hint" class="product-modal__hint" aria-live="polite"></p>
+                            </div>
 
-                            <div class="modal-info">
-                                <h2 id="modal-name"></h2>
-                                <p id="modal-desc"></p>
-                                <h3 id="modal-price"></h3>
+                            <div class="product-modal__block" id="colors-block">
+                                <span class="product-modal__label">Color</span>
+                                <div id="colors-container" class="color-selector" role="listbox" aria-label="Seleccionar color"></div>
+                            </div>
 
-                                <div class="modal-actions">
-                                    <div class="modal-field">
-                                        <label>Talle</label>
-                                        <div class="sizes">
-                                            <button onclick="selectSize(this,'S')">S</button>
-                                            <button onclick="selectSize(this,'M')">M</button>
-                                            <button onclick="selectSize(this,'L')">L</button>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal-field">
-                                        <label>Cantidad</label>
-                                        <div class="modal-qty-controls">
-                                            <button type="button" onclick="changeModalQty(-1)">−</button>
-                                            <input type="number" id="modal-qty" value="1" min="1" readonly>
-                                            <button type="button" onclick="changeModalQty(1)">+</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <button onclick="addToCartFromModal()">Agregar al carrito</button>
-
-                                <label>Color</label>
-                                <div class="colors">
-                                    <span style="background:#1e3a5f" onclick="selectColor(this,'Azul')"></span>
-                                    <span style="background:black" onclick="selectColor(this,'Negro')"></span>
-                                    <span style="background:#a3c1da" onclick="selectColor(this,'Celeste')"></span>
+                            <div class="product-modal__block product-modal__block--qty">
+                                <span class="product-modal__label">Cantidad</span>
+                                <div class="modal-qty-controls">
+                                    <button type="button" onclick="changeModalQty(-1)" aria-label="Reducir cantidad">−</button>
+                                    <input type="number" id="modal-qty" value="1" min="1" readonly aria-label="Cantidad">
+                                    <button type="button" onclick="changeModalQty(1)" aria-label="Aumentar cantidad">+</button>
                                 </div>
                             </div>
+
+                            <button type="button" id="modal-add-btn" class="product-modal__cta" onclick="addToCartFromModal()" disabled>
+                                Seleccioná un talle
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div id="image-preview" class="image-preview" onclick="closeImagePreview()" aria-hidden="true">
-                    <span class="image-close" onclick="closeImagePreview(); event.stopPropagation()">×</span>
-                    <img id="preview-img" alt="Vista ampliada del producto">
-                </div>
+        <div id="image-preview" class="image-preview" onclick="closeImagePreview()" aria-hidden="true">
+            <button type="button" class="image-close" onclick="closeImagePreview(); event.stopPropagation()" aria-label="Cerrar vista ampliada">×</button>
+            <img id="preview-img" alt="Vista ampliada del producto">
+        </div>
 
-                <!-- REVIEWS -->
-                <section id="reviews" class="section" aria-labelledby="reviews-title">
-                    <h2 id="reviews-title">Opiniones reales</h2>
-                    <div class="reviews">
-                        <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 1"></div>
-                        <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 2"></div>
-                        <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 3"></div>
-                    </div>
-                </section>
-
+        <section id="reviews" class="section" aria-labelledby="reviews-title">
+            <h2 id="reviews-title">Opiniones reales</h2>
+            <div class="reviews" id="reviews-container">
+                <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 1" loading="lazy" width="250" height="150"></div>
+                <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 2" loading="lazy" width="250" height="150"></div>
+                <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 3" loading="lazy" width="250" height="150"></div>
+            </div>
+        </section>
     </main>
 
-    <!-- CART -->
     <div id="cart-overlay" class="overlay" onclick="toggleCart()" aria-hidden="true"></div>
     <aside id="cart" class="cart" role="complementary" aria-label="Carrito de compras">
         <div class="cart-header">
             <div>
                 <h3>Tu carrito</h3>
-                <p id="cart-subtitle" style="margin:0;font-size:0.95rem;color:#666;">0 artículos</p>
+                <p id="cart-subtitle" class="cart-subtitle">0 artículos</p>
             </div>
-            <button class="close-cart" onclick="toggleCart()" aria-label="Cerrar carrito">×</button>
+            <div class="cart-header__actions">
+                <button type="button" class="cart-clear-btn" id="cart-clear-btn" onclick="clearCart()" aria-label="Vaciar carrito" title="Vaciar carrito">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+                <button type="button" class="close-cart" onclick="toggleCart()" aria-label="Cerrar carrito">×</button>
+            </div>
         </div>
         <div id="cart-items" class="cart-content"></div>
         <div class="cart-footer">
             <p id="total">Total: €0.00</p>
-            <button onclick="checkout()" aria-label="Finalizar compra" class="checkout-btn">Finalizar compra</button>
+            <button type="button" onclick="checkout()" aria-label="Finalizar compra" class="checkout-btn">Finalizar compra</button>
         </div>
     </aside>
 
-    <!-- FOOTER -->
+    <button type="button" class="shipping-float" onclick="openShippingModal()">
+        <i class="fa-solid fa-truck" aria-hidden="true"></i><span> Calcular envío</span>
+    </button>
+
+    <div id="shipping-modal" class="shipping-modal" role="dialog" aria-modal="true" aria-labelledby="shipping-title" hidden>
+        <div class="shipping-content">
+            <button type="button" class="shipping-close" onclick="closeShippingModal()" aria-label="Cerrar">×</button>
+            <h2 id="shipping-title">Calcular envío</h2>
+            <div class="shipping-info">
+                <div class="shipping-group">
+                    <label for="origin-city">Origen</label>
+                    <input type="text" id="origin-city" value="Alicante" disabled>
+                </div>
+                <div class="shipping-group">
+                    <label for="destination-city">Destino</label>
+                    <input type="text" id="destination-city" placeholder="Ej: Madrid">
+                </div>
+                <div class="shipping-group">
+                    <label for="postal-code">Código Postal</label>
+                    <input type="text" id="postal-code" placeholder="28001">
+                </div>
+                <div class="shipping-group">
+                    <label for="shipping-weight">Peso</label>
+                    <input type="text" id="shipping-weight" value="1kg" disabled>
+                </div>
+                <div class="shipping-group">
+                    <label for="shipping-type">Tipo de entrega</label>
+                    <select id="shipping-type">
+                        <option value="locker">Locker</option>
+                        <option value="pickup">Punto de recogida</option>
+                    </select>
+                </div>
+            </div>
+            <div class="shipping-btn-row">
+                <button type="button" class="shipping-btn" onclick="calculateShipping()">Calcular</button>
+                <button type="button" class="shipping-btn shipping-btn--reset" id="shipping-reset-btn" onclick="resetShipping()" style="display:none;" aria-label="Nueva búsqueda">
+                    <i class="fa-solid fa-rotate-left"></i> Nueva búsqueda
+                </button>
+            </div>
+            <div id="shipping-result"></div>
+            <button type="button" class="shipping-rates-link" onclick="openRatesModal()">
+                <i class="fa-solid fa-table-list"></i> Ver lista de precios
+            </button>
+        </div>
+    </div>
+
     <footer role="contentinfo">
-        <div>
-            <h3>Heydemin</h3>
-            <p>Denim femenino premium</p>
+
+        <!-- ── Franja superior con tagline ── -->
+        <div class="footer__top">
+            <p class="footer__top-text">Denim que cuenta historias · Nueva colección disponible</p>
         </div>
-        <div>
-            <h4>Links</h4>
-            <a href="#about">Nosotras</a>
-            <a href="#catalog">Catálogo</a>
-            <a href="#reviews">Opiniones</a>
-        </div>
-        <div>
-            <h4>Contacto</h4>
-            <p>Email: <a href="mailto:contacto@heydemin.com">contacto@heydemin.com</a></p>
-            <p>WhatsApp: <a href="https://wa.me/5491234567890" target="_blank">+54 9 1234-5678</a></p>
-        </div>
-        <div>
-            <h4>Síguenos</h4>
-            <div class="social-links">
-                <a href="https://www.instagram.com/heydemin/" target="_blank" rel="noopener noreferrer"
-                    aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
+
+        <!-- ── Cuerpo principal ── -->
+        <div class="footer__body">
+
+            <!-- Brand -->
+            <div class="footer__brand">
+                <a href="/" aria-label="Heydemin inicio" class="footer__logo-link">
+                    <span class="logo__wrap logo__wrap--light">
+                        <span class="logo__line logo__line--left"></span>
+                        <span class="logo__hey">hey</span>
+                        <span class="logo__line logo__line--right"></span>
+                        <span class="logo__denim">denim</span>
+                    </span>
                 </a>
-                <a href="https://www.tiktok.com/@heydemin" target="_blank" rel="noopener noreferrer"
-                    aria-label="TikTok">
-                    <i class="fab fa-tiktok"></i>
+                <p class="footer__tagline">Denim femenino premium.<br>Diseñado para mujeres reales.</p>
+                <div class="social-links" id="footer-social-links">
+                    <a href="https://www.instagram.com/heydemin/" target="_blank" rel="noopener noreferrer" aria-label="Heydemin en Instagram">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@heydemin" target="_blank" rel="noopener noreferrer" aria-label="Heydemin en TikTok">
+                        <i class="fab fa-tiktok" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.facebook.com/heydemin" target="_blank" rel="noopener noreferrer" aria-label="Heydemin en Facebook">
+                        <i class="fab fa-facebook" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.pinterest.com/heydemin/" target="_blank" rel="noopener noreferrer" aria-label="Heydemin en Pinterest">
+                        <i class="fab fa-pinterest" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tienda -->
+            <div class="footer__col">
+                <h4><i class="fa-solid fa-shirt footer__col-icon"></i> Tienda</h4>
+                <a href="#catalog"><i class="fa-solid fa-chevron-right footer__link-arrow"></i>Catálogo de jeans</a>
+                <a href="#about"><i class="fa-solid fa-chevron-right footer__link-arrow"></i>Nuestra historia</a>
+                <a href="#reviews"><i class="fa-solid fa-chevron-right footer__link-arrow"></i>Opiniones de clientes</a>
+            </div>
+
+            <!-- Ayuda -->
+            <div class="footer__col">
+                <h4><i class="fa-solid fa-headset footer__col-icon"></i> Contacto</h4>
+                <a href="mailto:contacto@heydemin.com" rel="noopener" id="footer-email">
+                    <i class="fa-solid fa-envelope footer__link-icon"></i>contacto@heydemin.com
                 </a>
-                <a href="https://www.facebook.com/heydemin" target="_blank" rel="noopener noreferrer"
-                    aria-label="Facebook">
-                    <i class="fab fa-facebook"></i>
+                <a href="https://wa.me/5491234567890" target="_blank" rel="noopener noreferrer" id="footer-whatsapp" class="footer__wa-link">
+                    <i class="fab fa-whatsapp footer__link-icon"></i>WhatsApp
                 </a>
-                <a href="https://www.pinterest.com/heydemin/" target="_blank" rel="noopener noreferrer"
-                    aria-label="Pinterest">
-                    <i class="fab fa-pinterest"></i>
+                <a href="https://fashionmagazine.com/style/the-ultimate-guide-to-womens-jeans/"
+                   target="_blank" rel="noopener noreferrer" class="footer__outlink">
+                    <i class="fa-solid fa-arrow-up-right-from-square footer__link-icon"></i>Guía de tallas
                 </a>
             </div>
-        </div>
-    </footer>
 
-    <a href="https://wa.me/123456789" target="_blank" aria-label="Contactar por WhatsApp">
-        <img class="whatsapp" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            <!-- Tendencias -->
+            <div class="footer__col">
+                <h4><i class="fa-solid fa-fire footer__col-icon"></i> Tendencias</h4>
+                <a href="https://www.whowhatwear.com/fashion/denim/denim-trends-2025"
+                   target="_blank" rel="noopener noreferrer" class="footer__outlink">
+                    <i class="fa-solid fa-arrow-up-right-from-square footer__link-icon"></i>Tendencias denim 2025
+                </a>
+                <a href="https://www.vogue.es/moda/tendencias"
+                   target="_blank" rel="noopener noreferrer" class="footer__outlink">
+                    <i class="fa-solid fa-arrow-up-right-from-square footer__link-icon"></i>Moda mujer
+                </a>
+            </div>
+
+        </div><!-- /footer__body -->
+
+        <!-- ── Línea inferior ── -->
+        <div class="footer__bottom">
+            <p>© <span id="footer-year"></span> Heydemin · Todos los derechos reservados</p>
+            <div class="footer__bottom-badges">
+                <span class="footer__badge"><i class="fa-solid fa-lock"></i> Pago seguro</span>
+                <span class="footer__badge"><i class="fa-solid fa-truck"></i> Envío gratis +€60</span>
+                <span class="footer__badge"><i class="fa-solid fa-rotate-left"></i> Devoluciones fáciles</span>
+            </div>
+        </div>
+
+        <!-- ── NEXSI ── -->
+        <div class="nexsi-signature">
+            <span>Diseñado y desarrollado por</span>
+            <a href="https://nexsi.com" target="_blank" rel="noopener noreferrer">NEXSI</a>
+        </div>
+
+    </footer>
+    <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
+
+    <a href="https://wa.me/123456789" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp" id="whatsapp-float">
+        <img class="whatsapp" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="" width="60" height="60" loading="lazy">
     </a>
 
-    <script>
-
-        let selectedProduct = null;
-
-        function openModal(id) {
-            const p = products.find(x => x.id === id);
-            if (!p) return;
-
-            selectedProduct = p;
-
-            document.getElementById('modal-name').innerText = p.name;
-            document.getElementById('modal-desc').innerText = p.description;
-            document.getElementById('modal-price').innerText = "€" + p.price;
-            document.getElementById('modal-img').src =
-                "https://images.unsplash.com/photo-1512436991641-6745cdb1723f";
-            document.getElementById('modal-qty').value = 1;
-
-            document.getElementById('product-modal').style.display = "block";
-        }
-
-        function closeModal() {
-            document.getElementById('product-modal').style.display = "none";
-            closeImagePreview();
-        }
-
-        function openImagePreview(src) {
-            const preview = document.getElementById('image-preview');
-            document.getElementById('preview-img').src = src;
-            preview.classList.add('active');
-        }
-
-        function changeModalQty(delta) {
-            const input = document.getElementById('modal-qty');
-            let qty = Number(input.value) || 1;
-            qty += delta;
-            if (qty < 1) qty = 1;
-            input.value = qty;
-        }
-
-        function closeImagePreview() {
-            document.getElementById('image-preview').classList.remove('active');
-        }
-
-        function addToCartFromModal() {
-            const qty = parseInt(document.getElementById('modal-qty').value);
-            const itemKey = `${selectedProduct.id}-${selectedSize}-${selectedColor}`;
-
-            let item = cart.find(i => i.key === itemKey);
-
-            if (item) {
-                item.qty += qty;
-            } else {
-                cart.push({
-                    ...selectedProduct,
-                    qty,
-                    size: selectedSize,
-                    color: selectedColor,
-                    key: itemKey
-                });
-            }
-
-            updateCart();
-            showToast();
-            closeModal();
-        }
-
-        let selectedSize = "M";
-
-        function selectSize(el, size) {
-            document.querySelectorAll(".sizes button").forEach(b => b.classList.remove("active"));
-            el.classList.add("active");
-            selectedSize = size;
-        }
-
-        let selectedColor = "Azul";
-
-        function selectColor(el, color) {
-            document.querySelectorAll(".colors span").forEach(c => c.classList.remove("active"));
-            el.classList.add("active");
-            selectedColor = color;
-        }
-
-        let cart = [];
-
-        const products = [
-            { id: 1, name: "Jean Skinny", price: 50, description: "Corte ajustado que estiliza la silueta con confort y un lavado suave." },
-            { id: 2, name: "Jean Mom Fit", price: 60, description: "Tiro alto y pierna recta para un look relajado con mucha actitud." },
-            { id: 3, name: "Jean Wide Leg", price: 70, description: "La silueta más cómoda y moderna con un ancho fluido perfecto para el verano." },
-            { id: 4, name: "Jean Tiro Alto", price: 65, description: "Soporte y estilo en una silueta femenina que acompaña cada movimiento." },
-            { id: 5, name: "Jean Black Premium", price: 80, description: "Negro intenso con detalles premium para un look elegante y urbano." },
-            { id: 6, name: "Jean Vintage", price: 75, description: "Un denim con personalidad, perfecto para combinar con básicos y estampados." }
-        ];
-
-        function loadProducts() {
-            const grid = document.getElementById('products');
-            const carouselTrack = document.getElementById('carousel-track');
-
-            grid.innerHTML = '';
-
-            // Crear elementos del carrusel
-            let carouselHTML = '';
-            products.forEach(p => {
-                carouselHTML += `
-<div class="carousel-card" onclick="openModal(${p.id})">
-<img src="https://images.unsplash.com/photo-1495121605193-b116b5b9c5d2?auto=format&fit=crop&w=900&q=80" alt="${p.name}">
-<p>${p.name}</p>
-</div>`;
-            });
-
-            // Duplicar elementos para efecto infinito
-            carouselTrack.innerHTML = carouselHTML + carouselHTML;
-
-            // Agregar productos al grid
-            products.forEach(p => {
-                grid.innerHTML += `
-<div id="product-${p.id}" class="product" onclick="toggleDetail(${p.id})">
-<img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=900&q=80" alt="${p.name}">
-<div class="product-info">
-<h3>${p.name}</h3>
-<p>€${p.price}</p>
-<button type="button" onclick="event.stopPropagation(); openModal(${p.id})">Agregar</button>
-</div>
-<p class="product-description">${p.description}</p>
-</div>`;
-            });
-
-            // Agregar event listeners para pausar animación en móviles
-            const carouselCards = document.querySelectorAll('.carousel-card');
-            carouselCards.forEach(card => {
-                card.addEventListener('touchstart', pauseCarousel);
-                card.addEventListener('touchend', resumeCarousel);
-            });
-        }
-
-        function pauseCarousel() {
-            const track = document.getElementById('carousel-track');
-            track.classList.add('paused');
-        }
-
-        function resumeCarousel() {
-            setTimeout(() => {
-                const track = document.getElementById('carousel-track');
-                track.classList.remove('paused');
-            }, 1000); // Reanudar después de 1 segundo
-        }
-
-        function toggleCart() {
-            document.getElementById('cart').classList.toggle('active');
-            document.getElementById('cart-overlay').classList.toggle('active');
-            document.querySelector('nav').classList.remove('active');
-            updateCart();
-        }
-
-        function toggleMenu() {
-            document.querySelector('nav').classList.toggle('active');
-        }
-
-        function toggleDetail(id) {
-            const card = document.getElementById(`product-${id}`);
-            if (card) {
-                card.classList.toggle('show-description');
-            }
-        }
-
-        function addToCart(id) {
-            let item = cart.find(i => i.id === id && i.size === selectedSize && i.color === selectedColor);
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-
-            if (item) {
-                item.qty++;
-            } else {
-                cart.push({
-                    ...product,
-                    qty: 1,
-                    size: selectedSize,
-                    color: selectedColor,
-                    key: `${product.id}-${selectedSize}-${selectedColor}`
-                });
-            }
-            updateCart();
-        }
-
-        function showToast() {
-            const t = document.getElementById("toast");
-            t.classList.add("show");
-
-            setTimeout(() => {
-                t.classList.remove("show");
-            }, 2000);
-        }
-
-        function updateCart() {
-            const container = document.getElementById('cart-items');
-            const count = document.getElementById('cart-count');
-            const subtitle = document.getElementById('cart-subtitle');
-            let total = 0;
-
-            container.innerHTML = "";
-
-            if (!cart.length) {
-                container.innerHTML = `<p class="cart-empty">Tu carrito está vacío. Agrega algo lindo para comenzar.</p>`;
-            }
-
-            cart.forEach(item => {
-                total += item.price * item.qty;
-
-                container.innerHTML += `
-<div class="cart-item">
-  <div>
-    <strong>${item.name}</strong>
-    <span>Talle: ${item.size || 'N/A'}</span>
-    <span>Color: ${item.color || 'N/A'}</span>
-    <span>Cantidad: ${item.qty}</span>
-  </div>
-  <div class="qty">
-    <button onclick="changeQty('${item.key}',-1)">−</button>
-    <span>${item.qty}</span>
-    <button onclick="changeQty('${item.key}',1)">+</button>
-  </div>
-  <span>€${(item.price * item.qty).toFixed(2)}</span>
-</div>`;
-            });
-
-            document.getElementById('total').innerText = `Total: €${total.toFixed(2)}`;
-            count.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
-            subtitle.innerText = `${cart.length} artículo${cart.length === 1 ? '' : 's'}`;
-            saveCart();
-        }
-
-        function saveCart() {
-            localStorage.setItem("cart", JSON.stringify(cart));
-        }
-
-        function loadCart() {
-            const isFirstLoad = !localStorage.getItem("cartInitialized");
-            if (isFirstLoad) {
-                // Primera carga: carrito vacío
-                cart = [];
-                localStorage.setItem("cartInitialized", "true");
-            } else {
-                // Cargas posteriores: cargar desde localStorage
-                const data = localStorage.getItem("cart");
-                if (data) {
-                    try {
-                        const parsed = JSON.parse(data);
-                        cart = Array.isArray(parsed) ? parsed : [];
-                    } catch (e) {
-                        cart = [];
-                    }
-                } else {
-                    cart = [];
-                }
-            }
-            updateCart();
-        }
-
-        function changeQty(key, delta) {
-            let item = cart.find(i => i.key === key);
-            if (!item) return;
-
-            item.qty += delta;
-            if (item.qty <= 0) {
-                cart = cart.filter(i => i.key !== key);
-            }
-            updateCart();
-        }
-
-        async function checkout() {
-            if (!cart.length) {
-                alert('El carrito está vacío. Agrega algún producto antes de pagar.');
-                return;
-            }
-
-            const res = await fetch('/checkout/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(cart)
-            });
-            const data = await res.json();
-
-            if (res.ok) {
-                window.location.href = data.payment_url;
-            } else {
-                alert(data.detail || 'No se pudo procesar el pago.');
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            loadProducts();
-            loadCart();
-        });
-    </script>
     <div id="toast" class="toast" role="alert" aria-live="polite">Producto agregado 🛒</div>
+
+    <!-- Modal tabla de precios de envío -->
+    <div id="rates-modal" class="rates-modal" role="dialog" aria-modal="true" aria-labelledby="rates-title" onclick="if(event.target===this)closeRatesModal()">
+        <div class="rates-modal__content">
+            <button type="button" class="rates-modal__close" onclick="closeRatesModal()" aria-label="Cerrar">×</button>
+            <h2 id="rates-title"><i class="fa-solid fa-truck"></i> Lista de precios de envío</h2>
+            <p class="rates-modal__note">Precios de referencia basados en tarifas de <strong>Correos España</strong> · IVA incluido · Paquete hasta 1kg</p>
+            <div class="rates-table-wrap">
+                <table class="rates-table">
+                    <thead>
+                        <tr>
+                            <th>Zona</th>
+                            <th>Provincias incluidas</th>
+                            <th>CP</th>
+                            <th>Locker InPost</th>
+                            <th>Punto recogida</th>
+                            <th>Plazo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="rates-table__free">
+                            <td><span class="zone-badge zone-badge--free">Gratis</span></td>
+                            <td><strong>Alicante</strong></td>
+                            <td>03xxx</td>
+                            <td><strong class="price-free">GRATIS</strong></td>
+                            <td><strong class="price-free">GRATIS</strong></td>
+                            <td>Local</td>
+                        </tr>
+                        <tr>
+                            <td><span class="zone-badge zone-badge--1">Zona 1</span></td>
+                            <td>Valencia, Castellón</td>
+                            <td>46xxx, 12xxx</td>
+                            <td>€3.95</td>
+                            <td>€4.95</td>
+                            <td>24h</td>
+                        </tr>
+                        <tr>
+                            <td><span class="zone-badge zone-badge--2">Zona 2</span></td>
+                            <td>Murcia, Almería, Albacete</td>
+                            <td>30xxx, 04xxx, 02xxx</td>
+                            <td>€4.95</td>
+                            <td>€5.95</td>
+                            <td>24h</td>
+                        </tr>
+                        <tr>
+                            <td><span class="zone-badge zone-badge--3">Zona 3</span></td>
+                            <td>Madrid, Andalucía, Castilla-La Mancha</td>
+                            <td>28xxx, 29xxx, 41xxx, 14xxx, 23xxx, 18xxx, 11xxx, 45xxx, 16xxx, 13xxx, 19xxx</td>
+                            <td>€5.95</td>
+                            <td>€6.95</td>
+                            <td>24-48h</td>
+                        </tr>
+                        <tr>
+                            <td><span class="zone-badge zone-badge--4">Zona 4</span></td>
+                            <td>Cataluña, Aragón, Castilla y León, Extremadura</td>
+                            <td>08xxx, 17xxx, 43xxx, 25xxx, 50xxx, 22xxx, 44xxx, 40xxx, 42xxx, 47xxx, 49xxx, 37xxx, 34xxx, 24xxx, 09xxx, 05xxx, 06xxx, 10xxx, 21xxx</td>
+                            <td>€7.95</td>
+                            <td>€8.95</td>
+                            <td>24-48h</td>
+                        </tr>
+                        <tr>
+                            <td><span class="zone-badge zone-badge--5">Zona 5</span></td>
+                            <td>Galicia, Asturias, Cantabria, País Vasco, Navarra, La Rioja</td>
+                            <td>15xxx, 27xxx, 32xxx, 36xxx, 33xxx, 39xxx, 48xxx, 20xxx, 01xxx, 31xxx, 26xxx</td>
+                            <td>€9.95</td>
+                            <td>€11.95</td>
+                            <td>24-48h</td>
+                        </tr>
+                        <tr>
+                            <td><span class="zone-badge zone-badge--6">Zona 6</span></td>
+                            <td>Baleares, Canarias, Ceuta, Melilla</td>
+                            <td>07xxx, 35xxx, 38xxx, 51xxx, 52xxx</td>
+                            <td>€14.95</td>
+                            <td>€16.95</td>
+                            <td>3-5 días</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="rates-modal__footer">Los precios pueden variar según el peso y dimensiones del paquete. Envío gratis en pedidos superiores a €60.</p>
+        </div>
+    </div>
 </body>
 
 </html>

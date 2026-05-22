@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title or 'Nuevo producto' }} · Heydemin Admin</title>
+<link rel="icon" type="image/svg+xml" href="/static/imagen/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/imagen/favicon.png">
+<link rel="shortcut icon" href="/static/imagen/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/imagen/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/static/css/admin.css?v=stock-flow-1">
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__brand">
+    <div class="sidebar__logo-mark">
+      <span class="sidebar__logo-hey">hey</span>
+      <span class="sidebar__logo-rule"></span>
+      <span class="sidebar__logo-denim">denim</span>
+    </div>
+    <span class="sidebar__sub">Admin</span>
+  </div>
+  <nav class="sidebar__nav">
+    <a href="/admin/dashboard" class="sidebar__link">
+      <i class="fa-solid fa-chart-line"></i> Dashboard
+    </a>
+    <a href="/admin/products" class="sidebar__link">
+      <i class="fa-solid fa-shirt"></i> Productos
+    </a>
+    <a href="/admin/products/new" class="sidebar__link sidebar__link--active sidebar__link--cta">
+      <i class="fa-solid fa-plus"></i> Cargar producto
+    </a>
+    <a href="/admin/notifications" class="sidebar__link">
+      <i class="fa-solid fa-bell"></i> Notificaciones
+    </a>
+    <a href="/" class="sidebar__link" target="_blank">
+      <i class="fa-solid fa-store"></i> Ver tienda
+    </a>
+  </nav>
+  <div class="sidebar__footer">
+    <button onclick="confirmLogout()" class="sidebar__logout">
+      <i class="fa-solid fa-right-from-bracket"></i> Salir
+    </button>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menú">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<main class="dash">
+  <header class="dash__header">
+    <div>
+      <a href="/admin/products" class="back-link"><i class="fa-solid fa-arrow-left"></i> Productos</a>
+      <h1 class="dash__title">{{ title or 'Nuevo producto' }}</h1>
+    </div>
+  </header>
+
+  <form method="POST" enctype="multipart/form-data" class="product-form">
+
+    <div class="form-grid">
+
+      <!-- Columna principal -->
+      <div class="form-col form-col--main">
+
+        <div class="form-card">
+          <h2 class="form-card__title">Información general</h2>
+
+          <div class="form-group">
+            <label class="form-label">Nombre del producto <span class="required">*</span></label>
+            <input class="form-input" type="text" name="name"
+              placeholder="Ej: Jean Mom Fit Azul"
+              value="{{ product.name if product else '' }}" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Descripción <span class="required">*</span></label>
+            <textarea class="form-input form-textarea" name="description"
+              placeholder="Describe el producto, materiales, fit…" required>{{ product.description if product else '' }}</textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Precio (€) <span class="required">*</span></label>
+              <input class="form-input" type="number" step="0.01" min="0" name="price"
+                placeholder="0.00"
+                value="{{ product.price if product else '' }}" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Stock total calculado <span class="required">*</span></label>
+              <input class="form-input stock-total-input" type="number" min="0" name="stock" id="stock-total"
+                placeholder="0"
+                value="{{ product.stock if product else 0 }}" readonly required>
+              <p class="form-hint">Se calcula automaticamente con las cantidades por talle.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h2 class="form-card__title">Variantes</h2>
+
+          <div class="form-group">
+            <label class="form-label">Colores</label>
+            <input class="form-input" type="text" name="colors"
+              placeholder="azul, negro, blanco"
+              value="{{ product.colors if product else '' }}">
+            <p class="form-hint">Separados por coma</p>
+          </div>
+
+          <div class="stock-builder" data-initial-sizes="{{ product.sizes if product else '' }}" data-initial-stock="{{ product.size_stock if product else '' }}">
+            <div class="stock-builder__head">
+              <div>
+                <label class="form-label">Talles y stock <span class="required">*</span></label>
+                <p class="form-hint">Agrega talles y carga la cantidad disponible de cada uno. Stock 0 queda visible como agotado.</p>
+              </div>
+              <button type="button" class="admin-btn admin-btn--ghost admin-btn--sm" onclick="addStockRow()">
+                <i class="fa-solid fa-plus"></i> Agregar talle
+              </button>
+            </div>
+
+            <div class="quick-sizes" aria-label="Talles rapidos">
+              <button type="button" onclick="addPresetSize('XS')">XS</button>
+              <button type="button" onclick="addPresetSize('S')">S</button>
+              <button type="button" onclick="addPresetSize('M')">M</button>
+              <button type="button" onclick="addPresetSize('L')">L</button>
+              <button type="button" onclick="addPresetSize('XL')">XL</button>
+              <button type="button" onclick="addPresetSize('XXL')">XXL</button>
+              <button type="button" onclick="addPresetSize('34')">34</button>
+              <button type="button" onclick="addPresetSize('36')">36</button>
+              <button type="button" onclick="addPresetSize('38')">38</button>
+              <button type="button" onclick="addPresetSize('40')">40</button>
+              <button type="button" onclick="addPresetSize('42')">42</button>
+            </div>
+
+            <div id="stock-rows" class="stock-rows"></div>
+            <p id="stock-empty" class="stock-empty">Todavia no hay talles cargados.</p>
+
+            <input type="hidden" name="sizes" id="sizes-input" value="{{ product.sizes if product else '' }}" required>
+            <input type="hidden" name="size_stock" id="size-stock-input" value="{{ product.size_stock if product else '' }}">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Descuento (%)</label>
+            <input class="form-input" type="number" name="discount" min="0" max="100"
+              placeholder="0"
+              value="{{ product.discount if product else 0 }}">
+            <p class="form-hint">0 = sin descuento. Se muestra el precio tachado en la tienda.</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+              <input type="checkbox" name="is_featured" value="1"
+                {% if product and product.is_featured %}checked{% endif %}
+                style="width:18px;height:18px;accent-color:#111;cursor:pointer;">
+              Producto destacado
+            </label>
+            <p class="form-hint">Muestra un recuadro especial en la tienda para diferenciarlo.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Columna lateral: imágenes -->
+      <div class="form-col form-col--side">
+
+        <div class="form-card">
+          <h2 class="form-card__title">Imágenes</h2>
+
+          {% if product and product.image %}
+          <div class="img-preview-grid">
+            {% set imgs = (product.images or product.image).split(',') %}
+            {% for img in imgs %}
+            <div class="img-preview-item">
+              <img src="{{ img.strip() }}" alt="Imagen del producto">
+            </div>
+            {% endfor %}
+          </div>
+          <p class="form-hint" style="margin-bottom:14px;">Imágenes actuales. Subir nuevas las reemplazará.</p>
+          {% endif %}
+
+          <div class="form-group">
+            <label class="form-label">Imagen principal <span class="required">*</span></label>
+            <label class="file-drop" id="drop-main">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span id="drop-main-label">Seleccionar imagen</span>
+              <input type="file" name="image" accept="image/*" id="input-main"
+                onchange="previewFile(this, 'drop-main-label')" {% if not product %}required{% endif %}>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Imágenes adicionales</label>
+            <label class="file-drop" id="drop-extra">
+              <i class="fa-solid fa-images"></i>
+              <span id="drop-extra-label">Seleccionar imágenes</span>
+              <input type="file" name="extra_images" accept="image/*" multiple id="input-extra"
+                onchange="previewFile(this, 'drop-extra-label')">
+            </label>
+            <p class="form-hint">Se muestran al hacer hover en la tienda</p>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h2 class="form-card__title">Confirmar acción</h2>
+          <div class="form-group">
+            <label class="form-label">Contraseña de administrador <span class="required">*</span></label>
+            <input class="form-input" type="password" name="confirm_password"
+              placeholder="••••••••" required autocomplete="current-password"
+              id="confirm-password-input">
+            <p class="form-hint">Requerida para guardar cambios.</p>
+          </div>
+          <div class="form-error" id="form-error" style="display:none;">
+            <i class="fa-solid fa-circle-exclamation"></i> Contraseña incorrecta.
+          </div>
+        </div>
+
+        <button type="submit" class="admin-btn admin-btn--primary admin-btn--full">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar producto
+        </button>
+
+        <a href="/admin/products" class="admin-btn admin-btn--ghost admin-btn--full" style="margin-top:8px;text-align:center;">
+          Cancelar
+        </a>
+
+      </div>
+    </div>
+
+  </form>
+</main>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('active');
+}
+function previewFile(input, labelId) {
+  const label = document.getElementById(labelId);
+  if (input.files && input.files.length > 0) {
+    const names = Array.from(input.files).map(f => f.name).join(', ');
+    label.textContent = names.length > 40 ? names.slice(0, 40) + '…' : names;
+  }
+}
+const initialSizes = {{ (product.sizes if product else '')|tojson }};
+const initialSizeStock = {{ (product.size_stock if product else '')|tojson }};
+const initialTotalStock = {{ product.stock if product else 0 }};
+
+function parseSizeList(value) {
+  if (!value) return [];
+  return [...new Set(String(value).split(/[,;|\s]+/).map((s) => s.trim().toUpperCase()).filter(Boolean))];
+}
+
+function parseStockMap(value) {
+  const map = {};
+  const raw = String(value || '').trim();
+  if (!raw) return map;
+
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') {
+      Object.entries(parsed).forEach(([size, qty]) => {
+        map[String(size).trim().toUpperCase()] = Math.max(0, Number(qty) || 0);
+      });
+      return map;
+    }
+  } catch {
+    // Keeps support for "S:4, M:2".
+  }
+
+  raw.split(/[,;]+/).forEach((part) => {
+    const [size, qty] = part.split(':').map((s) => s.trim());
+    if (size) map[size.toUpperCase()] = Math.max(0, Number(qty) || 0);
+  });
+  return map;
+}
+
+function addPresetSize(size) {
+  const exists = Array.from(document.querySelectorAll('.stock-size-input'))
+    .some((input) => input.value.trim().toUpperCase() === size);
+  if (exists) return;
+  addStockRow(size, 0);
+}
+
+function addStockRow(size = '', qty = 0) {
+  const rows = document.getElementById('stock-rows');
+  const safeSize = String(size).replace(/"/g, '&quot;');
+  const safeQty = Math.max(0, Number(qty) || 0);
+  const row = document.createElement('div');
+  row.className = 'stock-row';
+  row.innerHTML = `
+    <div class="stock-row__field">
+      <span>Talle</span>
+      <input class="form-input stock-size-input" type="text" value="${safeSize}" placeholder="M" aria-label="Talle">
+    </div>
+    <div class="stock-row__field">
+      <span>Cantidad</span>
+      <input class="form-input stock-qty-input" type="number" min="0" value="${safeQty}" aria-label="Cantidad">
+    </div>
+    <button type="button" class="stock-row__remove" onclick="removeStockRow(this)" aria-label="Eliminar talle">
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  `;
+
+  rows.appendChild(row);
+  row.querySelectorAll('input').forEach((input) => input.addEventListener('input', syncStockFields));
+  syncStockFields();
+}
+
+function removeStockRow(button) {
+  button.closest('.stock-row')?.remove();
+  syncStockFields();
+}
+
+function syncStockFields() {
+  const rows = Array.from(document.querySelectorAll('.stock-row'));
+  const entries = [];
+  let total = 0;
+
+  rows.forEach((row) => {
+    const sizeInput = row.querySelector('.stock-size-input');
+    const qtyInput = row.querySelector('.stock-qty-input');
+    const size = sizeInput.value.trim().toUpperCase();
+    const qty = Math.max(0, Number(qtyInput.value) || 0);
+    qtyInput.value = qty;
+
+    if (!size) return;
+    sizeInput.value = size;
+    entries.push([size, qty]);
+    total += qty;
+  });
+
+  document.getElementById('sizes-input').value = entries.map(([size]) => size).join(', ');
+  document.getElementById('size-stock-input').value = entries.map(([size, qty]) => `${size}:${qty}`).join(', ');
+  document.getElementById('stock-total').value = total;
+  document.getElementById('stock-empty').style.display = entries.length ? 'none' : 'block';
+}
+
+function initStockBuilder() {
+  const sizes = parseSizeList(initialSizes);
+  const stockMap = parseStockMap(initialSizeStock);
+
+  if (sizes.length) {
+    sizes.forEach((size) => addStockRow(size, stockMap[size] ?? 0));
+  } else if (Number(initialTotalStock) > 0) {
+    addStockRow('UNICO', Number(initialTotalStock));
+  } else {
+    syncStockFields();
+  }
+
+  document.querySelector('.product-form')?.addEventListener('submit', (event) => {
+    syncStockFields();
+    if (!document.getElementById('sizes-input').value.trim()) {
+      event.preventDefault();
+      alert('Agrega al menos un talle antes de guardar.');
+    }
+  });
+}
+
+initStockBuilder();
+
+function confirmLogout() {
+  if (confirm('¿Segura que querés cerrar sesión?')) {
+    window.location.href = '/admin/logout';
+  }
+}
+</script>
+</body>
+</html>
