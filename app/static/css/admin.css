@@ -411,9 +411,18 @@ canvas { max-height: 260px; }
     padding-top: 60px;
   }
 
-  /* Formulario producto: 1 columna, columna lateral debajo */
-  .form-grid { grid-template-columns: 1fr; gap: 0; }
-  .form-col--side { margin-top: 0; }
+  /* Header productos — evitar que el botón tape la hamburguesa */
+  .dash__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-right: 52px; /* espacio para la hamburguesa */
+  }
+
+  .dash__header .admin-btn {
+    width: 100%;
+    justify-content: center;
+  }
   .dash__header {
     flex-direction: row;
     align-items: center;
@@ -1567,7 +1576,12 @@ canvas { max-height: 260px; }
 
   /* Product cards — mejoradas */
   .product-cards {
+    display: flex !important;
     gap: 10px;
+  }
+
+  .admin-table-wrap {
+    display: none !important;
   }
 
   .product-card-admin {
@@ -1624,4 +1638,10 @@ canvas { max-height: 260px; }
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateX(-50%) translateY(12px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Formulario producto responsive — tablet y mobile */
+@media (max-width: 900px) {
+  .form-grid { grid-template-columns: 1fr; gap: 0; }
+  .form-col--side { margin-top: 0; }
 }
