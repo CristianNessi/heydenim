@@ -151,7 +151,8 @@
     <!-- Preload fuente crítica para evitar FOUT -->
     <link rel="preload" as="style"
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;700&family=Dancing+Script:wght@700&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;700&family=Dancing+Script:wght@700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;700&family=Dancing+Script:wght@700&display=swap"
         rel="stylesheet">
     <!-- Font Awesome con display=swap para no bloquear render -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -181,14 +182,18 @@
             <span class="topbar__sep">·</span>
             <span class="topbar__item" id="topbar-social-slot">
                 Síguenos
-                <a href="https://www.instagram.com/heydemin/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="topbar__social"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@heydemin" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="topbar__social"><i class="fab fa-tiktok"></i></a>
-                <a href="https://www.facebook.com/heydemin" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="topbar__social"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/heydemin/" target="_blank" rel="noopener noreferrer"
+                    aria-label="Instagram" class="topbar__social"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@heydemin" target="_blank" rel="noopener noreferrer" aria-label="TikTok"
+                    class="topbar__social"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.facebook.com/heydemin" target="_blank" rel="noopener noreferrer"
+                    aria-label="Facebook" class="topbar__social"><i class="fab fa-facebook"></i></a>
             </span>
             <span class="topbar__sep">·</span>
             <span class="topbar__item" id="topbar-email-slot">📩 contacto@heydemin.com</span>
             <span class="topbar__sep">·</span>
-            <span class="topbar__item" id="topbar-whatsapp-slot">💬 WhatsApp: <a href="https://wa.me/5491234567890" target="_blank" rel="noopener noreferrer" class="topbar__link">+54 9 1234-5678</a></span>
+            <span class="topbar__item" id="topbar-whatsapp-slot">💬 WhatsApp: <a href="https://wa.me/5491234567890"
+                    target="_blank" rel="noopener noreferrer" class="topbar__link">+54 9 1234-5678</a></span>
         </div>
     </div>
 
@@ -228,25 +233,33 @@
 
     <main id="main-content">
         <!-- HERO: H1 optimizado con keyword principal -->
-        <section class="hero" aria-label="Bienvenida a Heydemin" id="hero-section"
-          {% if hero_image %}style="background-image:linear-gradient(180deg,rgba(17,17,17,.35),rgba(17,17,17,.65)),url('{{ hero_image }}')"{% endif %}>
+        <section class="hero" aria-label="Bienvenida a Heydemin" id="hero-section" {% if hero_image
+            %}style="background-image:linear-gradient(180deg,rgba(17,17,17,.35),rgba(17,17,17,.65)),url('{{ hero_image }}')"
+            {% endif %}>
             <h1 id="hero-title">{{ hero_title if hero_title else 'Jeans y Denim Femenino – Heydemin' }}</h1>
-            <p class="hero__sub" id="hero-subtitle">{{ hero_subtitle if hero_subtitle else 'Denim premium para mujeres reales · Envío gratis desde €60 · Nueva colección disponible' }}</p>
+            <p class="hero__sub" id="hero-subtitle">{{ hero_subtitle if hero_subtitle else 'Denim premium para mujeres
+                reales · Envío gratis desde €60 · Nueva colección disponible' }}</p>
         </section>
 
         <section class="section" aria-labelledby="nuevos-title">
             <h2 id="nuevos-title">Nuevos Ingresos</h2>
             <div class="carousel" id="carousel" role="region" aria-label="Carrusel de nuevos productos">
+                <button type="button" class="carousel-nav carousel-prev" id="carousel-prev"
+                    aria-label="Anterior">‹</button>
                 <div class="carousel-track" id="carousel-track"></div>
+                <button type="button" class="carousel-nav carousel-next" id="carousel-next"
+                    aria-label="Siguiente">›</button>
                 <div class="carousel-indicator" aria-hidden="true"></div>
             </div>
         </section>
 
-        <section id="about" class="section about-section" aria-labelledby="about-title"
-          {% if about_image %}style="background-image:url('{{ about_image }}')"{% endif %}>
+        <section id="about" class="section about-section" aria-labelledby="about-title" {% if about_image
+            %}style="background-image:url('{{ about_image }}')" {% endif %}>
             <div class="about-overlay">
                 <h2 id="about-title">Nosotras</h2>
-                <p id="about-text">{{ about_text if about_text else 'En Heydemin somos una marca dedicada al denim femenino premium. Diseñamos jeans de mujer que combinan estilo, comodidad y actitud para mujeres reales.' }}</p>
+                <p id="about-text">{{ about_text if about_text else 'En Heydemin somos una marca dedicada al denim
+                    femenino premium. Diseñamos jeans de mujer que combinan estilo, comodidad y actitud para mujeres
+                    reales.' }}</p>
                 <p id="about-extra" style="margin-top:14px;font-size:0.9rem;color:rgba(255,255,255,0.75)">
                     {{ about_extra if about_extra else 'Enviamos a toda España · Pago seguro · Devoluciones fáciles' }}
                 </p>
@@ -257,7 +270,8 @@
             <h2 id="catalog-title">Catálogo</h2>
             <div id="products" class="grid" role="region" aria-label="Catálogo de productos"></div>
 
-            <div id="product-modal" class="modal product-modal" role="dialog" aria-modal="true" aria-labelledby="modal-name" hidden>
+            <div id="product-modal" class="modal product-modal" role="dialog" aria-modal="true"
+                aria-labelledby="modal-name" hidden>
                 <div class="modal-content product-modal__content">
                     <button type="button" class="modal-close" onclick="closeModal()" aria-label="Cerrar">×</button>
                     <div class="product-modal__body">
@@ -266,11 +280,14 @@
                                 <img id="modal-img" alt="Imagen del producto" onclick="openImagePreview(this.src)">
                                 <div class="zoom-lens" id="zoom-lens"></div>
                                 <div class="zoom-result" id="zoom-result"></div>
-                                <button type="button" class="modal-zoom-btn" onclick="openImagePreview(document.getElementById('modal-img').src)" aria-label="Ver imagen ampliada">
+                                <button type="button" class="modal-zoom-btn"
+                                    onclick="openImagePreview(document.getElementById('modal-img').src)"
+                                    aria-label="Ver imagen ampliada">
                                     <i class="fa-solid fa-magnifying-glass-plus"></i>
                                 </button>
                             </div>
-                            <div id="modal-thumbs" class="product-modal__thumbs" aria-label="Imagenes del producto"></div>
+                            <div id="modal-thumbs" class="product-modal__thumbs" aria-label="Imagenes del producto">
+                            </div>
                         </div>
                         <div class="product-modal__details">
                             <p class="product-modal__eyebrow">Heydemin · Denim</p>
@@ -281,25 +298,31 @@
 
                             <div class="product-modal__block">
                                 <span class="product-modal__label">Talle</span>
-                                <div id="sizes-container" class="size-selector" role="listbox" aria-label="Seleccionar talle"></div>
+                                <div id="sizes-container" class="size-selector" role="listbox"
+                                    aria-label="Seleccionar talle"></div>
                                 <p id="size-hint" class="product-modal__hint" aria-live="polite"></p>
                             </div>
 
                             <div class="product-modal__block" id="colors-block">
                                 <span class="product-modal__label">Color</span>
-                                <div id="colors-container" class="color-selector" role="listbox" aria-label="Seleccionar color"></div>
+                                <div id="colors-container" class="color-selector" role="listbox"
+                                    aria-label="Seleccionar color"></div>
                             </div>
 
                             <div class="product-modal__block product-modal__block--qty">
                                 <span class="product-modal__label">Cantidad</span>
                                 <div class="modal-qty-controls">
-                                    <button type="button" onclick="changeModalQty(-1)" aria-label="Reducir cantidad">−</button>
-                                    <input type="number" id="modal-qty" value="1" min="1" readonly aria-label="Cantidad">
-                                    <button type="button" onclick="changeModalQty(1)" aria-label="Aumentar cantidad">+</button>
+                                    <button type="button" onclick="changeModalQty(-1)"
+                                        aria-label="Reducir cantidad">−</button>
+                                    <input type="number" id="modal-qty" value="1" min="1" readonly
+                                        aria-label="Cantidad">
+                                    <button type="button" onclick="changeModalQty(1)"
+                                        aria-label="Aumentar cantidad">+</button>
                                 </div>
                             </div>
 
-                            <button type="button" id="modal-add-btn" class="product-modal__cta" onclick="addToCartFromModal()" disabled>
+                            <button type="button" id="modal-add-btn" class="product-modal__cta"
+                                onclick="addToCartFromModal()" disabled>
                                 Seleccioná un talle
                             </button>
                         </div>
@@ -309,16 +332,20 @@
         </section>
 
         <div id="image-preview" class="image-preview" onclick="closeImagePreview()" aria-hidden="true">
-            <button type="button" class="image-close" onclick="closeImagePreview(); event.stopPropagation()" aria-label="Cerrar vista ampliada">×</button>
+            <button type="button" class="image-close" onclick="closeImagePreview(); event.stopPropagation()"
+                aria-label="Cerrar vista ampliada">×</button>
             <img id="preview-img" alt="Vista ampliada del producto">
         </div>
 
         <section id="reviews" class="section" aria-labelledby="reviews-title">
             <h2 id="reviews-title">Opiniones reales</h2>
             <div class="reviews" id="reviews-container">
-                <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 1" loading="lazy" width="250" height="150"></div>
-                <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 2" loading="lazy" width="250" height="150"></div>
-                <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 3" loading="lazy" width="250" height="150"></div>
+                <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 1" loading="lazy"
+                        width="250" height="150"></div>
+                <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 2" loading="lazy"
+                        width="250" height="150"></div>
+                <div class="review"><img src="https://i.imgur.com/ZXBtVw7.png" alt="Opinión de cliente 3" loading="lazy"
+                        width="250" height="150"></div>
             </div>
         </section>
     </main>
@@ -331,7 +358,8 @@
                 <p id="cart-subtitle" class="cart-subtitle">0 artículos</p>
             </div>
             <div class="cart-header__actions">
-                <button type="button" class="cart-clear-btn" id="cart-clear-btn" onclick="clearCart()" aria-label="Vaciar carrito" title="Vaciar carrito">
+                <button type="button" class="cart-clear-btn" id="cart-clear-btn" onclick="clearCart()"
+                    aria-label="Vaciar carrito" title="Vaciar carrito">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
                 <button type="button" class="close-cart" onclick="toggleCart()" aria-label="Cerrar carrito">×</button>
@@ -340,7 +368,8 @@
         <div id="cart-items" class="cart-content"></div>
         <div class="cart-footer">
             <p id="total">Total: €0.00</p>
-            <button type="button" onclick="checkout()" aria-label="Finalizar compra" class="checkout-btn">Finalizar compra</button>
+            <button type="button" onclick="checkout()" aria-label="Finalizar compra" class="checkout-btn">Finalizar
+                compra</button>
         </div>
     </aside>
 
@@ -348,7 +377,8 @@
         <i class="fa-solid fa-truck" aria-hidden="true"></i><span> Calcular envío</span>
     </button>
 
-    <div id="shipping-modal" class="shipping-modal" role="dialog" aria-modal="true" aria-labelledby="shipping-title" hidden>
+    <div id="shipping-modal" class="shipping-modal" role="dialog" aria-modal="true" aria-labelledby="shipping-title"
+        hidden>
         <div class="shipping-content">
             <button type="button" class="shipping-close" onclick="closeShippingModal()" aria-label="Cerrar">×</button>
             <h2 id="shipping-title">Calcular envío</h2>
@@ -379,7 +409,8 @@
             </div>
             <div class="shipping-btn-row">
                 <button type="button" class="shipping-btn" onclick="calculateShipping()">Calcular</button>
-                <button type="button" class="shipping-btn shipping-btn--reset" id="shipping-reset-btn" onclick="resetShipping()" style="display:none;" aria-label="Nueva búsqueda">
+                <button type="button" class="shipping-btn shipping-btn--reset" id="shipping-reset-btn"
+                    onclick="resetShipping()" style="display:none;" aria-label="Nueva búsqueda">
                     <i class="fa-solid fa-rotate-left"></i> Nueva búsqueda
                 </button>
             </div>
@@ -412,16 +443,20 @@
                 </a>
                 <p class="footer__tagline">Denim femenino premium.<br>Diseñado para mujeres reales.</p>
                 <div class="social-links" id="footer-social-links">
-                    <a href="https://www.instagram.com/heydemin/" target="_blank" rel="noopener noreferrer" aria-label="Heydemin en Instagram">
+                    <a href="https://www.instagram.com/heydemin/" target="_blank" rel="noopener noreferrer"
+                        aria-label="Heydemin en Instagram">
                         <i class="fab fa-instagram" aria-hidden="true"></i>
                     </a>
-                    <a href="https://www.tiktok.com/@heydemin" target="_blank" rel="noopener noreferrer" aria-label="Heydemin en TikTok">
+                    <a href="https://www.tiktok.com/@heydemin" target="_blank" rel="noopener noreferrer"
+                        aria-label="Heydemin en TikTok">
                         <i class="fab fa-tiktok" aria-hidden="true"></i>
                     </a>
-                    <a href="https://www.facebook.com/heydemin" target="_blank" rel="noopener noreferrer" aria-label="Heydemin en Facebook">
+                    <a href="https://www.facebook.com/heydemin" target="_blank" rel="noopener noreferrer"
+                        aria-label="Heydemin en Facebook">
                         <i class="fab fa-facebook" aria-hidden="true"></i>
                     </a>
-                    <a href="https://www.pinterest.com/heydemin/" target="_blank" rel="noopener noreferrer" aria-label="Heydemin en Pinterest">
+                    <a href="https://www.pinterest.com/heydemin/" target="_blank" rel="noopener noreferrer"
+                        aria-label="Heydemin en Pinterest">
                         <i class="fab fa-pinterest" aria-hidden="true"></i>
                     </a>
                 </div>
@@ -441,11 +476,12 @@
                 <a href="mailto:contacto@heydemin.com" rel="noopener" id="footer-email">
                     <i class="fa-solid fa-envelope footer__link-icon"></i>contacto@heydemin.com
                 </a>
-                <a href="https://wa.me/5491234567890" target="_blank" rel="noopener noreferrer" id="footer-whatsapp" class="footer__wa-link">
+                <a href="https://wa.me/5491234567890" target="_blank" rel="noopener noreferrer" id="footer-whatsapp"
+                    class="footer__wa-link">
                     <i class="fab fa-whatsapp footer__link-icon"></i>WhatsApp
                 </a>
-                <a href="https://fashionmagazine.com/style/the-ultimate-guide-to-womens-jeans/"
-                   target="_blank" rel="noopener noreferrer" class="footer__outlink">
+                <a href="https://fashionmagazine.com/style/the-ultimate-guide-to-womens-jeans/" target="_blank"
+                    rel="noopener noreferrer" class="footer__outlink">
                     <i class="fa-solid fa-arrow-up-right-from-square footer__link-icon"></i>Guía de tallas
                 </a>
             </div>
@@ -453,12 +489,12 @@
             <!-- Tendencias -->
             <div class="footer__col">
                 <h4><i class="fa-solid fa-fire footer__col-icon"></i> Tendencias</h4>
-                <a href="https://www.whowhatwear.com/fashion/denim/denim-trends-2025"
-                   target="_blank" rel="noopener noreferrer" class="footer__outlink">
+                <a href="https://www.whowhatwear.com/fashion/denim/denim-trends-2025" target="_blank"
+                    rel="noopener noreferrer" class="footer__outlink">
                     <i class="fa-solid fa-arrow-up-right-from-square footer__link-icon"></i>Tendencias denim 2025
                 </a>
-                <a href="https://www.vogue.es/moda/tendencias"
-                   target="_blank" rel="noopener noreferrer" class="footer__outlink">
+                <a href="https://www.vogue.es/moda/tendencias" target="_blank" rel="noopener noreferrer"
+                    class="footer__outlink">
                     <i class="fa-solid fa-arrow-up-right-from-square footer__link-icon"></i>Moda mujer
                 </a>
             </div>
@@ -484,18 +520,22 @@
     </footer>
     <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
 
-    <a href="https://wa.me/123456789" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp" id="whatsapp-float">
-        <img class="whatsapp" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="" width="60" height="60" loading="lazy">
+    <a href="https://wa.me/123456789" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp"
+        id="whatsapp-float">
+        <img class="whatsapp" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="" width="60"
+            height="60" loading="lazy">
     </a>
 
     <div id="toast" class="toast" role="alert" aria-live="polite">Producto agregado 🛒</div>
 
     <!-- Modal tabla de precios de envío -->
-    <div id="rates-modal" class="rates-modal" role="dialog" aria-modal="true" aria-labelledby="rates-title" onclick="if(event.target===this)closeRatesModal()">
+    <div id="rates-modal" class="rates-modal" role="dialog" aria-modal="true" aria-labelledby="rates-title"
+        onclick="if(event.target===this)closeRatesModal()">
         <div class="rates-modal__content">
             <button type="button" class="rates-modal__close" onclick="closeRatesModal()" aria-label="Cerrar">×</button>
             <h2 id="rates-title"><i class="fa-solid fa-truck"></i> Lista de precios de envío</h2>
-            <p class="rates-modal__note">Precios de referencia basados en tarifas de <strong>Correos España</strong> · IVA incluido · Paquete hasta 1kg</p>
+            <p class="rates-modal__note">Precios de referencia basados en tarifas de <strong>Correos España</strong> ·
+                IVA incluido · Paquete hasta 1kg</p>
             <div class="rates-table-wrap">
                 <table class="rates-table">
                     <thead>
@@ -544,7 +584,8 @@
                         <tr>
                             <td><span class="zone-badge zone-badge--4">Zona 4</span></td>
                             <td>Cataluña, Aragón, Castilla y León, Extremadura</td>
-                            <td>08xxx, 17xxx, 43xxx, 25xxx, 50xxx, 22xxx, 44xxx, 40xxx, 42xxx, 47xxx, 49xxx, 37xxx, 34xxx, 24xxx, 09xxx, 05xxx, 06xxx, 10xxx, 21xxx</td>
+                            <td>08xxx, 17xxx, 43xxx, 25xxx, 50xxx, 22xxx, 44xxx, 40xxx, 42xxx, 47xxx, 49xxx, 37xxx,
+                                34xxx, 24xxx, 09xxx, 05xxx, 06xxx, 10xxx, 21xxx</td>
                             <td>€7.95</td>
                             <td>€8.95</td>
                             <td>24-48h</td>
@@ -568,7 +609,8 @@
                     </tbody>
                 </table>
             </div>
-            <p class="rates-modal__footer">Los precios pueden variar según el peso y dimensiones del paquete. Envío gratis en pedidos superiores a €60.</p>
+            <p class="rates-modal__footer">Los precios pueden variar según el peso y dimensiones del paquete. Envío
+                gratis en pedidos superiores a €60.</p>
         </div>
     </div>
 </body>

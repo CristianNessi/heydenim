@@ -20,6 +20,7 @@ from app.db.models.analytics import PageView, ClickEvent
 from app.db.models.sale import Sale
 from app.db.models.site_content import SiteContent
 from app.db.models.notification import Notification
+from app.db.models.admin_user import AdminUser
 
 
 @asynccontextmanager

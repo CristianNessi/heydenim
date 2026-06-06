@@ -269,6 +269,9 @@ def delete_product(
         db.delete(product)
         db.commit()
     return RedirectResponse(url="/admin/dashboard?ok=producto_eliminado", status_code=302)
+
+
+@router.get("/products/edit/{product_id}")
 def edit_product_page(
     request: Request,
     product_id: int,

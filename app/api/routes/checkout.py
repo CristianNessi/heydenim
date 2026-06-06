@@ -58,14 +58,15 @@ async def process_checkout(request: Request, db: Session = Depends(get_db)) -> d
     prepared_items = []
     for item in cart_items:
         pid = item.get("id")
-        product = db.query(Product).filter(Product.id == pid).first() if pid else None
+        is_shipping = item.get("is_shipping", False)
+        product = db.query(Product).filter(Product.id == pid).first() if pid and not is_shipping else None
         discount = product.discount if product else int(item.get("discount", 0) or 0)
         discount = max(0, min(100, discount))
         base_price = float(item.get("price", 0))
         final_price = round(base_price * (1 - discount / 100), 2)
         qty = int(item.get("qty", item.get("quantity", 1)))
         total += final_price * qty
-        prepared_items.append((item, pid, product, discount, base_price, final_price, qty))
+        prepared_items.append((item, pid, product, discount, base_price, final_price, qty, is_shipping))
 
     total = round(total, 2)
 
@@ -83,7 +84,10 @@ async def process_checkout(request: Request, db: Session = Depends(get_db)) -> d
             )
 
             # Registrar venta, descontar stock y crear notificaciones
-        for item, pid, product, discount, base_price, final_price, qty in prepared_items:
+        for item, pid, product, discount, base_price, final_price, qty, is_shipping in prepared_items:
+            # El ítem de envío no se registra como venta ni descuenta stock
+            if is_shipping:
+                continue
             sale = Sale(
                 product_id=pid,
                 product_name=item.get("name", "Producto"),

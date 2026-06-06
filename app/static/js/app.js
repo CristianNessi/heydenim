@@ -7,16 +7,24 @@ let shippingPrice = 0;
 let products = [];
 let toastTimer = null;
 let gridListenersBound = false;
+let carouselState = {
+    track: null,
+    offset: 0, // px scrolled from start
+    totalWidth: 0, // effective width of one items set
+    speed: 40, // px per second (ajustable)
+    rafId: null,
+    lastTs: null,
+};
 
 const $ = (id) => document.getElementById(id);
 
 const SOCIAL_ICONS = {
     instagram: 'fab fa-instagram',
-    tiktok:    'fab fa-tiktok',
-    facebook:  'fab fa-facebook',
+    tiktok: 'fab fa-tiktok',
+    facebook: 'fab fa-facebook',
     pinterest: 'fab fa-pinterest',
-    youtube:   'fab fa-youtube',
-    twitter:   'fab fa-x-twitter',
+    youtube: 'fab fa-youtube',
+    twitter: 'fab fa-x-twitter',
 };
 
 function _buildTopbarSocial(social) {
@@ -48,6 +56,24 @@ function escapeHtml(text) {
 
 function formatPrice(value) {
     return `€${Number(value).toFixed(2)}`;
+}
+
+// Helper: obtener translateX actual en px de un elemento
+function getCurrentTranslateX(el) {
+    const style = window.getComputedStyle(el);
+    const transform = style.transform || style.webkitTransform;
+    if (!transform || transform === 'none') return 0;
+    const m = transform.match(/matrix\((.+)\)/);
+    if (m) {
+        const vals = m[1].split(',');
+        return parseFloat(vals[4]) || 0;
+    }
+    const mm = transform.match(/matrix3d\((.+)\)/);
+    if (mm) {
+        const vals = mm[1].split(',');
+        return parseFloat(vals[12]) || 0;
+    }
+    return 0;
 }
 
 function productImages(p) {
@@ -219,6 +245,27 @@ function getTotalAvailableStock(stockMap) {
     return Object.values(stockMap).reduce((sum, n) => sum + n, 0);
 }
 
+/**
+ * Devuelve el stock disponible descontando lo que ya está en el carrito
+ * para este producto y talle específico.
+ */
+function getAvailableStockMap(product, stockMap) {
+    const available = { ...stockMap };
+    cart.forEach((item) => {
+        if (item.id !== product.id) return;
+        const size = (item.size || '').toUpperCase();
+        if (size && available[size] !== undefined) {
+            available[size] = Math.max(0, available[size] - item.qty);
+        } else if (!size) {
+            // producto sin talles — descontar del primer (y único) key
+            Object.keys(available).forEach((k) => {
+                available[k] = Math.max(0, available[k] - item.qty);
+            });
+        }
+    });
+    return available;
+}
+
 function renderModalSizes(product) {
     const container = $('sizes-container');
     const hint = $('size-hint');
@@ -229,6 +276,8 @@ function renderModalSizes(product) {
 
     const sizes = parseSizesList(product.sizes);
     const stockMap = parseSizeStockMap(product);
+    // Descontar lo que ya está en el carrito para este producto
+    const availableMap = getAvailableStockMap(product, stockMap);
 
     if (!sizes.length) {
         container.innerHTML = '<p class="product-modal__hint">Consultá disponibilidad por WhatsApp</p>';
@@ -236,7 +285,7 @@ function renderModalSizes(product) {
     }
 
     sizes.forEach((size) => {
-        const qty = stockMap[size] ?? 0;
+        const qty = availableMap[size] ?? 0;
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'size-pill';
@@ -253,7 +302,6 @@ function renderModalSizes(product) {
             btn.setAttribute('aria-disabled', 'true');
             btn.setAttribute('aria-label', `Talle ${size}, agotado`);
         } else {
-            // Mostrar cantidad si es baja (≤5), sino solo el talle
             if (qty <= 5) {
                 const badge = document.createElement('span');
                 badge.className = 'size-pill__badge';
@@ -296,7 +344,8 @@ function renderModalColors(product) {
 
 function updateModalStockLine(product) {
     const stockMap = parseSizeStockMap(product);
-    const total = getTotalAvailableStock(stockMap);
+    const availableMap = getAvailableStockMap(product, stockMap);
+    const total = getTotalAvailableStock(availableMap);
     const el = $('modal-stock');
 
     if (total <= 0) {
@@ -419,6 +468,19 @@ function addToCartFromModal() {
 
     const qty = parseInt($('modal-qty').value, 10) || 1;
     const itemKey = `${selectedProduct.id}-${selectedSize}-${selectedColor}`;
+
+    // Verificar que no exceda el stock disponible
+    const stockMap = parseSizeStockMap(selectedProduct);
+    const availableMap = getAvailableStockMap(selectedProduct, stockMap);
+    const sizeKey = (selectedSize || '').toUpperCase();
+    const maxAdd = sizeKey
+        ? (availableMap[sizeKey] ?? 0)
+        : getTotalAvailableStock(availableMap);
+
+    if (qty > maxAdd) {
+        alert(`Solo quedan ${maxAdd} unidades disponibles en talle ${selectedSize}.`);
+        return;
+    }
 
     const item = cart.find((i) => i.key === itemKey);
     if (item) {
@@ -592,9 +654,168 @@ function loadProducts() {
         carouselTrack.addEventListener('click', handleCarouselClick);
         carouselTrack.addEventListener('touchstart', pauseCarousel, { passive: true });
         carouselTrack.addEventListener('touchend', resumeCarousel, { passive: true });
+        // Habilitar arrastre (mouse/pointer/táctil) para control manual bidireccional
+        enableCarouselDrag(carouselTrack);
+        // Asegurar que el botón "Ver producto" dentro de cada tarjeta abra el modal
+        carouselTrack.querySelectorAll('.carousel-card__cta').forEach((btn) => {
+            btn.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                const card = btn.closest('.carousel-card[data-product-id]');
+                if (card) openModal(Number(card.dataset.productId));
+            });
+        });
+        // Flechas prev/next: no reinician el carrusel, solo lo mueven desde la posición actual
+        const prevBtn = $('carousel-prev');
+        const nextBtn = $('carousel-next');
+        if (prevBtn) prevBtn.addEventListener('click', () => moveCarouselBy(-1));
+        if (nextBtn) nextBtn.addEventListener('click', () => moveCarouselBy(1));
+        // Inicializar auto-scroll JS
+        initCarouselAutoScroll(carouselTrack);
         gridListenersBound = true;
     }
 }
+
+// --- Auto-scroll controlado por JS (continúa donde lo dejes) ---
+function initCarouselAutoScroll(track) {
+    if (!track) return;
+    // detener si ya había
+    if (carouselState.rafId) cancelAnimationFrame(carouselState.rafId);
+
+    carouselState.track = track;
+    // track contiene dos veces el HTML: calcular mitad
+    const fullWidth = track.scrollWidth;
+    carouselState.totalWidth = Math.floor(fullWidth / 2) || fullWidth;
+    carouselState.offset = carouselState.offset % carouselState.totalWidth;
+    carouselState.lastTs = performance.now();
+
+    function step(ts) {
+        const trackEl = carouselState.track;
+        if (!trackEl) return;
+        const paused = trackEl.classList.contains('paused');
+        const dt = Math.max(0, (ts - (carouselState.lastTs || ts)) / 1000);
+        carouselState.lastTs = ts;
+        if (!paused) {
+            carouselState.offset += carouselState.speed * dt;
+            if (carouselState.offset >= carouselState.totalWidth) {
+                carouselState.offset -= carouselState.totalWidth;
+            }
+        }
+        const tx = - (carouselState.offset % carouselState.totalWidth);
+        trackEl.style.transform = `translateX(${tx}px)`;
+        carouselState.rafId = requestAnimationFrame(step);
+    }
+
+    carouselState.rafId = requestAnimationFrame(step);
+
+    // Recalcular en resize
+    window.addEventListener('resize', () => {
+        if (!carouselState.track) return;
+        const full = carouselState.track.scrollWidth;
+        carouselState.totalWidth = Math.floor(full / 2) || full;
+    });
+}
+
+function stopCarouselAutoScroll() {
+    if (carouselState.rafId) cancelAnimationFrame(carouselState.rafId);
+    carouselState.rafId = null;
+}
+
+function moveCarouselBy(direction) {
+    const track = carouselState.track || $('carousel-track');
+    if (!track) return;
+    const card = track.querySelector('.carousel-card');
+    if (!card) return;
+    const gap = parseFloat(getComputedStyle(track).gap) || 20;
+    const step = card.offsetWidth + gap;
+    carouselState.offset += direction * step;
+    // normalizar
+    carouselState.offset = ((carouselState.offset % carouselState.totalWidth) + carouselState.totalWidth) % carouselState.totalWidth;
+    // aplicar inmediatamente
+    const tx = - (carouselState.offset % carouselState.totalWidth);
+    track.style.transform = `translateX(${tx}px)`;
+    // pausar temporalmente
+    track.classList.add('paused');
+    setTimeout(() => track.classList.remove('paused'), 1500);
+}
+
+// --- Carrusel: arrastre bidireccional ---
+function enableCarouselDrag(track) {
+    if (!track) return;
+    let isPointerDown = false;
+    let isDragging = false;
+    let startX = 0;
+    let startOffset = 0; // en px
+    let rafId = null;
+    const DRAG_THRESHOLD = 6; // px para distinguir tap vs drag
+
+
+    function onPointerDown(ev) {
+        // solo botón primario o touch
+        if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+        isPointerDown = true;
+        isDragging = false; // aún no
+        startX = ev.clientX;
+        startOffset = getCurrentTranslateX(track);
+        try { track.setPointerCapture(ev.pointerId); } catch (e) { }
+        // no preventDefault aquí: permitir clicks/taps cortos
+    }
+
+    function onPointerMove(ev) {
+        if (!isPointerDown) return;
+        const dx = ev.clientX - startX;
+        if (!isDragging && Math.abs(dx) > DRAG_THRESHOLD) {
+            // iniciar drag
+            isDragging = true;
+            track.classList.add('paused');
+            track.style.animation = 'none';
+        }
+        if (!isDragging) return;
+
+        const next = startOffset + dx;
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+            track.style.transform = `translateX(${next}px)`;
+        });
+        ev.preventDefault();
+    }
+
+    function endDrag(ev) {
+        // si no hubo drag real, no interferimos (permitir click)
+        if (!isDragging) {
+            isPointerDown = false;
+            try { track.releasePointerCapture(ev.pointerId); } catch (e) { }
+            return;
+        }
+        isPointerDown = false;
+        isDragging = false;
+        try { track.releasePointerCapture(ev.pointerId); } catch (e) { }
+        if (rafId) cancelAnimationFrame(rafId);
+        // Actualizar offset global del carrusel según la transform aplicada durante el drag
+        try {
+            const tx = getCurrentTranslateX(track); // tx es negativo o 0
+            if (carouselState && carouselState.totalWidth) {
+                const newOffset = ((-tx) % carouselState.totalWidth + carouselState.totalWidth) % carouselState.totalWidth;
+                carouselState.offset = newOffset;
+            }
+        } catch (e) { }
+        // Mantener pausa temporal y restaurar animación tras 2s
+        setTimeout(() => {
+            track.style.transform = '';
+            track.style.animation = '';
+            track.classList.remove('paused');
+        }, 2000);
+        ev.preventDefault();
+    }
+
+    track.addEventListener('pointerdown', onPointerDown);
+    track.addEventListener('pointermove', onPointerMove);
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    track.addEventListener('pointerleave', endDrag);
+}
+
+// Mover carrusel por pasos (1 = siguiente, -1 = anterior)
+// (replaced by carouselState-aware moveCarouselBy above)
 
 function handleProductGridClick(e) {
     const galleryBtn = e.target.closest('[data-action="gallery-prev"], [data-action="gallery-next"]');
@@ -767,6 +988,20 @@ function changeQty(key, delta) {
     const item = cart.find((i) => i.key === key);
     if (!item) return;
 
+    if (delta > 0) {
+        // Calcular cuánto stock queda disponible para este producto/talle
+        const product = products.find((p) => p.id === item.id);
+        if (product) {
+            const stockMap = parseSizeStockMap(product);
+            const sizeKey = (item.size || '').toUpperCase();
+            // Stock total del talle
+            const totalForSize = sizeKey ? (stockMap[sizeKey] ?? 0) : getTotalAvailableStock(stockMap);
+            // Cuánto hay en el carrito para este mismo key
+            const inCart = item.qty; // ya incluye el actual antes de sumar
+            if (inCart >= totalForSize) return; // no dejar superar el stock
+        }
+    }
+
     item.qty += delta;
     if (item.qty <= 0) {
         cart = cart.filter((i) => i.key !== key);
@@ -782,20 +1017,56 @@ function clearCart() {
     updateCart();
 }
 
+// ── Datos de envío confirmados ────────────────────────────────
+let confirmedShipping = null; // { city, postal, type, zone, price }
+
 async function checkout() {
     if (!cart.length) {
         alert('El carrito está vacío. Agrega algún producto antes de pagar.');
         return;
     }
 
-    const btn = document.querySelector('.checkout-btn');
-    btn.disabled = true;
+    // Envío obligatorio
+    if (!confirmedShipping) {
+        // Cerrar carrito antes de abrir modal de envío
+        $('cart').classList.remove('active');
+        $('cart-overlay').classList.remove('active');
+        openShippingModal();
+        $('shipping-result').innerHTML = '<p style="color:#ef4444;font-size:0.85rem;margin-top:12px;font-weight:600;">⚠️ Calculá el envío antes de continuar.</p>';
+        return;
+    }
+
+    // Cerrar carrito y mostrar modal de confirmación
+    $('cart').classList.remove('active');
+    $('cart-overlay').classList.remove('active');
+    openCheckoutConfirmModal();
+}
+
+async function _doCheckout() {
+    const btn = document.getElementById('confirm-pay-btn');
+    if (btn) btn.disabled = true;
 
     try {
+        // Incluir el envío como ítem extra en el carrito
+        const payload = [...cart];
+        if (confirmedShipping && confirmedShipping.price > 0) {
+            payload.push({
+                id: null,
+                name: `Envío (${confirmedShipping.type === 'locker' ? 'Locker InPost' : 'Punto recogida'}) · ${escapeHtml(confirmedShipping.city)} ${escapeHtml(confirmedShipping.postal)}`,
+                price: confirmedShipping.price,
+                qty: 1,
+                quantity: 1,
+                discount: 0,
+                size: null,
+                color: null,
+                is_shipping: true,
+            });
+        }
+
         const res = await fetch('/checkout/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(cart),
+            body: JSON.stringify(payload),
         });
         const data = await res.json();
 
@@ -803,12 +1074,81 @@ async function checkout() {
             window.location.href = data.payment_url;
         } else {
             alert(data.detail || 'No se pudo procesar el pago.');
+            if (btn) btn.disabled = false;
         }
     } catch {
         alert('Error de conexión. Intenta de nuevo.');
-    } finally {
-        btn.disabled = false;
+        if (btn) btn.disabled = false;
     }
+}
+
+// ── Modal de confirmación de compra ──────────────────────────
+function openCheckoutConfirmModal() {
+    // Calcular totales
+    const subtotal = cart.reduce((sum, item) => sum + itemFinalUnitPrice(item) * item.qty, 0);
+    const shipping = confirmedShipping ? confirmedShipping.price : 0;
+    const total = subtotal + shipping;
+    const deliveryLabel = confirmedShipping?.type === 'locker' ? 'Locker InPost' : 'Punto de recogida';
+
+    let itemsHtml = cart.map(item => {
+        const unitPrice = itemFinalUnitPrice(item);
+        return `<div class="cconfirm__item">
+            <span class="cconfirm__item-name">${escapeHtml(item.name)}${item.size ? ` · ${item.size}` : ''}${item.color ? ` · ${item.color}` : ''} × ${item.qty}</span>
+            <span class="cconfirm__item-price">${formatPrice(unitPrice * item.qty)}</span>
+        </div>`;
+    }).join('');
+
+    const modal = document.createElement('div');
+    modal.id = 'checkout-confirm-modal';
+    modal.className = 'cconfirm-overlay';
+    modal.innerHTML = `
+        <div class="cconfirm">
+            <h2 class="cconfirm__title"><i class="fa-solid fa-bag-shopping"></i> Confirmar pedido</h2>
+
+            <div class="cconfirm__section">
+                <p class="cconfirm__label">Dirección de envío</p>
+                <div class="cconfirm__address">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <strong>${escapeHtml(confirmedShipping.city)}, ${escapeHtml(confirmedShipping.postal)}</strong>
+                        <span>${deliveryLabel}</span>
+                    </div>
+                </div>
+                <p class="cconfirm__address-warn">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Asegurate de que esta dirección es correcta. El envío se realizará a esta zona postal.
+                </p>
+            </div>
+
+            <div class="cconfirm__section">
+                <p class="cconfirm__label">Productos</p>
+                ${itemsHtml}
+            </div>
+
+            <div class="cconfirm__section cconfirm__totals">
+                <div class="cconfirm__row"><span>Subtotal</span><span>${formatPrice(subtotal)}</span></div>
+                <div class="cconfirm__row"><span>Envío (${deliveryLabel})</span><span>${shipping === 0 ? '<strong style="color:#10b981">GRATIS</strong>' : formatPrice(shipping)}</span></div>
+                <div class="cconfirm__row cconfirm__row--total"><span>Total a pagar</span><span>${formatPrice(total)}</span></div>
+            </div>
+
+            <div class="cconfirm__actions">
+                <button type="button" class="cconfirm__btn cconfirm__btn--cancel" onclick="closeCheckoutConfirmModal()">
+                    <i class="fa-solid fa-arrow-left"></i> Volver
+                </button>
+                <button type="button" class="cconfirm__btn cconfirm__btn--pay" id="confirm-pay-btn" onclick="_doCheckout()">
+                    <i class="fa-solid fa-lock"></i> Pagar ${formatPrice(total)}
+                </button>
+            </div>
+        </div>`;
+
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCheckoutConfirmModal() {
+    const modal = document.getElementById('checkout-confirm-modal');
+    if (modal) modal.remove();
+    document.body.style.overflow = '';
 }
 
 function openShippingModal() {
@@ -828,8 +1168,8 @@ function closeShippingModal() {
 // El prefijo de 2 dígitos del CP determina la provincia/zona
 const SHIPPING_ZONES = {
     // Zona 0 — Alicante (origen) — ENVÍO GRATIS
-    locker:  { z0: 0, z1: 3.95, z2: 4.95, z3: 5.95, z4: 7.95, z5: 9.95, z6: 14.95 },
-    pickup:  { z0: 0, z1: 4.95, z2: 5.95, z3: 6.95, z4: 8.95, z5: 11.95, z6: 16.95 },
+    locker: { z0: 0, z1: 3.95, z2: 4.95, z3: 5.95, z4: 7.95, z5: 9.95, z6: 14.95 },
+    pickup: { z0: 0, z1: 4.95, z2: 5.95, z3: 6.95, z4: 8.95, z5: 11.95, z6: 16.95 },
 };
 
 const CP_ZONE = {
@@ -870,9 +1210,9 @@ function getZoneFromPostal(cp) {
 }
 
 function calculateShipping() {
-    const city   = $('destination-city').value.trim();
+    const city = $('destination-city').value.trim();
     const postal = $('postal-code').value.trim();
-    const type   = $('shipping-type').value;
+    const type = $('shipping-type').value;
 
     if (!city || !postal) {
         $('shipping-result').innerHTML = '<p style="color:#ef4444;font-size:0.85rem;margin-top:12px;">Completa el destino y el código postal.</p>';
@@ -884,7 +1224,7 @@ function calculateShipping() {
         return;
     }
 
-    const zone  = getZoneFromPostal(postal);
+    const zone = getZoneFromPostal(postal);
     const price = SHIPPING_ZONES[type][zone];
     const isFree = price === 0;
     const deliveryLabel = type === 'locker' ? 'Locker InPost' : 'Punto de recogida';
@@ -892,8 +1232,9 @@ function calculateShipping() {
     const days = zone === 'z0' ? 'Entrega local' : zone === 'z6' ? '3-5 días' : '24-48h';
 
     shippingPrice = price;
+    // Guardar datos confirmados de envío
+    confirmedShipping = { city, postal, type, zone, price };
     updateCart();
-
     $('shipping-result').innerHTML = `
         <div class="shipping-result-box">
             <div class="shipping-result-row">
@@ -919,7 +1260,10 @@ function calculateShipping() {
             <p class="shipping-result-note">
                 Precios de referencia basados en tarifas de Correos España · IVA incluido · Paquete hasta 1kg
             </p>
-        </div>`;
+        </div>
+        <button type="button" class="shipping-pay-btn" onclick="closeShippingModal(); openCheckoutConfirmModal();">
+            <i class="fa-solid fa-lock"></i> Confirmar y pagar
+        </button>`;
 
     $('shipping-reset-btn').style.display = 'inline-flex';
 }
@@ -930,6 +1274,7 @@ function resetShipping() {
     $('shipping-type').value = 'locker';
     $('shipping-result').innerHTML = '';
     shippingPrice = 0;
+    confirmedShipping = null;
     updateCart();
     $('shipping-reset-btn').style.display = 'none';
     $('destination-city').focus();
@@ -1027,7 +1372,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         })
-        .catch(() => {});
+        .catch(() => { });
 
     // ── Analytics: pageview ──────────────────────────────────────
     fetch('/analytics/pageview', {
@@ -1037,7 +1382,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             path: window.location.pathname,
             referrer: document.referrer || null,
         }),
-    }).catch(() => {});
+    }).catch(() => { });
 
     // ── Analytics: click tracking ────────────────────────────────
     document.addEventListener('click', (e) => {
@@ -1059,7 +1404,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     x_pct: xPct,
                     y_pct: yPct,
                 }),
-            }).catch(() => {});
+            }).catch(() => { });
             return;
         }
 
@@ -1074,7 +1419,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     x_pct: xPct,
                     y_pct: yPct,
                 }),
-            }).catch(() => {});
+            }).catch(() => { });
             return;
         }
 
@@ -1084,7 +1429,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ element: 'cart-icon', x_pct: xPct, y_pct: yPct }),
-            }).catch(() => {});
+            }).catch(() => { });
         }
     }, { passive: true });
 
@@ -1119,18 +1464,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const img = getImg();
         if (!img || !img.complete) return;
 
-        const rect     = img.getBoundingClientRect();
+        const rect = img.getBoundingClientRect();
         const wrapRect = wrap.getBoundingClientRect();
 
         // Posición del cursor relativa al wrap (para la lupa)
         const halfLens = LENS_SIZE / 2;
         let lx = e.clientX - wrapRect.left;
         let ly = e.clientY - wrapRect.top;
-        lx = Math.max(halfLens, Math.min(wrapRect.width  - halfLens, lx));
+        lx = Math.max(halfLens, Math.min(wrapRect.width - halfLens, lx));
         ly = Math.max(halfLens, Math.min(wrapRect.height - halfLens, ly));
 
         lens.style.left = (lx - halfLens) + 'px';
-        lens.style.top  = (ly - halfLens) + 'px';
+        lens.style.top = (ly - halfLens) + 'px';
 
         // Panel de resultado: sigue el cursor en viewport (fixed)
         const RW = 240, RH = 240;
@@ -1139,25 +1484,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         let ry = e.clientY - RH / 2;
 
         // Evitar que se salga de la pantalla
-        if (rx + RW > window.innerWidth)  rx = e.clientX - RW - margin;
-        if (ry < margin)                  ry = margin;
+        if (rx + RW > window.innerWidth) rx = e.clientX - RW - margin;
+        if (ry < margin) ry = margin;
         if (ry + RH > window.innerHeight) ry = window.innerHeight - RH - margin;
 
         result.style.left = rx + 'px';
-        result.style.top  = ry + 'px';
+        result.style.top = ry + 'px';
 
         // Calcular zoom del background
-        const scaleX = img.naturalWidth  / rect.width;
+        const scaleX = img.naturalWidth / rect.width;
         const scaleY = img.naturalHeight / rect.height;
 
         const imgX = (e.clientX - rect.left) * scaleX;
-        const imgY = (e.clientY - rect.top)  * scaleY;
+        const imgY = (e.clientY - rect.top) * scaleY;
 
         const bgX = -(imgX * ZOOM - RW / 2);
         const bgY = -(imgY * ZOOM - RH / 2);
 
-        result.style.backgroundImage    = `url('${img.src}')`;
-        result.style.backgroundSize     = `${img.naturalWidth * ZOOM}px ${img.naturalHeight * ZOOM}px`;
+        result.style.backgroundImage = `url('${img.src}')`;
+        result.style.backgroundSize = `${img.naturalWidth * ZOOM}px ${img.naturalHeight * ZOOM}px`;
         result.style.backgroundPosition = `${bgX}px ${bgY}px`;
     }
 
@@ -1165,12 +1510,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Ocultar lupa cuando el cursor sale del wrap
     wrap.addEventListener('mouseleave', () => {
-        lens.style.display  = 'none';
+        lens.style.display = 'none';
         result.style.display = 'none';
     });
 
     wrap.addEventListener('mouseenter', () => {
-        lens.style.display  = 'block';
+        lens.style.display = 'block';
         result.style.display = 'block';
     });
 
