@@ -7,7 +7,7 @@ from fastapi.responses import Response
 
 router = APIRouter(tags=["seo"])
 
-BASE_URL = "https://heydemin.com"
+BASE_URL = "https://heydenim.es"
 
 
 @router.get("/robots.txt", include_in_schema=False)

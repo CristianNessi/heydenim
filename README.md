@@ -267,7 +267,7 @@ El flujo de pago usa **Hosted Checkout**:
 
 Requisitos en el dashboard de SumUp:
 - Hosted Checkout habilitado para el merchant
-- `SUMUP_REDIRECT_URL` debe apuntar a la URL de producción (`https://heydemin.com/checkout/thank-you`)
+- `SUMUP_REDIRECT_URL` debe apuntar a la URL de producción (`https://heydenim.es/checkout/thank-you`)
 
 ---
 

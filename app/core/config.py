@@ -22,14 +22,14 @@ class Settings:
     # redirect_url: a donde SumUp redirige al usuario tras completar el pago
     SUMUP_REDIRECT_URL = os.getenv(
         "SUMUP_REDIRECT_URL",
-        "https://heydemin.com/checkout/thank-you"
+        "https://heydenim.es/checkout/thank-you"
     )
 
     # =========================
     # ADMIN AUTH
     # =========================
 
-    ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@heydemin.com")
+    ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@heydenim.es")
 
     ADMIN_PASSWORD_HASH = os.getenv("ADMIN_PASSWORD_HASH", "")
 
