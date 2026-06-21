@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ventas · Heydemin Admin</title>
+<link rel="icon" type="image/svg+xml" href="/static/imagen/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/imagen/favicon.png">
+<link rel="shortcut icon" href="/static/imagen/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/imagen/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__brand">
+    <div class="sidebar__logo-mark">
+      <span class="sidebar__logo-hey">hey</span>
+      <span class="sidebar__logo-rule"></span>
+      <span class="sidebar__logo-denim">denim</span>
+    </div>
+    <span class="sidebar__sub">Admin</span>
+  </div>
+  <nav class="sidebar__nav">
+    <a href="/admin/dashboard" class="sidebar__link">
+      <i class="fa-solid fa-chart-line"></i> Dashboard
+    </a>
+    <a href="/admin/products" class="sidebar__link">
+      <i class="fa-solid fa-shirt"></i> Productos
+    </a>
+    <a href="/admin/sales" class="sidebar__link sidebar__link--active">
+      <i class="fa-solid fa-money-check-dollar"></i> Ventas / Reembolsos
+    </a>
+    <a href="/admin/products/new" class="sidebar__link sidebar__link--cta">
+      <i class="fa-solid fa-plus"></i> Cargar producto
+    </a>
+    <a href="/admin/content" class="sidebar__link">
+      <i class="fa-solid fa-pen-to-square"></i> Contenido
+    </a>
+    <a href="/admin/notifications" class="sidebar__link">
+      <i class="fa-solid fa-bell"></i> Notificaciones
+    </a>
+    <a href="/" class="sidebar__link" target="_blank">
+      <i class="fa-solid fa-store"></i> Ver tienda
+    </a>
+  </nav>
+  <div class="sidebar__footer">
+    <button onclick="confirmLogout()" class="sidebar__logout">
+      <i class="fa-solid fa-right-from-bracket"></i> Salir
+    </button>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+<button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menú">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<main class="dash">
+  <header class="dash__header">
+    <div>
+      <p class="dash__brand-tag">Heydemin · <span>Admin</span></p>
+      <h1 class="dash__title">Ventas / Reembolsos</h1>
+      <p class="dash__sub">Aquí puedes revisar ventas y emitir reembolsos a través de SumUp.</p>
+      {% if message %}
+      <p style="color:#16a34a;font-weight:600;margin-top:12px;">{{ message }}</p>
+      {% endif %}
+      {% if error %}
+      <p style="color:#dc2626;font-weight:600;margin-top:12px;">{{ error }}</p>
+      {% endif %}
+    </div>
+  </header>
+
+  <section class="chart-card chart-card--full">
+    <h2 class="chart-card__title"><i class="fa-solid fa-receipt"></i> Historial de ventas</h2>
+    <div style="overflow-x:auto;">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Producto</th>
+            <th>Total</th>
+            <th>Fecha</th>
+            <th>Transacción</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if sales %}
+            {% for sale in sales %}
+            <tr>
+              <td>{{ sale.id }}</td>
+              <td>{{ sale.product_name }}</td>
+              <td>{{ sale.total }} €</td>
+              <td>{{ sale.created_at.strftime('%Y-%m-%d %H:%M') if sale.created_at else '-' }}</td>
+              <td>{{ sale.transaction_id or 'No registrado' }}</td>
+              <td>
+                {% if sale.is_refunded %}
+                  Reembolsado {{ sale.refund_amount }} €
+                {% elif sale.transaction_id %}
+                  Pagado
+                {% else %}
+                  Pendiente de transacción
+                {% endif %}
+              </td>
+              <td>
+                {% if sale.transaction_id and not sale.is_refunded %}
+                  <form method="post" action="/admin/sales/{{ sale.id }}/refund" style="display:inline;">
+                    <input type="password" name="confirm_password" placeholder="Contraseña admin" required style="width:160px;padding:6px 8px;margin-bottom:4px;">
+                    <button type="submit" class="button button--danger">Reembolsar</button>
+                  </form>
+                {% elif sale.is_refunded %}
+                  <span class="badge badge--success">Reembolsado</span>
+                {% else %}
+                  <span class="badge badge--muted">Sin transaction_id</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr><td colspan="7" class="td-empty">No hay ventas registradas aún.</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('active');
+}
+function confirmLogout() {
+  if (confirm('¿Segura que querés cerrar sesión?')) {
+    window.location.href = '/admin/logout';
+  }
+}
+</script>
+</body>
+</html>

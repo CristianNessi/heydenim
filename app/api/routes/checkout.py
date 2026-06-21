@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from fastapi import APIRouter, HTTPException, Request, Depends
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
@@ -71,9 +73,11 @@ async def process_checkout(request: Request, db: Session = Depends(get_db)) -> d
     total = round(total, 2)
 
     try:
+        checkout_reference = f"heydemin-{int(time.time())}"
         checkout_data = await create_checkout(
             total=total,
-            description="Compra en Heydemin"
+            description="Compra en Heydemin",
+            checkout_reference=checkout_reference,
         )
 
         payment_url = checkout_data.get("hosted_checkout_url")
@@ -83,7 +87,6 @@ async def process_checkout(request: Request, db: Session = Depends(get_db)) -> d
                 detail="No se pudo obtener la URL de pago de SumUp"
             )
 
-            # Registrar venta, descontar stock y crear notificaciones
         for item, pid, product, discount, base_price, final_price, qty, is_shipping in prepared_items:
             # El ítem de envío no se registra como venta ni descuenta stock
             if is_shipping:
@@ -98,6 +101,7 @@ async def process_checkout(request: Request, db: Session = Depends(get_db)) -> d
                 size=item.get("size"),
                 color=item.get("color"),
                 total=round(final_price * qty, 2),
+                checkout_reference=checkout_reference,
             )
             db.add(sale)
 
@@ -124,9 +128,37 @@ async def process_checkout(request: Request, db: Session = Depends(get_db)) -> d
 
 
 @router.get("/thank-you", response_class=HTMLResponse)
-async def thank_you():
+async def thank_you(request: Request, db: Session = Depends(get_db)):
     """Página de confirmación tras el pago con SumUp."""
-    return HTMLResponse(content="""
+    query = request.query_params
+    checkout_reference = query.get("checkout_reference")
+    transaction_id = query.get("transaction_id") or query.get("payment_id") or query.get("id")
+    message = ""
+
+    if checkout_reference:
+        message = "Gracias por tu compra. Hemos registrado la referencia de pago."
+        if transaction_id:
+            sales = db.query(Sale).filter(Sale.checkout_reference == checkout_reference).all()
+            if not sales:
+                sale = db.query(Sale).filter(Sale.transaction_id == None).order_by(Sale.created_at.desc()).first()
+                if sale and sale.created_at and sale.created_at >= datetime.utcnow() - timedelta(minutes=120):
+                    sale.transaction_id = transaction_id
+                    db.commit()
+                    message = "Gracias por tu compra. Transacción registrada correctamente."
+            else:
+                for sale in sales:
+                    if not sale.transaction_id:
+                        sale.transaction_id = transaction_id
+                db.commit()
+                message = "Gracias por tu compra. Transacción registrada correctamente."
+    elif transaction_id:
+        sale = db.query(Sale).filter(Sale.transaction_id == None).order_by(Sale.created_at.desc()).first()
+        if sale and sale.created_at and sale.created_at >= datetime.utcnow() - timedelta(minutes=120):
+            sale.transaction_id = transaction_id
+            db.commit()
+            message = "Gracias por tu compra. Transacción registrada correctamente."
+
+    return HTMLResponse(content=f"""
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -195,7 +227,7 @@ async def thank_you():
   <div class="card">
     <div class="icon">✓</div>
     <h1>¡Gracias por tu compra!</h1>
-    <p>Tu pedido fue procesado correctamente.<br>Recibirás un email de confirmación en breve.</p>
+    <p>{message or 'Tu pedido fue procesado correctamente.<br>Recibirás un email de confirmación en breve.'}</p>
     <a href="/">Volver a la tienda</a>
   </div>
 </body>

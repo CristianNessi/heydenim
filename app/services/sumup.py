@@ -9,7 +9,7 @@ class SumupError(Exception):
     pass
 
 
-async def create_checkout(total: float, description: str):
+async def create_checkout(total: float, description: str, checkout_reference: str | None = None):
     """
     Crea un checkout de SumUp con Hosted Checkout habilitado.
     Devuelve el objeto checkout que incluye hosted_checkout_url.
@@ -25,7 +25,7 @@ async def create_checkout(total: float, description: str):
     }
 
     payload = {
-        "checkout_reference": f"heydemin-{int(time.time())}",
+        "checkout_reference": checkout_reference or f"heydemin-{int(time.time())}",
         "amount": total,
         "currency": "EUR",
         "merchant_code": settings.SUMUP_MERCHANT_CODE,
@@ -36,8 +36,7 @@ async def create_checkout(total: float, description: str):
         },
     }
 
-    # redirect_url solo en producción (requiere dominio real con HTTPS)
-    if settings.SUMUP_REDIRECT_URL and settings.SUMUP_REDIRECT_URL.startswith("https://"):
+    if settings.SUMUP_REDIRECT_URL:
         payload["redirect_url"] = settings.SUMUP_REDIRECT_URL
 
     # pay_to_email es opcional
@@ -55,6 +54,35 @@ async def create_checkout(total: float, description: str):
                     f"Error de SumUp API: {response.status_code} - {response.text}"
                 )
 
+        except httpx.TimeoutException:
+            raise SumupError("Timeout conectando con SumUp")
+        except httpx.RequestError as e:
+            raise SumupError(f"Error de conexión: {str(e)}")
+
+
+async def refund_transaction(transaction_id: str, amount: float | None = None):
+    if not settings.SUMUP_API_KEY or not settings.SUMUP_MERCHANT_CODE:
+        raise SumupError("Configuración de SumUp incompleta")
+
+    url = f"https://api.sumup.com/v1.0/merchants/{settings.SUMUP_MERCHANT_CODE}/payments/{transaction_id}/refunds"
+
+    headers = {
+        "Authorization": f"Bearer {settings.SUMUP_API_KEY}",
+        "Content-Type": "application/json",
+    }
+
+    payload = {}
+    if amount is not None:
+        payload["amount"] = amount
+
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(url, json=payload, headers=headers, timeout=30.0)
+            if response.status_code >= 200 and response.status_code < 300:
+                return response.json()
+            raise SumupError(
+                f"Error de SumUp API: {response.status_code} - {response.text}"
+            )
         except httpx.TimeoutException:
             raise SumupError("Timeout conectando con SumUp")
         except httpx.RequestError as e:

@@ -72,6 +72,22 @@ def ensure_schema():
                 with engine.begin() as conn:
                     conn.execute(text(f"ALTER TABLE site_content ADD COLUMN {col_name} {col_type}"))
 
+    # Agregar columnas nuevas a ventas si no existen
+    if "sales" in tables:
+        sales_cols = {col["name"] for col in inspector.get_columns("sales")}
+        datetime_type = "TIMESTAMP WITH TIME ZONE" if engine.dialect.name == "postgresql" else "DATETIME"
+        sales_new_cols = {
+            "checkout_reference": "TEXT",
+            "transaction_id": "TEXT",
+            "is_refunded": "BOOLEAN DEFAULT FALSE",
+            "refund_amount": "FLOAT DEFAULT 0.0",
+            "refunded_at": datetime_type,
+        }
+        for col_name, col_type in sales_new_cols.items():
+            if col_name not in sales_cols:
+                with engine.begin() as conn:
+                    conn.execute(text(f"ALTER TABLE sales ADD COLUMN {col_name} {col_type}"))
+
 
 def _migrate_env_admin():
     """Crea el usuario admin del .env en la tabla admin_users si no existe."""

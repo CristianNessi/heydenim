@@ -3539,220 +3539,242 @@ footer a:hover .footer__link-arrow {
 
 /* ── MODAL CONFIRMACIÓN DE COMPRA ────────────────────────────── */
 .cconfirm-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  z-index: 1200;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 0;
-  animation: fadeIn 0.2s ease;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1200;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+    animation: fadeIn 0.2s ease;
 }
 
 @media (min-width: 600px) {
-  .cconfirm-overlay {
-    align-items: center;
-    padding: 24px;
-  }
+    .cconfirm-overlay {
+        align-items: center;
+        padding: 24px;
+    }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .cconfirm {
-  background: #fff;
-  border-radius: 20px 20px 0 0;
-  width: 100%;
-  max-width: 480px;
-  max-height: 92vh;
-  overflow-y: auto;
-  padding: 28px 24px 32px;
-  animation: slideUp 0.25s ease;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 480px;
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 28px 24px 32px;
+    animation: slideUp 0.25s ease;
 }
 
 @media (min-width: 600px) {
-  .cconfirm {
-    border-radius: 16px;
-    max-height: 85vh;
-  }
+    .cconfirm {
+        border-radius: 16px;
+        max-height: 85vh;
+    }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
+    from {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .cconfirm__title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #111;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .cconfirm__section {
-  margin-bottom: 18px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .cconfirm__section:last-of-type {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .cconfirm__label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #9ca3af;
-  margin-bottom: 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9ca3af;
+    margin-bottom: 10px;
 }
 
 .cconfirm__address {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: #f8f9fa;
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
 }
 
 .cconfirm__address i {
-  color: #111;
-  margin-top: 3px;
-  flex-shrink: 0;
+    color: #111;
+    margin-top: 3px;
+    flex-shrink: 0;
 }
 
 .cconfirm__address strong {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #111;
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #111;
 }
 
 .cconfirm__address span {
-  font-size: 0.78rem;
-  color: #6b7280;
+    font-size: 0.78rem;
+    color: #6b7280;
 }
 
 .cconfirm__address-warn {
-  font-size: 0.76rem;
-  color: #d97706;
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  line-height: 1.5;
+    font-size: 0.76rem;
+    color: #d97706;
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    line-height: 1.5;
 }
 
 .cconfirm__item {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 8px;
-  padding: 6px 0;
-  font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 0.85rem;
 }
 
 .cconfirm__item-name {
-  color: #374151;
-  flex: 1;
+    color: #374151;
+    flex: 1;
 }
 
 .cconfirm__item-price {
-  font-weight: 600;
-  color: #111;
-  flex-shrink: 0;
+    font-weight: 600;
+    color: #111;
+    flex-shrink: 0;
 }
 
 .cconfirm__totals {
-  background: #f8f9fa;
-  border-radius: 10px;
-  padding: 14px 16px;
-  border-bottom: none !important;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 14px 16px;
+    border-bottom: none !important;
 }
 
 .cconfirm__row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  color: #374151;
-  padding: 4px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #374151;
+    padding: 4px 0;
 }
 
 .cconfirm__row--total {
-  border-top: 1px solid #e5e7eb;
-  margin-top: 8px;
-  padding-top: 10px;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #111;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 8px;
+    padding-top: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111;
 }
 
 .cconfirm__actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .cconfirm__btn {
-  flex: 1;
-  padding: 14px;
-  border-radius: 10px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background 0.2s, opacity 0.2s;
-  font-family: inherit;
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s, opacity 0.2s;
+    font-family: inherit;
 }
 
 .cconfirm__btn--cancel {
-  background: #f3f4f6;
-  color: #374151;
-  flex: 0 0 auto;
-  padding: 14px 18px;
+    background: #f3f4f6;
+    color: #374151;
+    flex: 0 0 auto;
+    padding: 14px 18px;
 }
 
-.cconfirm__btn--cancel:hover { background: #e5e7eb; }
+.cconfirm__btn--cancel:hover {
+    background: #e5e7eb;
+}
 
 .cconfirm__btn--pay {
-  background: #111;
-  color: #fff;
-  flex: 1;
+    background: #111;
+    color: #fff;
+    flex: 1;
 }
 
-.cconfirm__btn--pay:hover { background: #333; }
-.cconfirm__btn--pay:disabled { opacity: 0.6; cursor: not-allowed; }
+.cconfirm__btn--pay:hover {
+    background: #333;
+}
+
+.cconfirm__btn--pay:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
 /* Botón pagar desde modal de envío */
 .shipping-pay-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  margin-top: 14px;
-  padding: 14px;
-  background: #111;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 14px;
+    padding: 14px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
 }
 
-.shipping-pay-btn:hover { background: #333; }
+.shipping-pay-btn:hover {
+    background: #333;
+}

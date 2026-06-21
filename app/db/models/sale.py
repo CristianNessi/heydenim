@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Text
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Boolean
 from sqlalchemy.sql import func
 from app.db.database import Base
 
@@ -17,4 +17,9 @@ class Sale(Base):
     size = Column(String, nullable=True)
     color = Column(String, nullable=True)
     total = Column(Float, nullable=False)             # final_price * quantity
+    checkout_reference = Column(String, nullable=True)
+    transaction_id = Column(String, nullable=True)
+    is_refunded = Column(Boolean, default=False)
+    refund_amount = Column(Float, default=0.0)
+    refunded_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

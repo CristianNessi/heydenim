@@ -16,11 +16,14 @@ from app.db.database import get_db
 from app.db.models.product import Product
 from app.db.models.site_content import SiteContent
 from app.db.models.admin_user import AdminUser
+from app.db.models.sale import Sale
+from app.services.sumup import refund_transaction, SumupError
 
 import uuid
 import time
 import bcrypt
 import imghdr
+from datetime import datetime
 
 
 def _get_any_admin_hash(db: Session) -> str:
@@ -173,6 +176,64 @@ def admin_products(request: Request, db: Session = Depends(get_db)):
         "admin/products.html",
         {"request": request, "products": products}
     )
+
+
+# =====================================
+# SALES LIST / REEMBOLSOS
+# =====================================
+@router.get("/sales")
+def admin_sales(request: Request, db: Session = Depends(get_db)):
+    if not _is_authenticated(request):
+        return RedirectResponse(url="/admin/login", status_code=302)
+
+    sales = db.query(Sale).order_by(Sale.created_at.desc()).all()
+    return templates.TemplateResponse(
+        request,
+        "admin/sales.html",
+        {
+            "request": request,
+            "sales": sales,
+            "message": request.query_params.get("message", ""),
+            "error": request.query_params.get("error", ""),
+        }
+    )
+
+
+@router.post("/sales/{sale_id}/refund")
+async def admin_sales_refund(
+    request: Request,
+    sale_id: int,
+    confirm_password: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    if not _is_authenticated(request):
+        return RedirectResponse(url="/admin/login", status_code=302)
+
+    if not _verify_password(confirm_password, _get_any_admin_hash(db)):
+        return RedirectResponse(url="/admin/sales?error=Contraseña+incorrecta", status_code=302)
+
+    sale = db.query(Sale).filter(Sale.id == sale_id).first()
+    if not sale:
+        return RedirectResponse(url="/admin/sales?error=Venta+no+encontrada", status_code=302)
+
+    if not sale.transaction_id:
+        return RedirectResponse(url="/admin/sales?error=Venta+sin+transaction_id", status_code=302)
+
+    if sale.is_refunded:
+        return RedirectResponse(url="/admin/sales?error=Venta+ya+reembolsada", status_code=302)
+
+    try:
+        refund_data = await refund_transaction(sale.transaction_id, amount=None)
+        sale.is_refunded = True
+        sale.refund_amount = float(refund_data.get("amount", sale.total)) if refund_data else sale.total
+        sale.refunded_at = datetime.utcnow()
+        db.commit()
+
+        return RedirectResponse(url="/admin/sales?message=Reembolso+realizado+correctamente", status_code=302)
+    except SumupError as e:
+        return RedirectResponse(url=f"/admin/sales?error=Error+SumUp:+{str(e)}", status_code=302)
+    except Exception as e:
+        return RedirectResponse(url=f"/admin/sales?error=Error+interno:+{str(e)}", status_code=302)
 
 
 # =====================================
