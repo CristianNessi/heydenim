@@ -18,6 +18,7 @@ class Sale(Base):
     color = Column(String, nullable=True)
     total = Column(Float, nullable=False)             # final_price * quantity
     checkout_reference = Column(String, nullable=True)
+    buyer_id = Column(Integer, nullable=True)
     transaction_id = Column(String, nullable=True)
     is_refunded = Column(Boolean, default=False)
     refund_amount = Column(Float, default=0.0)

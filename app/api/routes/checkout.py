@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timedelta
 
 from fastapi import APIRouter, HTTPException, Request, Depends
@@ -9,6 +10,7 @@ from app.services.sumup import SumupError, create_checkout
 from app.services.notifications import notify_sale, notify_low_stock, notify_out_of_stock
 from app.db.database import get_db
 from app.db.models.sale import Sale
+from app.db.models.buyer import Buyer
 from app.db.models.product import Product
 
 router = APIRouter(prefix="/checkout", tags=["Checkout"])
@@ -46,6 +48,18 @@ def _decrement_stock(product: Product, size: str | None, qty: int) -> None:
         product.stock = max(0, product.stock - qty)
 
 
+def _finalize_sales(sales: list[Sale], db: Session) -> None:
+    for sale in sales:
+        product = db.query(Product).filter(Product.id == sale.product_id).first() if sale.product_id else None
+        if product:
+            _decrement_stock(product, sale.size, sale.quantity)
+            if product.stock == 0:
+                notify_out_of_stock(db, product.name, product.id)
+            elif product.stock <= 3:
+                notify_low_stock(db, product.name, product.stock, product.id)
+        notify_sale(db, sale.product_name, sale.quantity, sale.total, sale.product_id)
+
+
 @router.post("/")
 async def process_checkout(request: Request, db: Session = Depends(get_db)) -> dict[str, str]:
     try:
@@ -53,8 +67,16 @@ async def process_checkout(request: Request, db: Session = Depends(get_db)) -> d
     except Exception:
         raise HTTPException(status_code=400, detail="JSON inválido")
 
+    buyer_data = None
+    if isinstance(cart_items, dict) and "items" in cart_items:
+        buyer_data = cart_items.get("buyer")
+        cart_items = cart_items.get("items") or []
+
     if not isinstance(cart_items, list) or not cart_items:
         raise HTTPException(status_code=400, detail="Carrito vacío")
+
+    if not buyer_data or not buyer_data.get("email") or not buyer_data.get("phone"):
+        raise HTTPException(status_code=400, detail="El email y el teléfono del comprador son obligatorios")
 
     total = 0.0
     prepared_items = []
@@ -87,8 +109,15 @@ async def process_checkout(request: Request, db: Session = Depends(get_db)) -> d
                 detail="No se pudo obtener la URL de pago de SumUp"
             )
 
+        # Si se proporcionó buyer, crear registro antes de las ventas
+        buyer_obj = None
+        if buyer_data and buyer_data.get("email") and buyer_data.get("phone"):
+            buyer_obj = Buyer(email=buyer_data.get("email"), phone=buyer_data.get("phone"))
+            db.add(buyer_obj)
+            db.flush()  # obtener id sin commitear
+
         for item, pid, product, discount, base_price, final_price, qty, is_shipping in prepared_items:
-            # El ítem de envío no se registra como venta ni descuenta stock
+            # El ítem de envío no se registra como venta ni descuenta stock todavía
             if is_shipping:
                 continue
             sale = Sale(
@@ -102,20 +131,9 @@ async def process_checkout(request: Request, db: Session = Depends(get_db)) -> d
                 color=item.get("color"),
                 total=round(final_price * qty, 2),
                 checkout_reference=checkout_reference,
+                buyer_id=buyer_obj.id if buyer_obj else None,
             )
             db.add(sale)
-
-            # Notificación de venta
-            notify_sale(db, item.get("name", "Producto"), qty,
-                        round(final_price * qty, 2), pid)
-
-            # Descontar stock y notificar si baja
-            if product:
-                _decrement_stock(product, item.get("size"), qty)
-                if product.stock == 0:
-                    notify_out_of_stock(db, product.name, product.id)
-                elif product.stock <= 3:
-                    notify_low_stock(db, product.name, product.stock, product.id)
 
         db.commit()
 
@@ -139,16 +157,15 @@ async def thank_you(request: Request, db: Session = Depends(get_db)):
         message = "Gracias por tu compra. Hemos registrado la referencia de pago."
         if transaction_id:
             sales = db.query(Sale).filter(Sale.checkout_reference == checkout_reference).all()
+            pending_sales = [sale for sale in sales if not sale.transaction_id]
             if not sales:
                 sale = db.query(Sale).filter(Sale.transaction_id == None).order_by(Sale.created_at.desc()).first()
                 if sale and sale.created_at and sale.created_at >= datetime.utcnow() - timedelta(minutes=120):
+                    pending_sales = [sale]
+            if pending_sales:
+                for sale in pending_sales:
                     sale.transaction_id = transaction_id
-                    db.commit()
-                    message = "Gracias por tu compra. Transacción registrada correctamente."
-            else:
-                for sale in sales:
-                    if not sale.transaction_id:
-                        sale.transaction_id = transaction_id
+                _finalize_sales(pending_sales, db)
                 db.commit()
                 message = "Gracias por tu compra. Transacción registrada correctamente."
     elif transaction_id:

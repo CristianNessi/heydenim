@@ -1063,10 +1063,34 @@ async function _doCheckout() {
             });
         }
 
+        // Leer email/teléfono desde el modal de confirmación
+        const buyerEmailInput = document.getElementById('buyer-email');
+        const buyerPhoneInput = document.getElementById('buyer-phone');
+        let buyerEmail = buyerEmailInput ? buyerEmailInput.value.trim() : '';
+        let buyerPhone = buyerPhoneInput ? buyerPhoneInput.value.trim() : '';
+
+        if (!buyerEmail) {
+            alert('El email de contacto es obligatorio.');
+            if (btn) btn.disabled = false;
+            return;
+        }
+        if (!buyerPhone) {
+            alert('El teléfono de contacto es obligatorio.');
+            if (btn) btn.disabled = false;
+            return;
+        }
+        if (!buyerEmail.includes('@')) {
+            alert('Email inválido. Verifica y vuelve a intentar.');
+            if (btn) btn.disabled = false;
+            return;
+        }
+
+        const bodyPayload = { items: payload, buyer: { email: buyerEmail, phone: buyerPhone } };
+
         const res = await fetch('/checkout/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
+            body: JSON.stringify(bodyPayload),
         });
         const data = await res.json();
 
@@ -1125,6 +1149,22 @@ function openCheckoutConfirmModal() {
                 ${itemsHtml}
             </div>
 
+            <div class="cconfirm__section">
+                <p class="cconfirm__label">Datos de contacto</p>
+                <div class="cconfirm__address">
+                    <div>
+                        <strong>Email</strong>
+                        <span id="confirm-buyer-email"></span>
+                    </div>
+                </div>
+                <div class="cconfirm__address">
+                    <div>
+                        <strong>Teléfono</strong>
+                        <span id="confirm-buyer-phone"></span>
+                    </div>
+                </div>
+            </div>
+
             <div class="cconfirm__section cconfirm__totals">
                 <div class="cconfirm__row"><span>Subtotal</span><span>${formatPrice(subtotal)}</span></div>
                 <div class="cconfirm__row"><span>Envío (${deliveryLabel})</span><span>${shipping === 0 ? '<strong style="color:#10b981">GRATIS</strong>' : formatPrice(shipping)}</span></div>
@@ -1142,6 +1182,14 @@ function openCheckoutConfirmModal() {
         </div>`;
 
     document.body.appendChild(modal);
+
+    const buyerEmail = document.getElementById('buyer-email')?.value.trim() || '';
+    const buyerPhone = document.getElementById('buyer-phone')?.value.trim() || '';
+    const emailSpan = document.getElementById('confirm-buyer-email');
+    const phoneSpan = document.getElementById('confirm-buyer-phone');
+    if (emailSpan) emailSpan.textContent = buyerEmail;
+    if (phoneSpan) phoneSpan.textContent = buyerPhone;
+
     document.body.style.overflow = 'hidden';
 }
 
@@ -1149,6 +1197,44 @@ function closeCheckoutConfirmModal() {
     const modal = document.getElementById('checkout-confirm-modal');
     if (modal) modal.remove();
     document.body.style.overflow = '';
+    // Volver al modal de envío para corregir datos si es necesario.
+    openShippingModal();
+}
+
+function showShippingValidationError(message) {
+    const shippingResult = $('shipping-result');
+    if (!shippingResult) return;
+    const existingError = shippingResult.querySelector('.shipping-validation-error');
+    if (existingError) existingError.remove();
+
+    const error = document.createElement('p');
+    error.className = 'shipping-validation-error';
+    error.style.cssText = 'color:#ef4444;font-size:0.85rem;margin-top:12px;font-weight:600;';
+    error.textContent = message;
+    shippingResult.appendChild(error);
+}
+
+function validateBuyerInfoAndProceed() {
+    const emailInput = document.getElementById('buyer-email');
+    const phoneInput = document.getElementById('buyer-phone');
+    const email = emailInput ? emailInput.value.trim() : '';
+    const phone = phoneInput ? phoneInput.value.trim() : '';
+
+    if (!email) {
+        showShippingValidationError('El email es obligatorio para continuar.');
+        return;
+    }
+    if (!phone) {
+        showShippingValidationError('El teléfono es obligatorio para continuar.');
+        return;
+    }
+    if (!email.includes('@')) {
+        showShippingValidationError('El email ingresado no es válido.');
+        return;
+    }
+
+    closeShippingModal();
+    openCheckoutConfirmModal();
 }
 
 function openShippingModal() {
@@ -1261,7 +1347,7 @@ function calculateShipping() {
                 Precios de referencia basados en tarifas de Correos España · IVA incluido · Paquete hasta 1kg
             </p>
         </div>
-        <button type="button" class="shipping-pay-btn" onclick="closeShippingModal(); openCheckoutConfirmModal();">
+        <button type="button" class="shipping-pay-btn" onclick="validateBuyerInfoAndProceed()">
             <i class="fa-solid fa-lock"></i> Confirmar y pagar
         </button>`;
 

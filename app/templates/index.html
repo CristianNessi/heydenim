@@ -406,6 +406,14 @@
                         <option value="pickup">Punto de recogida</option>
                     </select>
                 </div>
+                <div class="shipping-group">
+                    <label for="buyer-email">Email para confirmación <span style="color:#dc2626; font-size:0.85rem;">*</span></label>
+                    <input type="email" id="buyer-email" placeholder="tu@correo.com" required>
+                </div>
+                <div class="shipping-group">
+                    <label for="buyer-phone">Teléfono de contacto <span style="color:#dc2626; font-size:0.85rem;">*</span></label>
+                    <input type="tel" id="buyer-phone" placeholder="600 123 456" required>
+                </div>
             </div>
             <div class="shipping-btn-row">
                 <button type="button" class="shipping-btn" onclick="calculateShipping()">Calcular</button>

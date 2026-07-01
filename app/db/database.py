@@ -79,6 +79,7 @@ def ensure_schema():
         sales_new_cols = {
             "checkout_reference": "TEXT",
             "transaction_id": "TEXT",
+            "buyer_id": "INTEGER",
             "is_refunded": "BOOLEAN DEFAULT FALSE",
             "refund_amount": "FLOAT DEFAULT 0.0",
             "refunded_at": datetime_type,
@@ -87,6 +88,10 @@ def ensure_schema():
             if col_name not in sales_cols:
                 with engine.begin() as conn:
                     conn.execute(text(f"ALTER TABLE sales ADD COLUMN {col_name} {col_type}"))
+
+    # Crear tabla buyers si no existe
+    if "buyers" not in tables:
+        Base.metadata.create_all(bind=engine)
 
 
 def _migrate_env_admin():

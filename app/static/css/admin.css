@@ -123,6 +123,11 @@ body {
 
 .sidebar__link--cta:hover { background: #f0f0f0; }
 
+.sidebar__link--active.sidebar__link--cta {
+  background: rgba(255,255,255,0.12);
+  color: #fff !important;
+}
+
 .sidebar__footer {
   padding: 16px 12px 0;
   border-top: 1px solid rgba(255,255,255,0.08);
@@ -335,6 +340,88 @@ canvas { max-height: 260px; }
   border-radius: 99px;
   background: var(--blue);
   transition: width 0.6s ease;
+}
+
+.admin-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.admin-action-btn--refund {
+  background: #f97316;
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+.admin-action-btn--refund:hover {
+  background: #ea580c;
+}
+
+.admin-action-btn--confirm {
+  background: #0f766e;
+  border-color: rgba(15, 118, 110, 0.35);
+}
+
+.admin-action-btn--confirm:hover {
+  background: #115e59;
+}
+
+.admin-action-btn--cancel {
+  background: #64748b;
+}
+
+.admin-action-btn--disabled {
+  background: #94a3b8;
+  border-color: rgba(148, 163, 184, 0.35);
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.admin-action-btn--disabled:hover {
+  transform: none;
+}
+
+.refund-action {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 260px;
+}
+
+.refund-password-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: var(--text);
+}
+
+.refund-confirm-box {
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.refund-confirm-box p {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  color: #334155;
 }
 
 /* ── HEATMAP ─────────────────────────────────────────────────── */
@@ -623,6 +710,17 @@ canvas { max-height: 260px; }
   border-bottom: 1px solid var(--border);
   font-size: 0.88rem;
   vertical-align: middle;
+}
+
+.sale-buyer-id {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.sale-buyer-contact {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 4px;
 }
 
 .admin-table tbody tr:last-child td { border-bottom: none; }

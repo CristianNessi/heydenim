@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compradores · Heydemin Admin</title>
+  <link rel="icon" type="image/svg+xml" href="/static/imagen/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/imagen/favicon.png">
+  <link rel="shortcut icon" href="/static/imagen/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="/static/imagen/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+      <div class="sidebar__logo-mark">
+        <span class="sidebar__logo-hey">hey</span>
+        <span class="sidebar__logo-rule"></span>
+        <span class="sidebar__logo-denim">denim</span>
+      </div>
+      <span class="sidebar__sub">Admin</span>
+    </div>
+    <nav class="sidebar__nav">
+      <a href="/admin/dashboard" class="sidebar__link">
+        <i class="fa-solid fa-chart-line"></i> Dashboard
+      </a>
+      <a href="/admin/products" class="sidebar__link">
+        <i class="fa-solid fa-shirt"></i> Productos
+      </a>
+      <a href="/admin/buyers" class="sidebar__link sidebar__link--active">
+        <i class="fa-solid fa-user-group"></i> Compradores
+      </a>
+      <a href="/admin/sales" class="sidebar__link">
+        <i class="fa-solid fa-receipt"></i> Ventas / Reembolsos
+      </a>
+      <a href="/admin/products/new" class="sidebar__link sidebar__link--cta">
+        <i class="fa-solid fa-plus"></i> Cargar producto
+      </a>
+      <a href="/admin/content" class="sidebar__link">
+        <i class="fa-solid fa-pen-to-square"></i> Contenido
+      </a>
+      <a href="/admin/notifications" class="sidebar__link">
+        <i class="fa-solid fa-bell"></i> Notificaciones
+      </a>
+      <a href="/" class="sidebar__link" target="_blank">
+        <i class="fa-solid fa-store"></i> Ver tienda
+      </a>
+    </nav>
+    <div class="sidebar__footer">
+      <button onclick="confirmLogout()" class="sidebar__logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Salir
+      </button>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+  <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menú">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <main class="dash">
+    <header class="dash__header">
+      <div>
+        <p class="dash__brand-tag">Heydemin · <span>Admin</span></p>
+        <h1 class="dash__title">Compradores</h1>
+        <p class="dash__sub">Listado completo de compradores registrados con contacto y fecha de creación.</p>
+      </div>
+      <div>
+        <p class="dash__sub">Total: {{ buyers|length }} comprador{{ 'es' if buyers|length != 1 else '' }}</p>
+      </div>
+    </header>
+    <section class="chart-card chart-card--full">
+      <h2 class="chart-card__title">Listado de compradores</h2>
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead>
+            <tr><th>ID</th><th>Email</th><th>Teléfono</th><th>Fecha</th></tr>
+          </thead>
+          <tbody>
+            {% if buyers %}
+              {% for b in buyers %}
+              <tr>
+                <td>{{ b.id }}</td>
+                <td>{{ b.email or '-' }}</td>
+                <td>{{ b.phone or '-' }}</td>
+                <td>{{ b.created_at.strftime('%Y-%m-%d %H:%M') if b.created_at else '-' }}</td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="4">No hay compradores registrados.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebar-overlay').classList.toggle('active');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('active');
+  }
+  function confirmLogout() {
+    if (confirm('¿Segura que querés cerrar sesión?')) {
+      window.location.href = '/admin/logout';
+    }
+  }
+  </script>
+</body>
+</html>

@@ -17,6 +17,7 @@ from app.db.models.product import Product
 from app.db.models.site_content import SiteContent
 from app.db.models.admin_user import AdminUser
 from app.db.models.sale import Sale
+from app.db.models.buyer import Buyer
 from app.services.sumup import refund_transaction, SumupError
 
 import uuid
@@ -187,6 +188,7 @@ def admin_sales(request: Request, db: Session = Depends(get_db)):
         return RedirectResponse(url="/admin/login", status_code=302)
 
     sales = db.query(Sale).order_by(Sale.created_at.desc()).all()
+
     return templates.TemplateResponse(
         request,
         "admin/sales.html",
@@ -196,6 +198,19 @@ def admin_sales(request: Request, db: Session = Depends(get_db)):
             "message": request.query_params.get("message", ""),
             "error": request.query_params.get("error", ""),
         }
+    )
+
+
+@router.get("/buyers")
+def admin_buyers(request: Request, db: Session = Depends(get_db)):
+    if not _is_authenticated(request):
+        return RedirectResponse(url="/admin/login", status_code=302)
+
+    buyers = db.query(Buyer).order_by(Buyer.created_at.desc()).all()
+    return templates.TemplateResponse(
+        request,
+        "admin/buyers.html",
+        {"request": request, "buyers": buyers}
     )
 
 
